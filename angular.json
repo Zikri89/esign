@@ -90,10 +90,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                          "browserTarget": "fuse:build:production"
+                          "buildTarget": "fuse:build:production"
                         },
                         "development": {
-                          "browserTarget": "fuse:build:development"
+                          "buildTarget": "fuse:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
