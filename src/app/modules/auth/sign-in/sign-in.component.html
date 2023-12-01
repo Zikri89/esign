@@ -34,18 +34,11 @@
         <div class="w-full max-w-100 sm:w-100 mx-auto sm:mx-0">
             <!-- Logo -->
             <div class="w-19">
-                <img alt="logo" src="assets/images/logo/logo.png">
+                <img class="logo" alt="logo" src="assets/images/logo/logo.png">
             </div>
 
             <!-- Title -->
             <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign in</div>
-            <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Don't have an account?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-up']">Sign up
-                </a>
-            </div>
 
             <!-- Alert -->
             <fuse-alert
@@ -53,7 +46,7 @@
                 [appearance]="'outline'"
                 [showIcon]="false"
                 [type]="'info'">
-                You are browsing <strong>Fuse Demo</strong>. Click on the "Sign in" button to access the Demo and Documentation.
+                Aplikasi <strong>E-Sign</strong>. dijalankan dalam mode dev.
             </fuse-alert>
 
             <!-- Alert -->
@@ -115,20 +108,6 @@
                         Password is required
                     </mat-error>
                 </mat-form-field>
-
-                <!-- Actions -->
-                <div class="inline-flex items-center justify-between w-full mt-1.5">
-                    <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
-                        [formControlName]="'rememberMe'">
-                        Remember me
-                    </mat-checkbox>
-                    <a
-                        class="text-md font-medium text-primary-500 hover:underline"
-                        [routerLink]="['/forgot-password']">Forgot password?
-                    </a>
-                </div>
 
                 <!-- Submit button -->
                 <button

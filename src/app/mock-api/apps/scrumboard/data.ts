@@ -77,8 +77,8 @@ export const cards = [
         boardId    : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         listId     : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
         position   : 65536,
-        title      : 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards',
-        description: 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards. Example that showcase all of the available bits on the card with a fairly long title compared to other cards.',
+        title      : 'Dashboard that showcase all of the available bits on the card with a fairly long title compared to other cards',
+        description: 'Dashboard that showcase all of the available bits on the card with a fairly long title compared to other cards. Example that showcase all of the available bits on the card with a fairly long title compared to other cards.',
         labels     : [
             'e0175175-2784-48f1-a519-a1d2e397c9b3',
             '51779701-818a-4a53-bc16-137c3bd7a564',
