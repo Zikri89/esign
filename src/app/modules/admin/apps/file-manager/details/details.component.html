@@ -10,11 +10,30 @@
     </div>
 
     <div class="flex flex-col gt-xs:flex-row">
+        <!-- Name & Type -->
+        <div class="flex flex-col items-start mt-8">
+            <div class="text-xl font-medium">{{item.name}}</div>
+        </div>
+
+        <!-- Description -->
+        <div class="flex items-center justify-between mt-8">
+            <div class="text-lg font-medium">Description</div>
+        </div>
+        <div class="flex mt-2 border-t">
+            <div class="py-3">
+                <ng-container *ngIf="item.description">
+                    <div>{{item.description}}</div>
+                </ng-container>
+                <ng-container *ngIf="!item.description">
+                    <div class="italic text-secondary">Click here to add a description</div>
+                </ng-container>
+            </div>
+        </div>
         <mat-form-field
             [ngClass]="formFieldHelpers"
-            class="flex-auto gt-xs:pr-3">
+            class="flex-auto gt-xs:pr-3 w-full">
             <mat-label>Pilih Nama pasien</mat-label>
-            <mat-select [placeholder]="'Pilih Nama Pasien'">
+            <mat-select [placeholder]="'Pilih Nama Pasien'" [(ngModel)]="selectedPasien" name="pasienId" required>
                 <mat-option value="5cb66e32-d1ac-3b9a-3c34-5991ce25add5">Pasien 1</mat-option>
                 <mat-option value="5cb66e32-d1ac-4b9a-7c34-5991ce21acd2">Pasien 2</mat-option>
                 <mat-option value="5cb66e32-d1af-4b3a-8x34-5991ce25add2">Pasien 3</mat-option>
@@ -24,35 +43,15 @@
                 matPrefix
                 [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
         </mat-form-field>
-
-    <!-- Name & Type -->
-    <div class="flex flex-col items-start mt-8">
-        <div class="text-xl font-medium">{{item.name}}</div>
-    </div>
-
-    <!-- Description -->
-    <div class="flex items-center justify-between mt-8">
-        <div class="text-lg font-medium">Description</div>
-    </div>
-    <div class="flex mt-2 border-t">
-        <div class="py-3">
-            <ng-container *ngIf="item.description">
-                <div>{{item.description}}</div>
-            </ng-container>
-            <ng-container *ngIf="!item.description">
-                <div class="italic text-secondary">Click here to add a description</div>
-            </ng-container>
+        <!-- Actions -->
+        <div class="flex w-full">
+            <button type="button"
+                class="flex-auto"
+                mat-flat-button
+                [color]="'primary'" (click)="makeEsign({ formulirId: item.id, pasienId: selectedPasien })">
+                Buat E-Sign
+            </button>
         </div>
     </div>
-
-    <!-- Actions -->
-    <div class="flex w-full mt-8">
-        <button
-            class="flex-auto"
-            mat-flat-button
-            [color]="'primary'">
-            Buat E-Sign
-        </button>
-    </div>
-
 </div>
+

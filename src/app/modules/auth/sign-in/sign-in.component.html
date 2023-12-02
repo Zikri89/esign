@@ -90,7 +90,7 @@
                         type="password"
                         [formControlName]="'password'"
                         #passwordField>
-                    <button
+                    <button title="Lihat Password"
                         mat-icon-button
                         type="button"
                         (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
@@ -110,7 +110,7 @@
                 </mat-form-field>
 
                 <!-- Submit button -->
-                <button
+                <button type="button"
                     class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
                     [color]="'primary'"

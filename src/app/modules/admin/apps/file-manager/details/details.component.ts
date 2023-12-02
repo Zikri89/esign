@@ -1,17 +1,20 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
 import { Item } from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
+import { FuseAlertType } from '@fuse/components/alert';
 import { Subject, takeUntil } from 'rxjs';
+import { FormDataFormulir } from 'app/modules/admin/apps/file-manager/details/details.types';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
     selector       : 'file-manager-details',
@@ -24,7 +27,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class FileManagerDetailsComponent implements OnInit, OnDestroy
 {
     item: Item;
-    formFieldHelpers: string[] = [''];
+    selectedPasien: string;
+    formFieldHelpers: string[] = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -34,6 +38,9 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _fileManagerListComponent: FileManagerListComponent,
         private _fileManagerService: FileManagerService,
+        private _activatedRoute: ActivatedRoute,
+        private _router: Router,
+        private snackBar: MatSnackBar
     )
     {
     }
@@ -97,5 +104,41 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
+    }
+
+    makeEsign(formData : FormDataFormulir): void
+    {
+        if (!this.selectedPasien) {
+            const verticalPosition: MatSnackBarVerticalPosition = 'top';
+            // Tampilkan alert danger menggunakan MatSnackBar
+            this.snackBar.open('Pilih Nama Pasien terlebih dahulu.', 'OK', {
+                duration: 3000,
+                verticalPosition: verticalPosition,
+            });
+
+            return ;
+        }
+        // Sign in
+        this._fileManagerService.esignIn(formData)
+            .subscribe(
+                () =>
+                {
+                    // Set the redirect url.
+                    // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+                    // to the correct page after a successful sign in. This way, that url can be set via
+                    // routing file and we don't have to touch here.
+                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || 'apps/file-manager/formulir/'+formData.formulirId;
+                    // Navigate to the redirect url
+                    this._router.navigateByUrl(redirectURL);
+
+                },
+                (response) =>
+                {
+                   // Tampilkan alert danger menggunakan MatSnackBar
+                    this.snackBar.open(response, 'OK', {
+                        duration: 3000,
+                    });
+                },
+            );
     }
 }

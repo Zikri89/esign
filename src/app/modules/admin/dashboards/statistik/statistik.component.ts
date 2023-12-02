@@ -14,6 +14,8 @@ import { User } from 'app/core/user/user.types';
 import { ProjectService } from 'app/modules/admin/dashboards/statistik/statistik.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
+import { SharedDataService } from 'app/services/shared-date-service';
+
 
 @Component({
     selector       : 'statistik',
@@ -33,7 +35,7 @@ export class ProjectComponent implements OnInit, OnDestroy
     chartYearlyExpenses: ApexOptions = {};
     data: any;
     user: User;
-    selectedProject: string = 'Tipe Data 1';
+    selectedProject: string = 'Data Statistik 1';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**

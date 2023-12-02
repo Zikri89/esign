@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Item, Items } from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { BehaviorSubject, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { FormDataFormulir } from './details/details.types';
+import { SharedDataService } from 'app/services/shared-date-service';
 
 @Injectable({providedIn: 'root'})
 export class FileManagerService
@@ -13,7 +15,7 @@ export class FileManagerService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient, private _sharedDataService: SharedDataService)
     {
     }
 
@@ -81,6 +83,16 @@ export class FileManagerService
 
                 return of(item);
             }),
+        );
+    }
+
+    esignIn(esignData: FormDataFormulir): Observable<any> {
+        return this.getItemById(esignData.formulirId).pipe(
+            switchMap((item) => {
+                const mergedItem = { 'pasienId': esignData.pasienId, ...item };
+                this._sharedDataService.setEsignData(mergedItem);
+                return of(mergedItem);
+            })
         );
     }
 }

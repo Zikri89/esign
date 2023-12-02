@@ -63,6 +63,7 @@
     "lodash": "4.17.21",
     "postcss": "8.4.31",
     "tailwindcss": "3.3.5",
+    "ts-node": "^10.9.1",
     "typescript": "5.2.2"
   }
 }

@@ -5,6 +5,7 @@ import { FileManagerComponent } from 'app/modules/admin/apps/file-manager/file-m
 import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
 import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { catchError, throwError } from 'rxjs';
+import { FormsWizardsComponent } from './wizards/wizards.component';
 
 /**
  * Folder resolver
@@ -130,6 +131,13 @@ export default [
                 ],
             },
             {
+                path     : 'formulir/:formulirId',
+                component: FormsWizardsComponent,
+                resolve  : {
+                    item: folderResolver,
+                }
+            },
+            {
                 path     : '',
                 component: FileManagerListComponent,
                 resolve  : {
@@ -145,7 +153,7 @@ export default [
                         canDeactivate: [canDeactivateFileManagerDetails],
                     },
                 ],
-            },
+            }
         ],
     },
 ] as Routes;
