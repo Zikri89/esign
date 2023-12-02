@@ -1,0 +1,47 @@
+<div class="flex flex-col flex-auto p-6 md:p-8">
+
+    <!-- Close button -->
+    <div class="flex items-center justify-end">
+        <a
+            mat-icon-button
+            [routerLink]="['../../']">
+            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </a>
+    </div>
+
+    <!-- Preview -->
+    <div class="mt-8 aspect-[9/6]">
+        <div class="flex items-center justify-center h-full border rounded-lg bg-gray-50 dark:bg-card">
+            <ng-container *ngIf="item.type === 'folder'">
+                <mat-icon
+                    class="icon-size-24 text-hint"
+                    [svgIcon]="'heroicons_outline:folder'"></mat-icon>
+            </ng-container>
+            <ng-container *ngIf="item.type !== 'folder'">
+                <mat-icon
+                    class="icon-size-24 text-hint"
+                    [svgIcon]="'heroicons_outline:document'"></mat-icon>
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- Name & Type -->
+    <div class="flex flex-col items-start mt-8">
+        <div class="text-xl font-medium">{{item.name}}</div>
+    </div>
+
+    <!-- Description -->
+    <div class="flex items-center justify-between mt-8">
+        <div class="text-lg font-medium">Description</div>
+    </div>
+    <div class="flex mt-2 border-t">
+        <div class="py-3">
+            <ng-container *ngIf="item.description">
+                <div>{{item.description}}</div>
+            </ng-container>
+            <ng-container *ngIf="!item.description">
+                <div class="italic text-secondary">Gunakan Form Untuk pasien ?</div>
+            </ng-container>
+        </div>
+    </div>
+</div>
