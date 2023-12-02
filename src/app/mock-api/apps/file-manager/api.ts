@@ -45,11 +45,9 @@ export class FileManagerMockApi
                 items = items.filter(item => item.folderId === folderId);
 
                 // Separate the items by folders and files
-                const folders = items.filter(item => item.type === 'folder');
                 const files = items.filter(item => item.type !== 'folder');
 
                 // Sort the folders and files alphabetically by filename
-                folders.sort((a, b) => a.name.localeCompare(b.name));
                 files.sort((a, b) => a.name.localeCompare(b.name));
 
                 // Figure out the path and attach it to the response
@@ -81,7 +79,6 @@ export class FileManagerMockApi
                 return [
                     200,
                     {
-                        folders,
                         files,
                         path,
                     },

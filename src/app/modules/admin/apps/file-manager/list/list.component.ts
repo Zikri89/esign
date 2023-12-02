@@ -6,8 +6,8 @@ import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { MedicalFormService } from 'app/modules/admin/medicalform/medicalform.service';
-import { Item, Items } from 'app/modules/admin/medicalform/medicalform.types';
+import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
+import { Item, Items } from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -33,7 +33,7 @@ export class FileManagerListComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
-        private _fileManagerService: MedicalFormService,
+        private _fileManagerService: FileManagerService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
     )
     {

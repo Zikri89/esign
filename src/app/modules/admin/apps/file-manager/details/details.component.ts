@@ -1,25 +1,30 @@
-import { NgIf } from '@angular/common';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { RouterLink } from '@angular/router';
-import { MedicalFormService } from 'app/modules/admin/medicalform/medicalform.service';
-import { Item } from 'app/modules/admin/medicalform/medicalform.types';
-import { FileManagerListComponent } from 'app/modules/admin/medicalform/list/list.component';
+import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
+import { Item } from 'app/modules/admin/apps/file-manager/file-manager.types';
+import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector       : 'medicalform-details',
+    selector       : 'file-manager-details',
     templateUrl    : './details.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,
-    imports        : [MatButtonModule, RouterLink, MatIconModule, NgIf],
+    imports        : [MatButtonModule, RouterLink, MatIconModule, NgIf, FormsModule, MatFormFieldModule, NgClass, TextFieldModule, ReactiveFormsModule, MatSelectModule],
 })
 export class FileManagerDetailsComponent implements OnInit, OnDestroy
 {
     item: Item;
+    formFieldHelpers: string[] = [''];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -28,7 +33,7 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fileManagerListComponent: FileManagerListComponent,
-        private _fileManagerService: MedicalFormService,
+        private _fileManagerService: FileManagerService,
     )
     {
     }

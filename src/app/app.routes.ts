@@ -9,15 +9,15 @@ import { LayoutComponent } from 'app/layout/layout.component';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
 
-    // Redirect empty path to '/dashboard'
-    {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
+    // Redirect empty path to '/dashboards/statistik'
+    {path: '', pathMatch : 'full', redirectTo: 'dashboards/statistik'},
 
-    // Redirect signed-in user to the '/dashboard'
+    // Redirect signed-in user to the '/dashboards/statistik'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboard'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboards/statistik'},
 
     // Auth routes for guests
     {
@@ -44,7 +44,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.routes')},
-            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')},
+            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
         ]
     },
 
@@ -70,8 +70,16 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver
         },
         children: [
-            {path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
-            {path: 'medical-form', loadChildren: () => import('app/modules/admin/medicalform/medicalform.routes')},
+            // Dashboards
+            {path: 'dashboards', children: [
+                {path: 'statistik', loadChildren: () => import('app/modules/admin/dashboards/statistik/statistik.routes')},
+            ]},
+
+            // Apps
+            {path: 'apps', children: [
+                {path: 'file-manager', loadChildren: () => import('app/modules/admin/apps/file-manager/file-manager.routes')},
+            ]},
+
         ]
     }
 ];

@@ -1,8 +1,9 @@
-import { MedicalformComponent } from 'app/modules/admin/medicalform/medicalform.component';import { inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@angular/router';
-import { FileManagerDetailsComponent } from 'app/modules/admin/medicalform/details/details.component';
-import { MedicalFormService } from 'app/modules/admin/medicalform/medicalform.service';
-import { FileManagerListComponent } from 'app/modules/admin/medicalform/list/list.component';
+import { FileManagerDetailsComponent } from 'app/modules/admin/apps/file-manager/details/details.component';
+import { FileManagerComponent } from 'app/modules/admin/apps/file-manager/file-manager.component';
+import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
+import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { catchError, throwError } from 'rxjs';
 
 /**
@@ -13,7 +14,7 @@ import { catchError, throwError } from 'rxjs';
  */
 const folderResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
 {
-    const fileManagerService = inject(MedicalFormService);
+    const fileManagerService = inject(FileManagerService);
     const router = inject(Router);
 
     return fileManagerService.getItems(route.paramMap.get('folderId')).pipe(
@@ -43,7 +44,7 @@ const folderResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapsho
  */
 const itemResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
 {
-    const fileManagerService = inject(MedicalFormService);
+    const fileManagerService = inject(FileManagerService);
     const router = inject(Router);
 
     return fileManagerService.getItemById(route.paramMap.get('id')).pipe(
@@ -109,7 +110,7 @@ const canDeactivateFileManagerDetails = (
 export default [
     {
         path     : '',
-        component: MedicalformComponent,
+        component: FileManagerComponent,
         children : [
             {
                 path     : 'folders/:folderId',
@@ -132,7 +133,7 @@ export default [
                 path     : '',
                 component: FileManagerListComponent,
                 resolve  : {
-                    items: () => inject(MedicalFormService).getItems(),
+                    items: () => inject(FileManagerService).getItems(),
                 },
                 children : [
                     {

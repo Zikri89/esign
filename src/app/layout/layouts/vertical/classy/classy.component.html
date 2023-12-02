@@ -13,13 +13,12 @@
         <div class="flex items-center w-full p-4 pl-6">
             <!-- Logo -->
             <div class="flex items-center justify-center">
-                <img
-                    class="w-8"
-                    src="assets/images/logo/logo.svg">
+                <img alt="logo"
+                    class="w-19 logo"
+                    src="assets/images/logo/logo.png">
             </div>
             <!-- Components -->
             <div class="flex items-center ml-auto">
-                <notifications></notifications>
                 <user [showAvatar]="false"></user>
             </div>
         </div>
@@ -46,14 +45,6 @@
             </div>
         </div>
     </ng-container>
-    <!-- Navigation footer hook -->
-    <ng-container fuseVerticalNavigationContentFooter>
-        <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4 opacity-12">
-            <img
-                class="max-w-36"
-                src="assets/images/logo/logo-text-on-dark.svg">
-        </div>
-    </ng-container>
 </fuse-vertical-navigation>
 
 <!-- Wrapper -->
@@ -62,18 +53,15 @@
     <!-- Header -->
     <div class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
         <!-- Navigation toggle button -->
-        <button
+        <button title="button"
             mat-icon-button
             (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
         <!-- Components -->
         <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
-            <languages></languages>
             <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
             <search [appearance]="'bar'"></search>
-            <shortcuts></shortcuts>
-            <messages></messages>
         </div>
     </div>
 

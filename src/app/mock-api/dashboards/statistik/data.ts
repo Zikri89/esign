@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 /* Get the current instant */
 const now = DateTime.now();
 
-export const project = {
+export const statistik = {
     githubIssues      : {
         overview: {
             'this-week': {
