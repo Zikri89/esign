@@ -6,20 +6,14 @@
             <!-- Breadcrumbs -->
             <div class="flex flex-wrap items-center font-medium">
                 <div>
-                    <a class="whitespace-nowrap text-primary-500">Formulir</a>
+                    <a class="whitespace-nowrap text-primary-500" routerLink="/apps/file-manager">Formulir</a>
                 </div>
                 <div class="flex items-center ml-1 whitespace-nowrap">
                     <mat-icon
                         class="icon-size-5 text-secondary"
                         [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
-                    <!-- <a class="ml-1 text-primary-500">{{ esignData.name }}</a> -->
+                    <a class="ml-1 text-primary-500">{{ esignData.name }}</a>
                 </div>
-            </div>
-            <!-- Title -->
-            <div class="mt-2">
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    <!-- Form {{ esignData.name }} -->
-                </h2>
             </div>
         </div>
     </div>
@@ -30,7 +24,7 @@
         <div class="max-w-3xl">
 
             <!-- Horizontal stepper -->
-            <div class="mt-5 mb-8 text-3xl font-bold">Horizontal Stepper</div>
+            <div class="mt-5 mb-8 text-3xl font-bold">{{ esignData.name }}</div>
 
             <form
                 class="p-4 bg-card shadow rounded overflow-hidden"

@@ -3,8 +3,8 @@ export const items = [
     {
         id         : '5cb66e32-d1ac-4b9a-8c34-5991ce25add2',
         folderId : null,
-        name       : 'Triase',
-        description: 'Formulir triase',
+        name       : 'Persetujuan Umum  General Concent',
+        description: 'Formulir Persetujuan Umum  General Concent',
     },
     {
         id         : '3ffc3d84-8f2d-4929-903a-ef6fc21657a7',

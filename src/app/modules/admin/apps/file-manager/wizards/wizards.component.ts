@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
+import { RouterModule } from '@angular/router';
 import { SharedDataService } from 'app/services/shared-date-service';
 
 @Component({
@@ -16,7 +17,7 @@ import { SharedDataService } from 'app/services/shared-date-service';
     templateUrl  : './wizards.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatCheckboxModule, MatRadioModule],
+    imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatCheckboxModule, MatRadioModule, RouterModule],
 })
 export class FormsWizardsComponent implements OnInit
 {
