@@ -29,4 +29,15 @@ export class FormManagerService {
         })
       );
   }
+
+  post(data: FormManagerData): Observable<FormManagerData> {
+    const url = 'http://localhost:1337/api/v1/formManager';
+    const apiKey = '71eec1b846172e2c6e8e7aadf536f8cf';
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+    });
+
+    return this._httpClient.post<FormManagerData>(url, data, { headers });
+  }
 }

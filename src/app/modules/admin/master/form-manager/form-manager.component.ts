@@ -2,16 +2,16 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { FormManagerData } from './form-manager.types';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { FormManagerService } from './form-manager.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FuseDrawerComponent } from '@fuse/components/drawer';
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 
 @Component({
     selector       : 'form-manager',
@@ -31,13 +31,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
         MatTableModule,
         MatCardModule,
         MatSortModule,
+        FuseDrawerComponent,
     ],
 })
 export class FormManagerComponent implements OnInit, OnDestroy
 {
+    @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
+    drawerMode: 'side' | 'over';
     formManagerDataSource: any;
     formManagerTableColumns: string[] = ['id', 'name', 'columnLength', 'description', 'status'];
     items: any;
+    drawerOpened: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -45,6 +49,10 @@ export class FormManagerComponent implements OnInit, OnDestroy
      */
     constructor(
         private _formManagerService: FormManagerService,
+        private _activatedRoute: ActivatedRoute,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _router: Router,
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
     )
     {
     }
@@ -68,6 +76,17 @@ export class FormManagerComponent implements OnInit, OnDestroy
                 // Store the table data
                 this.formManagerDataSource = this.items;
             });
+
+        this._fuseMediaWatcherService.onMediaQueryChange$('(min-width: 1440px)')
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((state) =>
+            {
+                // Calculate the drawer mode
+                this.drawerMode = state.matches ? 'side' : 'over';
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     /**
@@ -75,7 +94,9 @@ export class FormManagerComponent implements OnInit, OnDestroy
      */
     ngOnDestroy(): void
     {
-
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
     }
 
     /**
@@ -88,4 +109,16 @@ export class FormManagerComponent implements OnInit, OnDestroy
     {
         return item.id || index;
     }
+
+   /**
+     * On backdrop clicked
+     */
+   onBackdropClicked(): void
+   {
+       // Go back to the list
+       this._router.navigate(['./'], {relativeTo: this._activatedRoute});
+
+       // Mark for check
+       this._changeDetectorRef.markForCheck();
+   }
 }
