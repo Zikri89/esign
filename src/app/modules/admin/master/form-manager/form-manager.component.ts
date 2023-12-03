@@ -58,12 +58,6 @@ export class FormManagerComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        const url = 'http://localhost:1337/api/v1/formManager';
-        const apiKey = '71eec1b846172e2c6e8e7aadf536f8cf';
-        const headers = new HttpHeaders({
-            'apikey': apiKey,
-        });
-
         this._formManagerService.data$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) =>
