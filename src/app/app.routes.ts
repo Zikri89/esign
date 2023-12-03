@@ -75,6 +75,11 @@ export const appRoutes: Route[] = [
                 {path: 'statistik', loadChildren: () => import('app/modules/admin/dashboards/statistik/statistik.routes')},
             ]},
 
+            // Master
+            {path: 'master', children: [
+                {path: 'form-manager', loadChildren: () => import('app/modules/admin/master/form-manager/form-manager.routes')},
+            ]},
+
             // Apps
             {path: 'apps', children: [
                 {path: 'file-manager', loadChildren: () => import('app/modules/admin/apps/file-manager/file-manager.routes')},

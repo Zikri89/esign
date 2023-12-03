@@ -19,6 +19,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id      : 'master',
+        title   : 'Master Data',
+        subtitle: 'Setting data master',
+        type    : 'group',
+        icon    : 'heroicons_outline:document-plus',
+        children: [
+            {
+                id   : 'master.form-manager',
+                title: 'Form Manager',
+                type : 'basic',
+                icon : 'heroicons_outline:document-plus',
+                link : '/master/form-manager',
+            },
+        ],
+    },
+    {
         id      : 'apps',
         title   : 'Applications',
         subtitle: 'Penerapan Operasional',
