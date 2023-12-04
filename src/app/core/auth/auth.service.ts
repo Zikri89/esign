@@ -94,10 +94,12 @@ export class AuthService
      */
     signInUsingToken(): Observable<any>
     {
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+            'authorization' : this.accessToken
+        });
         // Sign in using the token
-        return this._httpClient.post('api/auth/sign-in-with-token', {
-            accessToken: this.accessToken,
-        }).pipe(
+        return this._httpClient.get(environment.apiUrl+'authWithToken', {headers}).pipe(
             catchError(() =>
 
                 // Return false
@@ -121,7 +123,7 @@ export class AuthService
                 this._authenticated = true;
 
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._userService.user = response;
 
                 // Return true
                 return of(true);

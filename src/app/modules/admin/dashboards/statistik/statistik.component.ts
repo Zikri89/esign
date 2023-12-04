@@ -14,7 +14,6 @@ import { User } from 'app/core/user/user.types';
 import { ProjectService } from 'app/modules/admin/dashboards/statistik/statistik.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
-import { SharedDataService } from 'app/services/shared-date-service';
 
 
 @Component({
@@ -23,7 +22,21 @@ import { SharedDataService } from 'app/services/shared-date-service';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,
-    imports        : [TranslocoModule, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
+    imports        : [
+        TranslocoModule,
+        MatIconModule,
+        MatButtonModule,
+        MatRippleModule,
+        MatMenuModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        NgApexchartsModule,
+        NgFor,
+        NgIf,
+        MatTableModule,
+        NgClass,
+        CurrencyPipe
+    ],
 })
 export class ProjectComponent implements OnInit, OnDestroy
 {
