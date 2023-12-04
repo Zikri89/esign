@@ -4,12 +4,14 @@ import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService
 {
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
+    private _cookieService = inject(CookieService);
     private _userService = inject(UserService);
     private readonly _secret: any;
 
@@ -20,15 +22,13 @@ export class AuthService
     /**
      * Setter & getter for access token
      */
-    set accessToken(token: string)
-    {
-        localStorage.setItem('accessToken', token);
-    }
+    set accessToken(token: string) {
+        this._cookieService.set('accessToken', token);
+      }
 
-    get accessToken(): string
-    {
-        return localStorage.getItem('accessToken') ?? '';
-    }
+      get accessToken(): string {
+        return this._cookieService.get('accessToken') || '';
+      }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -137,7 +137,7 @@ export class AuthService
     signOut(): Observable<any>
     {
         // Remove the access token from the local storage
-        localStorage.removeItem('accessToken');
+        this._cookieService.delete('accessToken');
 
         // Set the authenticated flag to false
         this._authenticated = false;
@@ -179,12 +179,6 @@ export class AuthService
 
         // Check the access token availability
         if ( !this.accessToken )
-        {
-            return of(false);
-        }
-
-        // Check the access token expire date
-        if ( AuthUtils.isTokenExpired(this.accessToken) )
         {
             return of(false);
         }
