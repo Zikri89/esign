@@ -1,8 +1,12 @@
 /* eslint-disable */
 export const user = {
-    id    : 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df',
-    name  : 'Zikri',
-    email : 'asalngoding90@gmail.com',
+    createdAt: '',
+    updatedAt: '',
+    id: 1,
+    idUser: '',
+    password: '',
+    name: 'Zikri',
+    email: 'asalngoding90@gmail.com',
     avatar: 'assets/images/avatars/brian-hughes.jpg',
     status: 'online',
 };

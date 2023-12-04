@@ -32,6 +32,7 @@ export class AuthUnlockSessionComponent implements OnInit
     showAlert: boolean = false;
     unlockSessionForm: UntypedFormGroup;
     private _email: string;
+    private _userCode: string;
 
     /**
      * Constructor
@@ -96,7 +97,7 @@ export class AuthUnlockSessionComponent implements OnInit
         this.showAlert = false;
 
         this._authService.unlockSession({
-            email   : this._email ?? '',
+            userCode   : this._userCode ?? '',
             password: this.unlockSessionForm.get('password').value,
         }).subscribe(
             () =>

@@ -66,18 +66,15 @@
                 [formGroup]="signInForm"
                 #signInNgForm="ngForm">
 
-                <!-- Email field -->
+                <!-- Username field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
-                    <input placeholder="email"
-                        id="email"
+                    <mat-label>User Name</mat-label>
+                    <input placeholder="username"
+                        id="username"
                         matInput
-                        [formControlName]="'email'">
-                    <mat-error *ngIf="signInForm.get('email').hasError('required')">
-                        Email address is required
-                    </mat-error>
-                    <mat-error *ngIf="signInForm.get('email').hasError('email')">
-                        Please enter a valid email address
+                        [formControlName]="'userCode'">
+                    <mat-error *ngIf="signInForm.get('userCode').hasError('required')">
+                        Username is required
                     </mat-error>
                 </mat-form-field>
 

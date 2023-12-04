@@ -54,9 +54,8 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['asalngoding89@gmail.com', [Validators.required, Validators.email]],
-            password  : ['admin', Validators.required],
-            rememberMe: [''],
+            userCode     : ['AD001', [Validators.required]],
+            password  : ['123456', Validators.required],
         });
     }
 
@@ -107,7 +106,7 @@ export class AuthSignInComponent implements OnInit
                     // Set the alert
                     this.alert = {
                         type   : 'error',
-                        message: 'Wrong email or password',
+                        message: 'Wrong username or password',
                     };
 
                     // Show the alert

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
 import { FormManagerData } from './form-manager.types';
+import { environment } from 'environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FormManagerService {
@@ -17,14 +18,12 @@ export class FormManagerService {
 
   // Get all formManagerData data
   get(): Observable<FormManagerData> {
-    const url = 'http://localhost:1337/api/v1/formManager';
-    const apiKey = '71eec1b846172e2c6e8e7aadf536f8cf';
     const headers = new HttpHeaders({
-        'x-api-key': apiKey,
+        'x-api-key': environment.apiKey,
     });
 
     return this._httpClient
-      .get<FormManagerData>(url, {headers}).pipe(tap((data) => {
+      .get<FormManagerData>(environment.apiUrl+'formManager', {headers}).pipe(tap((data) => {
           this._data.next(data);
         })
       );

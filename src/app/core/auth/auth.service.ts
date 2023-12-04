@@ -1,8 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { cloneDeep } from 'lodash-es';
+import Utf8 from 'crypto-js/enc-utf8';
+import HmacSHA256 from 'crypto-js/hmac-sha256';
+import { environment } from '../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class AuthService
@@ -10,6 +14,7 @@ export class AuthService
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
+    private readonly _secret: any;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -35,11 +40,11 @@ export class AuthService
     /**
      * Forgot password
      *
-     * @param email
+     * @param userCode
      */
-    forgotPassword(email: string): Observable<any>
+    forgotPassword(userCode: string): Observable<any>
     {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return this._httpClient.post('api/auth/forgot-password', userCode);
     }
 
     /**
@@ -57,7 +62,7 @@ export class AuthService
      *
      * @param credentials
      */
-    signIn(credentials: { email: string; password: string }): Observable<any>
+    signIn(credentials: { userCode: string; password: string }): Observable<any>
     {
         // Throw error, if the user is already logged in
         if ( this._authenticated )
@@ -65,7 +70,11 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient.post(environment.apiUrl+'auth', credentials, {headers}).pipe(
             switchMap((response: any) =>
             {
                 // Store the access token in the local storage
@@ -75,7 +84,7 @@ export class AuthService
                 this._authenticated = true;
 
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._userService.user = response;
 
                 // Return a new observable with the response
                 return of(response);
@@ -143,7 +152,7 @@ export class AuthService
      *
      * @param user
      */
-    signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
+    signUp(user: { name: string; userCode: string; password: string; company: string }): Observable<any>
     {
         return this._httpClient.post('api/auth/sign-up', user);
     }
@@ -153,7 +162,7 @@ export class AuthService
      *
      * @param credentials
      */
-    unlockSession(credentials: { email: string; password: string }): Observable<any>
+    unlockSession(credentials: { userCode: string; password: string }): Observable<any>
     {
         return this._httpClient.post('api/auth/unlock-session', credentials);
     }
