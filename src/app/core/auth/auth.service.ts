@@ -3,9 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
-import { cloneDeep } from 'lodash-es';
-import Utf8 from 'crypto-js/enc-utf8';
-import HmacSHA256 from 'crypto-js/hmac-sha256';
 import { environment } from '../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
