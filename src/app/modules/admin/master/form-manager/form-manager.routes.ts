@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@an
 import { FormManagerComponent } from './form-manager.component';
 import { FormManagerService } from './form-manager.service';
 import { FormManagerDetailsComponent } from './details/details.component';
+import { FormManagerDetailEditComponent } from './details-edit/details.component';
 
 const canDeactivateFormManagerDetails = (
     component: FormManagerDetailsComponent,
@@ -63,6 +64,23 @@ export default [
             {
                 path         : 'confirm',
                 component    : FormManagerComponent,
+            },
+        ],
+    },
+    {
+        path     : '',
+        component: FormManagerComponent,
+        children : [
+            {
+                path         : 'edit-form/:id',
+                component: FormManagerDetailEditComponent,
+                resolve  : {
+                    data: (route: ActivatedRouteSnapshot) => {
+                        const formId = route.paramMap.get('id');
+                        return inject(FormManagerService).onGetById(formId);
+                    }
+                },
+                canDeactivate: [canDeactivateFormManagerDetails],
             },
         ],
     }

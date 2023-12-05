@@ -29,6 +29,19 @@ export class FormManagerService {
         );
     }
 
+     // Get by id formManagerData data
+    onGetById(formId: string): Observable<FormManagerData> {
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient
+        .get<FormManagerData>(environment.apiUrl+'formManager/'+formId, {headers}).pipe(tap((data) => {
+            this._data.next(data);
+            })
+        );
+    }
+
     onPost(data: FormManagerData): Observable<FormManagerData> {
         const headers = new HttpHeaders({
         'x-api-key': environment.apiKey,

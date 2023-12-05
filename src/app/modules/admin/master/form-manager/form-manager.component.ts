@@ -161,4 +161,11 @@ export class FormManagerComponent implements OnInit, OnDestroy
             }
         })
     }
+
+    onEdit(el): void {
+        this._router.navigate(['./edit-form/'+el.id], {relativeTo: this._activatedRoute});
+
+       // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
 }

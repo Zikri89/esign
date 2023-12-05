@@ -1,0 +1,69 @@
+<div class="flex flex-col flex-auto p-6 md:p-8">
+
+    <!-- Close button -->
+    <div class="flex items-center justify-end">
+        <a
+            mat-icon-button
+            [routerLink]="['../']">
+            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </a>
+    </div>
+
+    <div class="flex flex-col gt-xs:flex-row">
+        <!-- Name & Type -->
+        <form  [formGroup]="myForm" class="flex flex-col p-8 pb-4 rounded-2xl overflow-hidden">
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="w-full">
+                    <mat-label>Nama Formulir</mat-label>
+                    <input matInput formControlName="name">
+                    <mat-icon
+                        class="icon-size-5"
+                        matSuffix
+                        [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                    <mat-error *ngIf="hasError('name', 'required')">Nama Formulir is required</mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto gt-xs:pl-3">
+                    <mat-label>Total Field</mat-label>
+                    <input matInput formControlName="columnLength">
+                    <mat-icon
+                        class="icon-size-5"
+                        matSuffix
+                        [svgIcon]="'heroicons_solid:list-bullet'"></mat-icon>
+                    <mat-error *ngIf="hasError('columnLength', 'required')">Total Field is required</mat-error>
+                    <mat-error *ngIf="hasError('columnLength', 'pattern')">Total Field is number</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto">
+                    <mat-label>Deskripsi</mat-label>
+                    <textarea
+                        matInput
+                        cdkTextareaAutosize
+                        [cdkAutosizeMinRows]="3" formControlName="description"></textarea>
+                    <mat-icon
+                        class="icon-size-5"
+                        matSuffix
+                        [svgIcon]="'heroicons_solid:newspaper'"></mat-icon>
+                    <mat-error *ngIf="hasError('description', 'required')">Deskripsi is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex justify-end mt-8">
+                <button
+                    class="w-full"
+                    mat-flat-button
+                    [color]="'primary'"
+                    type="button"
+                    (click)="onSubmit()">
+                    Tambah Data
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
