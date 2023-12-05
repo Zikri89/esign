@@ -65,12 +65,19 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        // Open the drawer
+        this._formManagerComponent.matDrawer.open();
+
         this._formManagerService.data$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) =>
             {
+                this._formManagerComponent.matDrawer.open();
                 // Store the data
                 this.items = data;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
             });
 
         this.myForm = this.fb.group({
@@ -78,10 +85,6 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
             columnLength: [this.items.columnLength, [Validators.required, Validators.pattern(/^\d+$/)]],
             description: [this.items.description, Validators.required]
         });
-        // Open the drawer
-        this._formManagerComponent.matDrawer.open();
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
     }
 
     /**
