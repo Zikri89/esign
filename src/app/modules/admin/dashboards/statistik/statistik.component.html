@@ -69,7 +69,7 @@
                 <!-- Home -->
                 <mat-tab label="Menu 1">
                     <ng-template matTabContent>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0" *ngIf="data && (data.length > 0); else noItems">
                             <p>No Data</p>
                         </div>
                     </ng-template>
@@ -78,7 +78,7 @@
                 <!-- Budget -->
                 <mat-tab label="Menu 2">
                     <ng-template matTabContent>
-                        <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0">
+                        <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0" *ngIf="data && (data.length > 0); else noItems">
                             <p>No Data</p>
                         </div>
                     </ng-template>
@@ -92,12 +92,21 @@
                         </span>
                     </ng-template>
                     <ng-template matTabContent>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full min-w-0">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full min-w-0" *ngIf="data && (data.length > 0); else noItems">
                             <p>No Data</p>
                         </div>
                     </ng-template>
                 </mat-tab>
 
+                 <!-- No items template -->
+                <ng-template #noItems>
+                    <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                        <mat-icon
+                            class="icon-size-24"
+                            [svgIcon]="'heroicons_outline:folder-open'"></mat-icon>
+                        <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">There are no data!</div>
+                    </div>
+                </ng-template>
             </mat-tab-group>
         </div>
     </div>
