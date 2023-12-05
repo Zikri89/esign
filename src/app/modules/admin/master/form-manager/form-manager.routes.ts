@@ -61,7 +61,7 @@ export default [
         component: FormManagerComponent,
         children : [
             {
-                path         : 'delete-form',
+                path         : 'confirm',
                 component    : FormManagerComponent,
             },
         ],

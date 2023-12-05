@@ -140,7 +140,7 @@ export class FormManagerComponent implements OnInit, OnDestroy
 
     onDelete(el): void {
          // Go back to the list
-       this._router.navigate(['./delete-form'], {relativeTo: this._activatedRoute});
+       this._router.navigate(['./confirm'], {relativeTo: this._activatedRoute});
        // Mark for check
        this._changeDetectorRef.markForCheck();
         const confirm = this._fuseConfirmationService.open();
@@ -150,26 +150,14 @@ export class FormManagerComponent implements OnInit, OnDestroy
                     next: (res) => {
                         this._router.navigate(['./'], {relativeTo: this._activatedRoute});
                         this._changeDetectorRef.markForCheck();
-
-                        // this._formManagerService.data$
-                        //     .pipe(takeUntil(this._unsubscribeAll))
-                        //     .subscribe((data) =>
-                        //     {
-                        //         // Store the data
-                        //         this.items = data;
-
-                        //         // Store the table data
-                        //         this.formManagerDataSource = this.items;
-
-                        //         // Mark for check
-                        //         this._changeDetectorRef.markForCheck();
-                        //     });
-
                     },
                     error: (err) => {
                         console.log(err);
                     }
                 })
+            } else {
+                this._router.navigate(['./'], {relativeTo: this._activatedRoute});
+                this._changeDetectorRef.markForCheck();
             }
         })
     }
