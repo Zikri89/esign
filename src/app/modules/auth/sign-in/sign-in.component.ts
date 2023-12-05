@@ -103,11 +103,18 @@ export class AuthSignInComponent implements OnInit
                     // Reset the form
                     this.signInNgForm.resetForm();
 
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: response.name,
-                    };
+                    if (response.status == 0) {
+                        this.alert = {
+                            type   : 'error',
+                            message: 'Tidak dapat terhubung dengan server. Pastikan server telah dinyalakan.',
+                        };
+                    } else {
+                        // Set the alert
+                        this.alert = {
+                            type   : 'error',
+                            message: response.name + ' : ' + response.error,
+                        };
+                    }
 
                     // Show the alert
                     this.showAlert = true;
