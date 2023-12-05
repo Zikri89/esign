@@ -16,7 +16,7 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 
 @Component({
     selector       : 'file-manager-details',
-    templateUrl    : './details.component.html',
+    templateUrl    : './detail-edit.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,

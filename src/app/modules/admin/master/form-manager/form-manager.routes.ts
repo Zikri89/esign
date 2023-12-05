@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@an
 import { FormManagerComponent } from './form-manager.component';
 import { FormManagerService } from './form-manager.service';
 import { FormManagerDetailsComponent } from './details/details.component';
-import { FormManagerDetailEditComponent } from './details-edit/details.component';
+import { FormManagerDetailEditComponent } from './details-edit/detail-edit.component';
 
 const canDeactivateFormManagerDetails = (
     component: FormManagerDetailsComponent,
@@ -29,6 +29,13 @@ const canDeactivateFormManagerDetails = (
 
     // If we are navigating to another item...
     if ( nextState.url.includes('/create-form') )
+    {
+        // Just navigate
+        return true;
+    }
+
+    // If we are navigating to another item...
+    if ( nextState.url.includes('/edit-form/:id') )
     {
         // Just navigate
         return true;
