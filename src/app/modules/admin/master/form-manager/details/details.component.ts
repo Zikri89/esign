@@ -7,11 +7,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject } from 'rxjs';
 import { FormManagerComponent } from '../form-manager.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormManagerService } from '../form-manager.service';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
     selector       : 'file-manager-details',
@@ -19,7 +20,19 @@ import { FormManagerService } from '../form-manager.service';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,
-    imports        : [MatButtonModule, RouterLink, MatIconModule, MatInputModule, NgIf, FormsModule, MatFormFieldModule, NgClass, TextFieldModule, ReactiveFormsModule, MatSelectModule],
+    imports: [
+        MatButtonModule,
+        RouterLink,
+        MatIconModule,
+        MatInputModule,
+        NgIf,
+        FormsModule,
+        MatFormFieldModule,
+        NgClass,
+        TextFieldModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+    ],
 })
 export class FormManagerDetailsComponent implements OnInit, OnDestroy
 {
@@ -34,7 +47,10 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _formManagerComponent: FormManagerComponent,
         private _formManagerService: FormManagerService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private _snackBar: MatSnackBar,
+        private _router: Router,
+        private _activatedRoute: ActivatedRoute,
     )
     {
     }
@@ -76,14 +92,29 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
 
     onSubmit() {
         if (this.myForm.valid) {
-            this._formManagerService.post(this.myForm.value).subscribe(
-                response => {
-                  console.log('Data posted successfully', response);
-                },
-                error => {
-                  console.error('Error posting data', error);
+            this._formManagerService.post(this.myForm.value).subscribe({
+                next: (response) => {
+                    this._snackBar.open('Data posted successfully', 'Close', {
+                        duration: 3000,
+                        verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                    });
+
+                    this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                    this._changeDetectorRef.markForCheck();
+                }, error: (error) => {
+
+                    let errorMessage = 'Error posting data';
+
+                    if (error && error.error && error.error.message) {
+                        errorMessage = error.error.message;
+                    }
+
+                    this._snackBar.open(errorMessage, 'Close', {
+                        duration: 3000,
+                        verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                    });
                 }
-              );
+            })
         } else {
             this.myForm.markAllAsTouched();
         }

@@ -110,6 +110,18 @@ export class FormManagerComponent implements OnInit, OnDestroy
         return item.id || index;
     }
 
+    /**
+     * On Create Form clicked
+     */
+   onCreateClicked(): void
+   {
+       // Go back to the list
+       this._router.navigate(['./create-form'], {relativeTo: this._activatedRoute});
+
+       // Mark for check
+       this._changeDetectorRef.markForCheck();
+   }
+
    /**
      * On backdrop clicked
      */
