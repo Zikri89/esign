@@ -67,7 +67,7 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
 
         this.myForm = this.fb.group({
             name: ['', Validators.required],
-            columnLength: ['', Validators.required],
+            columnLength: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
             description: ['', Validators.required]
         });
         // Open the drawer
