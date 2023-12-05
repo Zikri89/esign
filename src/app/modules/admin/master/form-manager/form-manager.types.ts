@@ -4,5 +4,6 @@ export interface FormManagerData
     name?: string;
     columnLength?: string;
     description?: string | null;
+    isDeleted : boolean | false,
     status?: string;
 }

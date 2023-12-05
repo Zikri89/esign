@@ -2,41 +2,59 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
 import { FormManagerData } from './form-manager.types';
-import { environment } from 'environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FormManagerService {
-  private _data: ReplaySubject<FormManagerData> = new ReplaySubject<FormManagerData>(1);
+    private _data: ReplaySubject<FormManagerData> = new ReplaySubject<FormManagerData>(1);
 
-  // Inject HttpClient in the constructor
-  constructor(private _httpClient: HttpClient) {}
+    // Inject HttpClient in the constructor
+    constructor(private _httpClient: HttpClient) {}
 
-  // Getter for data
-  get data$(): Observable<FormManagerData> {
-    return this._data.asObservable();
-  }
+    // Getter for data
+    get data$(): Observable<FormManagerData> {
+        return this._data.asObservable();
+    }
 
-  // Get all formManagerData data
-  get(): Observable<FormManagerData> {
-    const headers = new HttpHeaders({
+    // Get all formManagerData data
+    onGet(): Observable<FormManagerData> {
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient
+        .get<FormManagerData>(environment.apiUrl+'formManager', {headers}).pipe(tap((data) => {
+            this._data.next(data);
+            })
+        );
+    }
+
+    onPost(data: FormManagerData): Observable<FormManagerData> {
+        const headers = new HttpHeaders({
         'x-api-key': environment.apiKey,
-    });
+        });
 
-    return this._httpClient
-      .get<FormManagerData>(environment.apiUrl+'formManager', {headers}).pipe(tap((data) => {
-          this._data.next(data);
-        })
-      );
-  }
+        return this._httpClient.post<FormManagerData>(environment.apiUrl + 'formManager', data, { headers });
+    }
 
-  post(data: FormManagerData): Observable<FormManagerData> {
-    const url = 'http://localhost:1337/api/v1/formManager';
-    const apiKey = '71eec1b846172e2c6e8e7aadf536f8cf';
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-    });
+    onPatch(id: string): Observable<any> {
+        const headers = new HttpHeaders({
+        'x-api-key': environment.apiKey,
+        });
 
-    return this._httpClient.post<FormManagerData>(url, data, { headers });
-  }
+        const payload = { status: 'trash' };
+
+        return this._httpClient.patch(environment.apiUrl+'formManager/'+id, payload, { headers });
+    }
+
+    onDeleted(id: string): Observable<any> {
+        const headers = new HttpHeaders({
+        'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient.delete(environment.apiUrl+'formManager/'+id, { headers });
+    }
+
+
+
 }

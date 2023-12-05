@@ -63,6 +63,17 @@
                                 <th mat-header-cell *matHeaderCellDef>Status</th>
                                 <td mat-cell *matCellDef="let el">{{ el.status }}</td>
                             </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef>Action</th>
+                                <td mat-cell *matCellDef="let el">
+                                    <button mat-icon-button (click)="onDelete(el)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="onEdit(el)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="formManagerTableColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns:formManagerTableColumns"></tr>
                         </table>

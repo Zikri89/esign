@@ -12,6 +12,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { FuseDrawerComponent } from '@fuse/components/drawer';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { MatChipsModule } from '@angular/material/chips';
+import { FuseConfirmationService } from '@fuse/services/confirmation/confirmation.service';
 
 @Component({
     selector       : 'form-manager',
@@ -32,6 +34,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
         MatCardModule,
         MatSortModule,
         FuseDrawerComponent,
+        MatChipsModule,
     ],
 })
 export class FormManagerComponent implements OnInit, OnDestroy
@@ -39,7 +42,7 @@ export class FormManagerComponent implements OnInit, OnDestroy
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     formManagerDataSource: any;
-    formManagerTableColumns: string[] = ['id', 'name', 'columnLength', 'description', 'status'];
+    formManagerTableColumns: string[] = ['id', 'name', 'columnLength', 'description', 'status', 'action'];
     items: any;
     drawerOpened: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -53,6 +56,7 @@ export class FormManagerComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private _fuseConfirmationService: FuseConfirmationService,
     )
     {
     }
@@ -132,5 +136,41 @@ export class FormManagerComponent implements OnInit, OnDestroy
 
        // Mark for check
        this._changeDetectorRef.markForCheck();
-   }
+    }
+
+    onDelete(el): void {
+         // Go back to the list
+       this._router.navigate(['./delete-form'], {relativeTo: this._activatedRoute});
+       // Mark for check
+       this._changeDetectorRef.markForCheck();
+        const confirm = this._fuseConfirmationService.open();
+        confirm.afterClosed().subscribe((result) => {
+            if (result == 'confirmed') {
+                this._formManagerService.onDeleted(el.id).subscribe({
+                    next: (res) => {
+                        this._router.navigate(['./'], {relativeTo: this._activatedRoute});
+                        this._changeDetectorRef.markForCheck();
+
+                        // this._formManagerService.data$
+                        //     .pipe(takeUntil(this._unsubscribeAll))
+                        //     .subscribe((data) =>
+                        //     {
+                        //         // Store the data
+                        //         this.items = data;
+
+                        //         // Store the table data
+                        //         this.formManagerDataSource = this.items;
+
+                        //         // Mark for check
+                        //         this._changeDetectorRef.markForCheck();
+                        //     });
+
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                })
+            }
+        })
+    }
 }

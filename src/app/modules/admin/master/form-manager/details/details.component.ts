@@ -92,7 +92,7 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
 
     onSubmit() {
         if (this.myForm.valid) {
-            this._formManagerService.post(this.myForm.value).subscribe({
+            this._formManagerService.onPost(this.myForm.value).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
                         duration: 3000,

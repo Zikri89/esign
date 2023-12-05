@@ -42,7 +42,7 @@ export default [
         path     : '',
         component: FormManagerComponent,
         resolve  : {
-            data: () => inject(FormManagerService).get(),
+            data: () => inject(FormManagerService).onGet(),
         },
     },
     {
@@ -53,6 +53,16 @@ export default [
                 path         : 'create-form',
                 component    : FormManagerDetailsComponent,
                 canDeactivate: [canDeactivateFormManagerDetails],
+            },
+        ],
+    },
+    {
+        path     : '',
+        component: FormManagerComponent,
+        children : [
+            {
+                path         : 'delete-form',
+                component    : FormManagerComponent,
             },
         ],
     }
