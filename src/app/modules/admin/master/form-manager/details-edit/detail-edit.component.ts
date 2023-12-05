@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FormManagerComponent } from '../form-manager.component';
 import { MatInputModule } from '@angular/material/input';
@@ -103,14 +103,14 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
 
     onSubmit() {
         if (this.myForm.valid) {
-            this._formManagerService.onPost(this.myForm.value).subscribe({
+            this._formManagerService.onPut(this.myForm.value, this.items.id).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
                         duration: 3000,
                         verticalPosition: 'top' as MatSnackBarVerticalPosition,
                     });
 
-                    this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                    this._router.navigate(['../../'], {relativeTo: this._activatedRoute});
                     this._changeDetectorRef.markForCheck();
                 }, error: (error) => {
 

@@ -50,6 +50,15 @@ export class FormManagerService {
         return this._httpClient.post<FormManagerData>(environment.apiUrl + 'formManager', data, { headers });
     }
 
+    onPut(data: FormManagerData, id: string): Observable<FormManagerData> {
+        data.id = id;
+        const headers = new HttpHeaders({
+        'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient.put<FormManagerData>(environment.apiUrl + 'formManager/' +id, data, { headers });
+    }
+
     onPatch(id: string): Observable<any> {
         const headers = new HttpHeaders({
         'x-api-key': environment.apiKey,

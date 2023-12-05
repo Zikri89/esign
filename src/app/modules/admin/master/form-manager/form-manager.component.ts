@@ -14,7 +14,7 @@ import { FuseDrawerComponent } from '@fuse/components/drawer';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { MatChipsModule } from '@angular/material/chips';
 import { FuseConfirmationService } from '@fuse/services/confirmation/confirmation.service';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
     selector       : 'form-manager',
     templateUrl    : './form-manager.component.html',
@@ -36,13 +36,25 @@ import { FuseConfirmationService } from '@fuse/services/confirmation/confirmatio
         FuseDrawerComponent,
         MatChipsModule,
     ],
+    animations: [
+        trigger('buttonAnimation', [
+          state('normal', style({
+            transform: 'scale(1)',
+          })),
+          state('hovered', style({
+            transform: 'scale(1.1)',
+          })),
+          transition('normal <=> hovered', animate('200ms ease-in-out')),
+        ]),
+      ],
 })
+
 export class FormManagerComponent implements OnInit, OnDestroy
 {
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     formManagerDataSource: any;
-    formManagerTableColumns: string[] = ['id', 'name', 'columnLength', 'description', 'status', 'action'];
+    formManagerTableColumns: string[] = ['name', 'columnLength', 'description', 'action'];
     items: any;
     drawerOpened: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();

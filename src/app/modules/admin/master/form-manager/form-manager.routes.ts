@@ -18,9 +18,9 @@ const canDeactivateFormManagerDetails = (
         nextRoute = nextRoute.firstChild;
     }
 
-    // If the next state doesn't contain '/file-manager'
+    // If the next state doesn't contain '/form-manager'
     // it means we are navigating away from the
-    // file manager app
+    // form manager master
     if ( !nextState.url.includes('/form-manager') )
     {
         // Let it navigate
@@ -35,7 +35,7 @@ const canDeactivateFormManagerDetails = (
     }
 
     // If we are navigating to another item...
-    if ( nextState.url.includes('/edit-form/:id') )
+    if ( nextState.url.includes('/edit-form') )
     {
         // Just navigate
         return true;
