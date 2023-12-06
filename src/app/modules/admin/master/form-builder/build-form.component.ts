@@ -75,18 +75,26 @@ export class FormBuilderComponent implements OnInit
     }
 
     addCheckbox() {
-        this.formFields.push({ type: 'checkbox', label: 'Label Checkbox' });
+        // Modifikasi untuk menentukan label dan opsi
+        const label = prompt('Enter Checkbox Label:');
+        const option = prompt('Enter Checkbox Option (comma-separated):');
+        this.formFields.push({ type: 'checkbox', label: label || 'Label Checkbox', options: [option || 'Option 1'] });
     }
 
     addRadio() {
-        this.formFields.push({ type: 'radio', label: 'Label Radio' });
+        const label = prompt('Enter Radio Label:');
+        const option = prompt('Enter Radio Option (comma-separated):');
+        this.formFields.push({ type: 'radio', label: label || 'Label Radio', options: [option || 'Option 1'] });
     }
 
     addSelect() {
-        this.formFields.push({ type: 'select', label: 'Label Select Option', options: ['Option 1', 'Option 2', 'Option 3'] });
-    }
+        const label = prompt('Enter Select Label:');
+        const options = prompt('Enter Select Options (comma-separated):');
+        const optionsArray = options ? options.split(',').map(opt => opt.trim()) : ['Option 1'];
+        this.formFields.push({ type: 'select', label: label || 'Label Select', options: optionsArray });
+      }
 
-    addTextarea() {
+      addTextarea() {
         this.formFields.push({ type: 'textarea', label: 'Label Textarea' });
-    }
+      }
 }
