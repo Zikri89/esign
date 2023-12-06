@@ -47,10 +47,6 @@
                                 <th mat-header-cell *matHeaderCellDef>Name</th>
                                 <td mat-cell *matCellDef="let el">{{ el.name }}</td>
                             </ng-container>
-                            <ng-container matColumnDef="columnLength">
-                                <th mat-header-cell *matHeaderCellDef>Total Field</th>
-                                <td mat-cell *matCellDef="let el">{{ el.columnLength }}</td>
-                            </ng-container>
                             <ng-container matColumnDef="description">
                                 <th mat-header-cell *matHeaderCellDef>Description</th>
                                 <td mat-cell *matCellDef="let el" class="description-cell" matTooltip="{{ el.description }}">

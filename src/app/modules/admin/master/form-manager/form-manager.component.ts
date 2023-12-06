@@ -54,7 +54,7 @@ export class FormManagerComponent implements OnInit, OnDestroy
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     formManagerDataSource: any;
-    formManagerTableColumns: string[] = ['name', 'columnLength', 'description', 'action'];
+    formManagerTableColumns: string[] = ['name', 'description', 'action'];
     items: any;
     drawerOpened: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();

@@ -1,11 +1,77 @@
-<!-- Main -->
-<div class="flex flex-col flex-auto">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
 
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between p-6 sm:py-12 md:px-8 border-b bg-card dark:bg-transparent">
-        <!-- Title -->
-        <div>
-            <div class="text-4xl font-extrabold tracking-tight leading-none">Build Form</div>
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Dynamic Form</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Form Builder
+                </h2>
+            </div>
         </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center">
+            <button
+                class="ml-3"
+                mat-flat-button
+                (click)="addTextField()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Text Field</span>
+            </button>
+            <button
+                class="ml-3"
+                mat-flat-button
+                (click)="addCheckbox()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Checkbox</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+        <!-- CONTENT GOES HERE -->
+        <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+            <div *ngFor="let field of formFields;">
+                <div [ngSwitch]="field.type">
+                    <label *ngSwitchCase="'text'">{{ field.label }}:
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="w-full">
+                            <input
+                                matInput
+                                [placeholder]="'Placeholder only'">
+                        </mat-form-field>
+                    </label>
+                    <label *ngSwitchCase="'checkbox'">{{ field.label }}:
+                        <div class="flex flex-col">
+                            <mat-checkbox
+                                class="mb-2"
+                                [checked]="false"
+                                [color]="'primary'">
+                                {{ field.label }}
+                            </mat-checkbox>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

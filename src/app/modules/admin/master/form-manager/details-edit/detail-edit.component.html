@@ -26,20 +26,6 @@
                 </mat-form-field>
                 <mat-form-field
                     [ngClass]="formFieldHelpers"
-                    class="flex-auto gt-xs:pl-3">
-                    <mat-label>Total Field</mat-label>
-                    <input matInput formControlName="columnLength">
-                    <mat-icon
-                        class="icon-size-5"
-                        matSuffix
-                        [svgIcon]="'heroicons_solid:list-bullet'"></mat-icon>
-                    <mat-error *ngIf="hasError('columnLength', 'required')">Total Field is required</mat-error>
-                    <mat-error *ngIf="hasError('columnLength', 'pattern')">Total Field is number</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="flex">
-                <mat-form-field
-                    [ngClass]="formFieldHelpers"
                     class="flex-auto">
                     <mat-label>Deskripsi</mat-label>
                     <textarea

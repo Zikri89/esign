@@ -82,7 +82,6 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
 
         this.myForm = this.fb.group({
             name: [this.items.name, Validators.required],
-            columnLength: [this.items.columnLength, [Validators.required, Validators.pattern(/^\d+$/)]],
             description: [this.items.description, Validators.required]
         });
     }

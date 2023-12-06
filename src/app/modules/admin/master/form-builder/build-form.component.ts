@@ -1,42 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { CommonModule, NgClass } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { BuildForm } from './build-form.type';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector       : 'build-form',
     templateUrl    : './build-form.component.html',
+    encapsulation: ViewEncapsulation.None,
     standalone     : true,
-    imports: [ReactiveFormsModule, MatSelectModule, MatInputModule, MatButtonModule],
+    imports: [
+        CommonModule,
+        MatIconModule,
+        RouterLink,
+        MatButtonModule,
+        CdkScrollable,
+        MatFormFieldModule,
+        NgClass,
+        MatInputModule,
+        TextFieldModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatChipsModule,
+        MatCheckboxModule,
+        MatRadioModule
+    ],
 })
-export class FormBuilderComponent implements OnInit
+export class FormBuilderComponent
 {
-    form: FormGroup;
-    formFields: BuildForm[] = [];
+    formFields: any[] = [];
 
-    constructor(private fb: FormBuilder) { }
-
-    ngOnInit(): void {
-        this.form = this.fb.group({});
+    ngOnInit() {
     }
 
-    addField(field: BuildForm): void {
-        const control = this.fb.control('', Validators.required);
-        this.form.addControl(field.name, control);
-        this.formFields.push(field);
+    addTextField() {
+        this.formFields.push({ type: 'text', label: 'Text Field' });
     }
 
-    removeField(index: number): void {
-        const fieldName = this.formFields[index].name;
-        this.form.removeControl(fieldName);
-        this.formFields.splice(index, 1);
-    }
-
-    onSubmit(): void {
-        if (this.form.valid) {
-            console.log('Form submitted!', this.form.value);
-        }
+    addCheckbox() {
+        this.formFields.push({ type: 'checkbox', label: 'Checkbox' });
     }
 }
