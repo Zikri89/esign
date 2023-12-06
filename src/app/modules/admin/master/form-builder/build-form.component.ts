@@ -1,8 +1,9 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -37,11 +38,32 @@ import { RouterLink } from '@angular/router';
         MatRadioModule
     ],
 })
-export class FormBuilderComponent
+export class FormBuilderComponent implements OnInit
 {
     formFields: any[] = [];
+    form: FormGroup;
+    items: string;
+
+    constructor(private fb: FormBuilder, private http: HttpClient) {
+        this.form = this.fb.group({});
+      }
+
 
     ngOnInit() {
+        this.formFields.forEach(field => {
+            if (field.type !== 'select') {
+            this.form.addControl(field.label, this.fb.control(''));
+            } else {
+            this.form.addControl(field.label, this.fb.control(field.options[0]));
+            }
+        });
+    }
+
+    onSubmit() {
+        const angularFormValue = this.form.value;
+        const finalFormData = { ...angularFormValue, customFields: this.formFields };
+        this.items = JSON.stringify(finalFormData);
+        console.log(this.items);
     }
 
     addTextField() {

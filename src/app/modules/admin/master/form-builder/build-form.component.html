@@ -92,7 +92,7 @@
         class="flex-auto p-6 sm:p-10 overflow-y-auto"
         cdkScrollable>
         <!-- CONTENT GOES HERE -->
-        <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+        <form [formGroup]="form"  class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
             <div *ngFor="let field of formFields;">
                 <div [ngSwitch]="field.type">
                     <label *ngSwitchCase="'text'">{{ field.label }}:
@@ -162,6 +162,17 @@
                     </label>
                 </div>
             </div>
+            <button *ngIf="formFields.length > 0"
+                class="ml-3 mb-5"
+                mat-flat-button
+                type="button"
+                (click) = "onSubmit()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:list-bullet'"></mat-icon>
+                <span class="ml-2">Create Form</span>
+            </button>
         </form>
     </div>
 </div>
