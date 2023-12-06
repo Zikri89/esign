@@ -68,37 +68,53 @@ export class FormBuilderComponent implements OnInit
 
     addTextField() {
         const label = prompt('Enter Label Text:');
-        this.formFields.push({ type: 'text', label: label });
+        if (label !== null) {
+            this.formFields.push({ type: 'text', label: label });
+        }
     }
 
     addEmail() {
         const label = prompt('Enter Label Email:');
-        this.formFields.push({ type: 'email', label: label });
+        if (label !== null) {
+            this.formFields.push({ type: 'email', label: label });
+        }
     }
 
     addCheckbox() {
         const label = prompt('Enter Checkbox Label:');
         const optionsString = prompt('Enter Checkbox Options (comma-separated):');
-        const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
-        this.formFields.push({ type: 'checkbox', label: label || 'Label Checkbox', options: options });
+        if (label !== null && optionsString != null) {
+            const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
+            this.formFields.push({ type: 'checkbox', label: label || 'Label Checkbox', options: options });
+        }
     }
 
     addRadio() {
         const label = prompt('Enter Radio Label:');
         const optionsString = prompt('Enter Radio Options (comma-separated):');
-        const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
-        this.formFields.push({ type: 'radio', label: label || 'Label Radio', options: options });
+        if (label !== null && optionsString != null) {
+            const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
+            this.formFields.push({ type: 'radio', label: label || 'Label Radio', options: options });
+        }
     }
 
     addSelect() {
         const label = prompt('Enter Select Label:');
         const options = prompt('Enter Select Options (comma-separated):');
-        const optionsArray = options ? options.split(',').map(opt => opt.trim()) : ['Option 1'];
-        this.formFields.push({ type: 'select', label: label || 'Label Select', options: optionsArray });
-      }
+        if (label !== null) {
+            const optionsArray = options ? options.split(',').map(opt => opt.trim()) : ['Option 1'];
+            this.formFields.push({ type: 'select', label: label || 'Label Select', options: optionsArray });
+        }
+    }
 
-      addTextarea() {
+    addTextarea() {
         const label = prompt('Enter Label Text Area:');
-        this.formFields.push({ type: 'textarea', label: label });
-      }
+        if (label !== null) {
+            this.formFields.push({ type: 'textarea', label: label });
+        }
+    }
+
+    removeField(index: number) {
+        this.formFields.splice(index, 1);
+    }
 }

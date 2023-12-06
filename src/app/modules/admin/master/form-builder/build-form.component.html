@@ -165,6 +165,12 @@
                         </div>
                     </label>
                 </div>
+                <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="removeField(i)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
             <button *ngIf="formFields.length > 0"
                 class="ml-3 mb-5"
