@@ -115,12 +115,14 @@
                     </label>
                     <label *ngSwitchCase="'checkbox'">{{ field.label }}:
                         <div class="flex flex-col">
-                            <mat-checkbox
-                                class="mb-2"
-                                [checked]="false"
-                                [color]="'primary'">
-                                {{ field.label }}
-                            </mat-checkbox>
+                            <div *ngFor="let option of field.options">
+                                <mat-checkbox
+                                    class="mb-2"
+                                    [checked]="false"
+                                    [color]="'primary'">
+                                    {{ option }}
+                                </mat-checkbox>
+                            </div>
                         </div>
                     </label>
                     <label *ngSwitchCase="'radio'">{{ field.label }}:
@@ -129,11 +131,13 @@
                                 class="flex flex-col"
                                 [color]="'primary'"
                                 [value]="'just-good'">
-                                <mat-radio-button
-                                    class="mb-2"
-                                    [value]="'everything'">
-                                    {{ field.label }}
-                                </mat-radio-button>
+                                <div *ngFor="let option of field.options">
+                                    <mat-radio-button
+                                        class="mb-2"
+                                        [value]="option">
+                                        {{ option }}
+                                    </mat-radio-button>
+                                </div>
                             </mat-radio-group>
                         </div>
                     </label>

@@ -67,24 +67,27 @@ export class FormBuilderComponent implements OnInit
     }
 
     addTextField() {
-        this.formFields.push({ type: 'text', label: 'Label Text' });
+        const label = prompt('Enter Label Text:');
+        this.formFields.push({ type: 'text', label: label });
     }
 
     addEmail() {
-        this.formFields.push({ type: 'email', label: 'Label Email' });
+        const label = prompt('Enter Label Email:');
+        this.formFields.push({ type: 'email', label: label });
     }
 
     addCheckbox() {
-        // Modifikasi untuk menentukan label dan opsi
         const label = prompt('Enter Checkbox Label:');
-        const option = prompt('Enter Checkbox Option (comma-separated):');
-        this.formFields.push({ type: 'checkbox', label: label || 'Label Checkbox', options: [option || 'Option 1'] });
+        const optionsString = prompt('Enter Checkbox Options (comma-separated):');
+        const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
+        this.formFields.push({ type: 'checkbox', label: label || 'Label Checkbox', options: options });
     }
 
     addRadio() {
         const label = prompt('Enter Radio Label:');
-        const option = prompt('Enter Radio Option (comma-separated):');
-        this.formFields.push({ type: 'radio', label: label || 'Label Radio', options: [option || 'Option 1'] });
+        const optionsString = prompt('Enter Radio Options (comma-separated):');
+        const options = optionsString ? optionsString.split(',').map(opt => opt.trim()) : ['Option 1'];
+        this.formFields.push({ type: 'radio', label: label || 'Label Radio', options: options });
     }
 
     addSelect() {
@@ -95,6 +98,7 @@ export class FormBuilderComponent implements OnInit
       }
 
       addTextarea() {
-        this.formFields.push({ type: 'textarea', label: 'Label Textarea' });
+        const label = prompt('Enter Label Text Area:');
+        this.formFields.push({ type: 'textarea', label: label });
       }
 }
