@@ -15,7 +15,7 @@ import { FormManagerService } from '../form-manager.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
-    selector       : 'form-manager-detail-edit',
+    selector       : 'form-manager-buil-form',
     templateUrl    : './detail-edit.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

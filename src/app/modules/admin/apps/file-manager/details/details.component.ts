@@ -119,26 +119,22 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
             return ;
         }
         // Sign in
-        this._fileManagerService.esignIn(formData)
-            .subscribe(
-                () =>
-                {
-                    // Set the redirect url.
+        this._fileManagerService.esignIn(formData).subscribe({
+            next: (res) => {
+                // Set the redirect url.
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
                     // to the correct page after a successful sign in. This way, that url can be set via
                     // routing file and we don't have to touch here.
                     const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || 'apps/file-manager/formulir/'+formData.formulirId;
                     // Navigate to the redirect url
                     this._router.navigateByUrl(redirectURL);
-
-                },
-                (response) =>
-                {
-                   // Tampilkan alert danger menggunakan MatSnackBar
-                    this.snackBar.open(response, 'OK', {
-                        duration: 3000,
-                    });
-                },
-            );
+            },
+            error: (err) => {
+                // Tampilkan alert danger menggunakan MatSnackBar
+                this.snackBar.open(err, 'OK', {
+                    duration: 3000,
+                });
+            }
+        });
     }
 }

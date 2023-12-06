@@ -78,6 +78,7 @@ export const appRoutes: Route[] = [
             // Master
             {path: 'master', children: [
                 {path: 'form-manager', loadChildren: () => import('app/modules/admin/master/form-manager/form-manager.routes')},
+                {path: 'form-builder/:id', loadChildren: () => import('app/modules/admin/master/form-builder/build-form.routes')},
             ]},
 
             // Apps

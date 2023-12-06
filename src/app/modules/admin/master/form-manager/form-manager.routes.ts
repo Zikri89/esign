@@ -90,5 +90,5 @@ export default [
                 canDeactivate: [canDeactivateFormManagerDetails],
             },
         ],
-    }
+    },
 ] as Routes;

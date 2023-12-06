@@ -66,9 +66,9 @@
                                     <button class="circle-icon-button" mat-icon-button (click)="onEdit(el)" [@buttonAnimation]="animateState">
                                       <mat-icon>edit</mat-icon>
                                     </button>
-                                    <button class="circle-icon-button" mat-icon-button (click)="buildForm(el)" [@buttonAnimation]="animateState">
+                                    <a routerLink="../form-builder/{{ el.id }}" class="circle-icon-button" mat-icon-button  [@buttonAnimation]="animateState">
                                       <mat-icon>add</mat-icon>
-                                    </button>
+                                    </a>
                                   </td>
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="formManagerTableColumns"></tr>
