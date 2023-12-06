@@ -19,9 +19,31 @@
             </div>
         </div>
         <!-- Actions -->
-        <div class="flex shrink-0 items-center">
+        <div class="flex shrink-0 items-center flex flex-col">
             <button
-                class="ml-3"
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="addTextarea()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Text Area</span>
+            </button>
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="addEmail()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Email</span>
+            </button>
+        </div>
+        <div class="flex shrink-0 items-center flex flex-col">
+            <button
+                class="ml-3 mb-5"
                 mat-flat-button
                 (click)="addTextField()"
                 [color]="'accent'">
@@ -31,7 +53,7 @@
                 <span class="ml-2">Add Text Field</span>
             </button>
             <button
-                class="ml-3"
+                class="ml-3 mb-5"
                 mat-flat-button
                 (click)="addCheckbox()"
                 [color]="'accent'">
@@ -39,6 +61,28 @@
                     class="icon-size-4"
                     [svgIcon]="'heroicons_mini:plus'"></mat-icon>
                 <span class="ml-2">Add Checkbox</span>
+            </button>
+        </div>
+        <div class="flex shrink-0 items-center flex flex-col">
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="addRadio()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Radio</span>
+            </button>
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="addSelect()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Select</span>
             </button>
         </div>
     </div>
@@ -57,7 +101,16 @@
                             class="w-full">
                             <input
                                 matInput
-                                [placeholder]="'Placeholder only'">
+                                [placeholder]="'Placeholder only'" type="field.type">
+                        </mat-form-field>
+                    </label>
+                    <label *ngSwitchCase="'email'">{{ field.label }}:
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="w-full">
+                            <input
+                                matInput
+                                [placeholder]="'Placeholder only'" type="field.type">
                         </mat-form-field>
                     </label>
                     <label *ngSwitchCase="'checkbox'">{{ field.label }}:
@@ -68,6 +121,43 @@
                                 [color]="'primary'">
                                 {{ field.label }}
                             </mat-checkbox>
+                        </div>
+                    </label>
+                    <label *ngSwitchCase="'radio'">{{ field.label }}:
+                        <div class="flex flex-col">
+                            <mat-radio-group
+                                class="flex flex-col"
+                                [color]="'primary'"
+                                [value]="'just-good'">
+                                <mat-radio-button
+                                    class="mb-2"
+                                    [value]="'everything'">
+                                    {{ field.label }}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </label>
+                    <label *ngSwitchCase="'select'">{{ field.label }}:
+                        <div class="flex flex-col">
+                            <mat-form-field class="flex-auto">
+                                <mat-select>
+                                    <mat-option *ngFor="let option of field.options" [value]="field.options">
+                                        {{ option }}
+                                      </mat-option>
+                                    </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </label>
+                    <label *ngSwitchCase="'textarea'">{{ field.label }}:
+                        <div class="flex">
+                            <mat-form-field
+                                [ngClass]="formFieldHelpers"
+                                class="flex-auto">
+                                <textarea
+                                    matInput
+                                    [placeholder]="'Textarea with autosize'"
+                                    cdkTextareaAutosize></textarea>
+                            </mat-form-field>
                         </div>
                     </label>
                 </div>

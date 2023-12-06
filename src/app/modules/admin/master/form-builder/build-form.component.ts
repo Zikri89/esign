@@ -45,10 +45,26 @@ export class FormBuilderComponent
     }
 
     addTextField() {
-        this.formFields.push({ type: 'text', label: 'Text Field' });
+        this.formFields.push({ type: 'text', label: 'Label Text' });
+    }
+
+    addEmail() {
+        this.formFields.push({ type: 'email', label: 'Label Email' });
     }
 
     addCheckbox() {
-        this.formFields.push({ type: 'checkbox', label: 'Checkbox' });
+        this.formFields.push({ type: 'checkbox', label: 'Label Checkbox' });
+    }
+
+    addRadio() {
+        this.formFields.push({ type: 'radio', label: 'Label Radio' });
+    }
+
+    addSelect() {
+        this.formFields.push({ type: 'select', label: 'Label Select Option', options: ['Option 1', 'Option 2', 'Option 3'] });
+    }
+
+    addTextarea() {
+        this.formFields.push({ type: 'textarea', label: 'Label Textarea' });
     }
 }
