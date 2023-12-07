@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
     selector       : 'build-form',
@@ -35,7 +36,8 @@ import { RouterLink } from '@angular/router';
         MatOptionModule,
         MatChipsModule,
         MatCheckboxModule,
-        MatRadioModule
+        MatRadioModule,
+        MatDatepickerModule
     ],
 })
 export class FormBuilderComponent implements OnInit
@@ -46,7 +48,7 @@ export class FormBuilderComponent implements OnInit
 
     constructor(private fb: FormBuilder, private http: HttpClient) {
         this.form = this.fb.group({});
-      }
+    }
 
 
     ngOnInit() {
@@ -113,6 +115,14 @@ export class FormBuilderComponent implements OnInit
             this.formFields.push({ type: 'textarea', label: label });
         }
     }
+
+    addDate() {
+    const label = prompt('Enter Date Label:');
+    if (label !== null) {
+        this.formFields.push({ type: 'date', label: label });
+        this.form.addControl(label, this.fb.control(''));
+    }
+}
 
     removeField(index: number) {
         this.formFields.splice(index, 1);

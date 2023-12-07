@@ -85,6 +85,18 @@
                 <span class="ml-2">Add Select</span>
             </button>
         </div>
+        <div class="flex shrink-0 items-center flex flex-col">
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="addDate()"
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                <span class="ml-2">Add Date</span>
+            </button>
+        </div>
     </div>
 
     <!-- Main -->
@@ -147,8 +159,8 @@
                                 <mat-select>
                                     <mat-option *ngFor="let option of field.options" [value]="field.options">
                                         {{ option }}
-                                      </mat-option>
-                                    </mat-select>
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
                     </label>
@@ -163,6 +175,13 @@
                                     cdkTextareaAutosize></textarea>
                             </mat-form-field>
                         </div>
+                    </label>
+                    <label *ngSwitchCase="'date'">{{ field.label }}:
+                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                            <input matInput [placeholder]="'Select Date'" [matDatepicker]="picker" formControlName="{{ field.label }}">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
                     </label>
                 </div>
                 <button
