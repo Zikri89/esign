@@ -58,29 +58,6 @@ export class FileManagerListComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
-        // // Get the item
-        // this._fileManagerService.item$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((item: Item) =>
-        //     {
-        //         this.selectedItem = item;
-
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
-
-        // // Subscribe to media query change
-        // this._fuseMediaWatcherService.onMediaQueryChange$('(min-width: 1440px)')
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((state) =>
-        //     {
-        //         // Calculate the drawer mode
-        //         this.drawerMode = state.matches ? 'side' : 'over';
-
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
     }
 
     /**
