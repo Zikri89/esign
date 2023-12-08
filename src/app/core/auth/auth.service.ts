@@ -116,16 +116,23 @@ export class AuthService
                 if ( response.accessToken )
                 {
                     this.accessToken = response.accessToken;
+
+                    // Set the authenticated flag to true
+                    this._authenticated = true;
+
+                    // Store the user on the user service
+                    this._userService.user = response;
+
+                    // Return true
+                    return of(true);
+                }else{
+                    // Set the authenticated flag to true
+                    this._authenticated = false;
+                    // Return true
+                    return of(false);
                 }
 
-                // Set the authenticated flag to true
-                this._authenticated = true;
 
-                // Store the user on the user service
-                this._userService.user = response;
-
-                // Return true
-                return of(true);
             }),
         );
     }
