@@ -9,7 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, RouterModule } from '@angular/router';
+import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service';
+import { FormManagerData } from 'app/modules/admin/master/form-manager/form-manager.types';
 import { SharedDataService } from 'app/services/shared-date-service';
 
 @Component({
@@ -17,17 +19,34 @@ import { SharedDataService } from 'app/services/shared-date-service';
     templateUrl  : './wizards.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatCheckboxModule, MatRadioModule, RouterModule],
+    imports      : [
+        MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        RouterModule
+    ],
 })
 export class FormsWizardsComponent implements OnInit
 {
     horizontalStepperForm: UntypedFormGroup;
     verticalStepperForm: UntypedFormGroup;
-    esignData: any;
+    esignData: FormManagerData;
     /**
      * Constructor
      */
-    constructor(private _formBuilder: UntypedFormBuilder, private _sharedDataService: SharedDataService)
+    constructor(
+        private _formBuilder: UntypedFormBuilder,
+        private _route: ActivatedRoute,
+        private _formManagerService : FormManagerService
+        )
     {
     }
 
@@ -40,10 +59,17 @@ export class FormsWizardsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this._sharedDataService.esignData$.subscribe((data) => {
-            this.esignData = data;
-            console.log(this.esignData)
-        });
+        this._route.params.subscribe((params: Params) => {
+            const formId = params['formulirId'];
+
+            this._formManagerService.onGetById(formId).subscribe({
+                next: (value) => {
+                    this.esignData = value;
+                }, error: (err) => {
+                    console.log(err);
+                }
+            });
+        })
 
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({

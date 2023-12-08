@@ -98,9 +98,8 @@ export default [
                 path     : '',
                 component: FileManagerListComponent,
                 resolve  : {
-                    items: (route: ActivatedRouteSnapshot) => {
-                        const formId = route.paramMap.get('id');
-                        return inject(FileManagerService).getItems(formId);
+                    items: () => {
+                        return inject(FileManagerService).getItems();
                     }
                 },
                 children : [

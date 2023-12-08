@@ -47,7 +47,7 @@ export class FileManagerService
     /**
      * Get items
      */
-    getItems(formId): Observable<Item[]>
+    getItems(): Observable<Item[]>
     {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,
@@ -55,7 +55,7 @@ export class FileManagerService
 
 
         return this._httpClient
-        .get<Item[]>(environment.apiUrl+'formManager', {headers, params : {formId}}).pipe(tap((data: any) => {
+        .get<Item[]>(environment.apiUrl+'formManager', {headers}).pipe(tap((data: any) => {
             this._items.next(data);
             })
         );
