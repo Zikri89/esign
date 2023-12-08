@@ -2,7 +2,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -13,8 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormBuilderService } from './build-form.service';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { DynamicForm } from './build-form.type';
 
 @Component({
     selector       : 'build-form',
@@ -44,9 +47,16 @@ export class FormBuilderComponent implements OnInit
 {
     formFields: any[] = [];
     form: FormGroup;
-    items: string;
+    items: DynamicForm;
 
-    constructor(private fb: FormBuilder, private http: HttpClient) {
+    constructor(
+        private fb: FormBuilder,
+        private formBuilderService : FormBuilderService,
+        private _snackBar: MatSnackBar,
+        private _router: Router,
+        private _activatedRoute: ActivatedRoute,
+        private _changeDetectorRef: ChangeDetectorRef,
+    ) {
         this.form = this.fb.group({});
     }
 
@@ -63,9 +73,36 @@ export class FormBuilderComponent implements OnInit
 
     onSubmit() {
         const angularFormValue = this.form.value;
-        const finalFormData = { ...angularFormValue, customFields: this.formFields };
-        this.items = JSON.stringify(finalFormData);
-        console.log(this.items);
+        const finalFormData = { ...angularFormValue, ...this.formFields };
+
+        this.items = {
+            formName : "contoh nama form",
+            formFields : finalFormData
+        }
+
+        this.formBuilderService.onPost(this.items).subscribe({
+            next: (response) => {
+                this._snackBar.open('Data posted successfully', 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                });
+
+                this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                this._changeDetectorRef.markForCheck();
+            }, error: (error) => {
+
+                let errorMessage = 'Error posting data';
+
+                if (error && error.error && error.error.message) {
+                    errorMessage = error.error.message;
+                }
+
+                this._snackBar.open(errorMessage, 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                });
+            }
+        })
     }
 
     addTextField() {
