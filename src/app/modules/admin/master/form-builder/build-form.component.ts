@@ -154,12 +154,12 @@ export class FormBuilderComponent implements OnInit
     }
 
     addDate() {
-    const label = prompt('Enter Date Label:');
-    if (label !== null) {
-        this.formFields.push({ type: 'date', label: label });
-        this.form.addControl(label, this.fb.control(''));
+        const label = prompt('Enter Date Label:');
+        if (label !== null) {
+            this.formFields.push({ type: 'date', label: label });
+            this.form.addControl(label, this.fb.control(''));
+        }
     }
-}
 
     removeField(index: number) {
         this.formFields.splice(index, 1);
