@@ -75,8 +75,6 @@ export class FormBuilderComponent implements OnInit
         const angularFormValue = this.form.value;
         const finalFormData = this.formFields.map(field => ({ ...angularFormValue[field.label], ...field }));
 
-        console.log(finalFormData);
-
         this.items = {
             formName : "contoh nama form",
             formFields : finalFormData
