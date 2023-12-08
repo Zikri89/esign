@@ -1,13 +1,11 @@
-export interface Items
-{
-    files: Item[];
-    path: any[];
-}
-
-export interface Item
-{
-    id?: string;
-    folderId?: string;
-    name?: string;
-    description?: string | null;
+export interface Item {
+    createdAt: number;
+    updatedAt: number;
+    id: string;
+    name: string;
+    description: string | null;
+    isDeleted: boolean;
+    deletedBy: string;
+    deletedAt: number | null;
+    status: string;
 }

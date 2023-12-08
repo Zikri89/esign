@@ -13,29 +13,6 @@ import { FormsWizardsComponent } from './wizards/wizards.component';
  * @param route
  * @param state
  */
-const folderResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-{
-    const fileManagerService = inject(FileManagerService);
-    const router = inject(Router);
-
-    return fileManagerService.getItems(route.paramMap.get('folderId')).pipe(
-        // Error here means the requested folder is not available
-        catchError((error) =>
-        {
-            // Log the error
-            console.error(error);
-
-            // Get the parent url
-            const parentUrl = state.url.split('/').slice(0, -1).join('/');
-
-            // Navigate to there
-            router.navigateByUrl(parentUrl);
-
-            // Throw an error
-            return throwError(error);
-        }),
-    );
-};
 
 /**
  * Item resolver
@@ -114,34 +91,17 @@ export default [
         component: FileManagerComponent,
         children : [
             {
-                path     : 'folders/:folderId',
-                component: FileManagerListComponent,
-                resolve  : {
-                    item: folderResolver,
-                },
-                children : [
-                    {
-                        path         : 'details/:id',
-                        component    : FileManagerDetailsComponent,
-                        resolve      : {
-                            item: itemResolver,
-                        },
-                        canDeactivate: [canDeactivateFileManagerDetails],
-                    },
-                ],
-            },
-            {
                 path     : 'formulir/:formulirId',
                 component: FormsWizardsComponent,
-                resolve  : {
-                    item: folderResolver,
-                }
             },
             {
                 path     : '',
                 component: FileManagerListComponent,
                 resolve  : {
-                    items: () => inject(FileManagerService).getItems(),
+                    items: (route: ActivatedRouteSnapshot) => {
+                        const formId = route.paramMap.get('id');
+                        return inject(FileManagerService).getItems(formId);
+                    }
                 },
                 children : [
                     {

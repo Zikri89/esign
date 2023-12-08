@@ -1,16 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Item, Items } from 'app/modules/admin/apps/file-manager/file-manager.types';
+import { Item} from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { BehaviorSubject, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { FormDataFormulir } from './details/details.types';
 import { SharedDataService } from 'app/services/shared-date-service';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class FileManagerService
 {
     // Private
     private _item: BehaviorSubject<Item | null> = new BehaviorSubject(null);
-    private _items: BehaviorSubject<Items | null> = new BehaviorSubject(null);
+    private _items: BehaviorSubject<Item[] | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -26,7 +27,7 @@ export class FileManagerService
     /**
      * Getter for items
      */
-    get items$(): Observable<Items>
+    get items$(): Observable<Item[]>
     {
         return this._items.asObservable();
     }
@@ -46,13 +47,17 @@ export class FileManagerService
     /**
      * Get items
      */
-    getItems(folderId: string | null = null): Observable<Item[]>
+    getItems(formId): Observable<Item[]>
     {
-        return this._httpClient.get<Items>('api/apps/file-manager', {params: {folderId}}).pipe(
-            tap((response: any) =>
-            {
-                this._items.next(response);
-            }),
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+        });
+
+
+        return this._httpClient
+        .get<Item[]>(environment.apiUrl+'formManager', {headers, params : {formId}}).pipe(tap((data: any) => {
+            this._items.next(data);
+            })
         );
     }
 
@@ -66,7 +71,7 @@ export class FileManagerService
             map((items) =>
             {
                 // Find within the folders and files
-                const item = [...items.files].find(value => value.id === id) || null;
+                const item = [...items].find(value => value.id === id) || null;
 
                 // Update the item
                 this._item.next(item);

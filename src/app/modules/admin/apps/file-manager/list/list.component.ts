@@ -7,7 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
-import { Item, Items } from 'app/modules/admin/apps/file-manager/file-manager.types';
+import { Item} from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ export class FileManagerListComponent implements OnInit, OnDestroy
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     selectedItem: Item;
-    items: Items;
+    items: Item[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -51,36 +51,36 @@ export class FileManagerListComponent implements OnInit, OnDestroy
         // Get the items
         this._fileManagerService.items$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((items: Items) =>
+            .subscribe((value) =>
             {
-                this.items = items;
+                this.items = value;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the item
-        this._fileManagerService.item$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((item: Item) =>
-            {
-                this.selectedItem = item;
+        // // Get the item
+        // this._fileManagerService.item$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((item: Item) =>
+        //     {
+        //         this.selectedItem = item;
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
 
-        // Subscribe to media query change
-        this._fuseMediaWatcherService.onMediaQueryChange$('(min-width: 1440px)')
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((state) =>
-            {
-                // Calculate the drawer mode
-                this.drawerMode = state.matches ? 'side' : 'over';
+        // // Subscribe to media query change
+        // this._fuseMediaWatcherService.onMediaQueryChange$('(min-width: 1440px)')
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((state) =>
+        //     {
+        //         // Calculate the drawer mode
+        //         this.drawerMode = state.matches ? 'side' : 'over';
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     /**

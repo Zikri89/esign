@@ -26,46 +26,22 @@
                     <div>
                         <div class="text-4xl font-extrabold tracking-tight leading-none">Formulir</div>
                         <div class="flex items-center mt-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="!items.path.length">
-                                {{items.files.length}} form
-                            </ng-container>
-                            <!-- Breadcrumbs -->
-                            <ng-container *ngIf="items.path.length">
-                                <div class="flex items-center space-x-2">
-                                    <a
-                                        class="text-primary cursor-pointer"
-                                        [routerLink]="['/apps/file-manager']">Home
-                                    </a>
-                                    <div class="">/</div>
-                                    <ng-container *ngFor="let path of items.path; let last = last; trackBy: trackByFn">
-                                        <ng-container *ngIf="!last">
-                                            <a
-                                                class="text-primary cursor-pointer"
-                                                [routerLink]="['/apps/file-manager/folders/', path.id]">{{path.name}}</a>
-                                        </ng-container>
-                                        <ng-container *ngIf="last">
-                                            <div>{{path.name}}</div>
-                                        </ng-container>
-                                        <ng-container *ngIf="!last">
-                                            <div class="">/</div>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
+                            <ng-container>
+                                {{items.length}} form
                             </ng-container>
                         </div>
                     </div>
                 </div>
 
                 <!-- Items list -->
-                <ng-container *ngIf="items && (items.files.length > 0); else noItems">
+                <ng-container *ngIf="items && (items.length > 0); else noItems">
                     <div class="p-6 md:p-8 space-y-8">
                         <!-- Files -->
-                        <ng-container *ngIf="items.files.length > 0">
+                        <ng-container *ngIf="items.length > 0">
                             <div>
-                                <div class="font-medium">Form</div>
                                 <div
                                     class="flex flex-wrap -m-2 mt-2">
-                                    <ng-container *ngFor="let file of items.files; trackBy:trackByFn">
+                                    <ng-container *ngFor="let file of items; trackBy:trackByFn">
                                         <a
                                             class="flex flex-col w-40 h-40 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
                                             [routerLink]="['./details/', file.id]">
