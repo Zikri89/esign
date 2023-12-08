@@ -17,7 +17,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormBuilderService } from './build-form.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { DynamicForm } from './build-form.type';
+import { DynamicForm, DynamicFormField } from './build-form.type';
 
 @Component({
     selector       : 'build-form',
@@ -45,7 +45,7 @@ import { DynamicForm } from './build-form.type';
 })
 export class FormBuilderComponent implements OnInit
 {
-    formFields: any[] = [];
+    formFields: DynamicFormField[] = [];
     form: FormGroup;
     items: DynamicForm;
 
@@ -73,7 +73,9 @@ export class FormBuilderComponent implements OnInit
 
     onSubmit() {
         const angularFormValue = this.form.value;
-        const finalFormData = { ...angularFormValue, ...this.formFields };
+        const finalFormData = this.formFields.map(field => ({ ...angularFormValue[field.label], ...field }));
+
+        console.log(finalFormData);
 
         this.items = {
             formName : "contoh nama form",
