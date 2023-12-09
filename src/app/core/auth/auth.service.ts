@@ -142,7 +142,7 @@ export class AuthService
      */
     signOut(): Observable<any>
     {
-        // Remove the access token from the local storage
+        // Remove the access token from the cookies storage
         this._cookieService.delete('accessToken');
 
         // Set the authenticated flag to false
