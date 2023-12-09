@@ -103,7 +103,7 @@ export class AuthSignInComponent implements OnInit
                     if (response.status == 0) {
                         this.alert = {
                             type   : 'error',
-                            message: 'Tidak dapat terhubung dengan server. Pastikan server telah dinyalakan.',
+                            message: 'Tidak dapat terhubung dengan server. Pastikan server telah dinyalakan atau hubungi IT anda untuk daftarkan IP pada cors origin',
                         };
                     } else {
                         // Set the alert
