@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service';
 import { FormManagerData } from 'app/modules/admin/master/form-manager/form-manager.types';
 
@@ -38,7 +38,8 @@ import { FormManagerData } from 'app/modules/admin/master/form-manager/form-mana
         MatDatepickerModule,
         CommonModule,
         MatCheckboxModule,
-        MatRadioModule
+        MatRadioModule,
+        RouterLink
 
     ]
 })
