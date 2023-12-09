@@ -8,3 +8,9 @@ canvas {
   button {
     margin: 10px;
   }
+
+  @media (max-width: 600px) {
+    canvas {
+      width: 100%;
+    }
+  }
