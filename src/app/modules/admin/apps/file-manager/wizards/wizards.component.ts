@@ -93,6 +93,21 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+    /**
+     * On init
+     */
+    ngOnInit(): void {
+        this._formManagerService.data$.subscribe({
+            next: value => {
+                this.formData = value
+                this.createForm()
+            },
+            error: err => {
+                console.log(err)
+            },
+        })
+    }
+
     ngAfterViewInit() {
         this.signPad = new SignaturePad(this.signaturePadElement.nativeElement)
     }
@@ -113,21 +128,6 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
 
     clearSignPad() {
         this.signPad.clear()
-    }
-
-    /**
-     * On init
-     */
-    ngOnInit(): void {
-        this._formManagerService.data$.subscribe({
-            next: value => {
-                this.formData = value
-                this.createForm()
-            },
-            error: err => {
-                console.log(err)
-            },
-        })
     }
 
     createForm() {
