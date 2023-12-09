@@ -181,6 +181,19 @@
                         </mat-radio-group>
                     </div>
                 </div>
+
+                <div class="signature-container" fxLayout="column" fxLayoutAlign="center center" style="margin-top:30px;">
+                    <mat-label>Tanda tangan pasien atau keluarga pasien</mat-label>
+
+                    <div>
+                      <canvas #signPadCanvas (touchstart)="startSignPadDrawing($event)" (touchmove)="movedFinger($event)"></canvas>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" style="margin-top: 10px;">
+                      <button mat-raised-button color="warn" (click)="clearSignPad()">Clear</button>
+                      <button mat-raised-button color="accent" (click)="undoSign()">Undo</button>
+                    </div>
+                  </div>
                 <button
                     class="px-6 ml-3"
                     mat-flat-button

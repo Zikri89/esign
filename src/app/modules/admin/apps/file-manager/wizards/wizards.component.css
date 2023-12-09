@@ -1,0 +1,10 @@
+/* Update your existing CSS styles */
+canvas {
+    display: block;
+    border: 1px solid rgb(105, 105, 105);
+    background-color: var(--ion-color-success);
+  }
+
+  button {
+    margin: 10px;
+  }
