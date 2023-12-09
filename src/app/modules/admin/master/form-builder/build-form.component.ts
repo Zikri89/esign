@@ -97,8 +97,8 @@ export class FormBuilderComponent implements OnInit
                     verticalPosition: 'top' as MatSnackBarVerticalPosition,
                 });
 
-                this._router.navigate(['../'], {relativeTo: this._activatedRoute});
-                this._changeDetectorRef.markForCheck();
+                // this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                // this._changeDetectorRef.markForCheck();
             }, error: (error) => {
                 let errorMessage = 'Error posting data';
 
@@ -117,7 +117,7 @@ export class FormBuilderComponent implements OnInit
     addDynamicFormToFormManager(response) {
         this.dynamicFormId = response['result']['id'];
         this.formManagerData = {
-            dynamicForm : this.dynamicFormId,
+            dynamicForm : this.dynamicFormId
         };
 
         this._formManagerService.onPut(this.formManagerData, this.formId).subscribe({

@@ -7,6 +7,7 @@ import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/li
 import { catchError, throwError } from 'rxjs';
 import { FormsWizardsComponent } from './wizards/wizards.component';
 import { PatientService } from '../../master/pasien/patients.service';
+import { FormManagerService } from '../../master/form-manager/form-manager.service';
 
 /**
  * Folder resolver
@@ -27,6 +28,30 @@ const itemResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     const router = inject(Router);
 
     return fileManagerService.getItemById(route.paramMap.get('id')).pipe(
+        // Error here means the requested item is not available
+        catchError((error) =>
+        {
+            // Log the error
+            console.error(error);
+
+            // Get the parent url
+            const parentUrl = state.url.split('/').slice(0, -1).join('/');
+
+            // Navigate to there
+            router.navigateByUrl(parentUrl);
+
+            // Throw an error
+            return throwError(error);
+        }),
+    );
+};
+
+const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+{
+    const fileManagerService = inject(FormManagerService);
+    const router = inject(Router);
+
+    return fileManagerService.onGetById(route.paramMap.get('formulirId')).pipe(
         // Error here means the requested item is not available
         catchError((error) =>
         {
@@ -94,6 +119,9 @@ export default [
             {
                 path     : 'formulir/:formulirId/:patientId',
                 component: FormsWizardsComponent,
+                resolve : {
+                    formData : formResolver
+                }
             },
             {
                 path     : '',

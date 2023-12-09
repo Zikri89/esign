@@ -41,7 +41,8 @@ import { FormManagerData } from 'app/modules/admin/master/form-manager/form-mana
         CommonModule,
         MatCheckboxModule,
         MatRadioModule,
-        RouterLink
+        RouterLink,
+        ReactiveFormsModule
 
     ]
 })
@@ -75,51 +76,43 @@ export class FormsWizardsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this._route.params.subscribe((params: Params) => {
-            const formulirId = params['formulirId'];
-            this._formManagerService.onGetById(formulirId).subscribe({
-                next: (value) => {
-                    this.formData = value;
-                    this.form = this.createForm();
-                }, error: (err) => {
-                    console.log(err);
-                }
-            });
-        })
-    }
-
-    createForm() {
-        const formGroup = {};
-        var test = this.formData;
-        this.formData.dynamicForm['formFields'].forEach((field) => {
-          if (field.type === 'checkbox') {
-            const checkboxesGroup = {};
-            field.options.forEach((option) => {
-              checkboxesGroup[option] = this.fb.control(false);
-            });
-            formGroup[field.label] = this.fb.group(checkboxesGroup, { validators: [this.checkboxValidator] });
-          } else if (field.type === 'radio') {
-            formGroup[field.label] = this.fb.control('', { validators: [Validators.required] });
-          } else {
-            const validators = field.validators || [];
-            formGroup[field.label] = this.fb.control('', { validators: validators });
-          }
+        this._formManagerService.data$.subscribe({
+            next: (value) => {
+                this.formData = value;
+                this.createForm();
+            }, error: (err) => {
+                console.log(err);
+            }
         });
-
-        return this.fb.group(formGroup);
-      }
-
-      checkboxValidator(group: FormGroup) {
-        const controls = Object.values(group.controls);
-
-        const isValid = controls.some(control => control.value === true);
-
-        return isValid ? null : { atLeastOne: true };
-      }
-
-    getFormControl(fieldName: string) {
-        return this.form.get(fieldName);
     }
+
+    async createForm() {
+        const formFields = {};
+        for (const field of this.formData.dynamicForm['formFields']) {
+          const validators = [];
+          if (field.required) {
+            validators.push(Validators.required);
+          }
+
+          let initialValue = field.type === 'checkbox' ? {} : '';
+
+          if (field.type === 'checkbox') {
+            for (const option of field.options) {
+              initialValue[option] = false;
+            }
+          }
+
+          formFields[field.label] = new FormControl(initialValue, validators);
+        }
+
+        this.form = this.fb.group(formFields);
+      }
+
+
+      getFormControl(label: string) {
+        return this.form.get(label);
+      }
+
 
     onSubmit() {
       if (this.form.valid) {
