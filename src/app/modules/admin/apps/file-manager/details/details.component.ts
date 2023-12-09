@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,9 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { Subject, takeUntil } from 'rxjs';
 import { FormDataFormulir } from 'app/modules/admin/apps/file-manager/details/details.types';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { PatientService } from 'app/modules/admin/master/pasien/patients.service';
+import { Patient } from 'app/modules/admin/master/pasien/patients.types';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
     selector       : 'file-manager-details',
@@ -22,11 +25,25 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,
-    imports        : [MatButtonModule, RouterLink, MatIconModule, NgIf, FormsModule, MatFormFieldModule, NgClass, TextFieldModule, ReactiveFormsModule, MatSelectModule],
+    imports        : [
+        MatButtonModule,
+        RouterLink,
+        MatIconModule,
+        NgIf,
+        FormsModule,
+        MatFormFieldModule,
+        NgClass,
+        TextFieldModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatOptionModule,
+        CommonModule
+    ],
 })
 export class FileManagerDetailsComponent implements OnInit, OnDestroy
 {
     item: Item;
+    patients: Patient[];
     selectedPasien: string;
     formFieldHelpers: string[] = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -38,6 +55,7 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _fileManagerListComponent: FileManagerListComponent,
         private _fileManagerService: FileManagerService,
+        private _patientsService: PatientService,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private snackBar: MatSnackBar
@@ -71,6 +89,13 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this._patientsService.data$.pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((patients: Patient[]) =>
+        {
+            // Get the patients
+            this.patients = patients;
+        });
     }
 
     /**
@@ -125,7 +150,7 @@ export class FileManagerDetailsComponent implements OnInit, OnDestroy
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
                     // to the correct page after a successful sign in. This way, that url can be set via
                     // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || 'apps/file-manager/formulir/'+formData.formulirId;
+                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || 'apps/file-manager/formulir/'+formData.formulirId+'/'+this.selectedPasien;
                     // Navigate to the redirect url
                     this._router.navigateByUrl(redirectURL);
             },

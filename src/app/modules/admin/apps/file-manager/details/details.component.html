@@ -34,9 +34,7 @@
             class="flex-auto gt-xs:pr-3 w-full">
             <mat-label>Pilih Nama pasien</mat-label>
             <mat-select [placeholder]="'Pilih Nama Pasien'" [(ngModel)]="selectedPasien" name="pasienId" required>
-                <mat-option value="5cb66e32-d1ac-3b9a-3c34-5991ce25add5">Pasien 1</mat-option>
-                <mat-option value="5cb66e32-d1ac-4b9a-7c34-5991ce21acd2">Pasien 2</mat-option>
-                <mat-option value="5cb66e32-d1af-4b3a-8x34-5991ce25add2">Pasien 3</mat-option>
+                <mat-option *ngFor="let option of patients" [value]="option.noRkmMedis">{{ option.nmPasien }}</mat-option>
             </mat-select>
             <mat-icon
                 class="icon-size-5"

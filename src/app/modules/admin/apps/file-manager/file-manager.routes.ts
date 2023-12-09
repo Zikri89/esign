@@ -6,6 +6,7 @@ import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-man
 import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { catchError, throwError } from 'rxjs';
 import { FormsWizardsComponent } from './wizards/wizards.component';
+import { PatientService } from '../../master/pasien/patients.service';
 
 /**
  * Folder resolver
@@ -91,7 +92,7 @@ export default [
         component: FileManagerComponent,
         children : [
             {
-                path     : 'formulir/:formulirId',
+                path     : 'formulir/:formulirId/:patientId',
                 component: FormsWizardsComponent,
             },
             {
@@ -108,6 +109,9 @@ export default [
                         component    : FileManagerDetailsComponent,
                         resolve      : {
                             item: itemResolver,
+                            patient: () => {
+                                return inject(PatientService).onGet();
+                            }
                         },
                         canDeactivate: [canDeactivateFileManagerDetails],
                     },
