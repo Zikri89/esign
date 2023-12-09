@@ -83,15 +83,18 @@ export class FormsWizardsComponent implements OnInit
               "formFields": [
                 {
                   "type": "textarea",
-                  "label": "Alamat"
+                  "label": "Alamat",
+                  "validators": [Validators.required, Validators.maxLength(500)]
                 },
                 {
                   "type": "text",
-                  "label": "Nama"
+                  "label": "Nama",
+                  "validators": [Validators.required]
                 },
                 {
                   "type": "date",
-                  "label": "Tanggal Lahir"
+                  "label": "Tanggal Lahir",
+                  "validators": [Validators.required]
                 },
                 {
                   "type": "select",
@@ -99,15 +102,17 @@ export class FormsWizardsComponent implements OnInit
                   "options": [
                     "Baru",
                     "Lama"
-                  ]
+                  ],
+                  "validators": [Validators.required]
                 },
                 {
                   "type": "checkbox",
                   "label": "Rawatan",
                   "options": [
                     "Rawat 1",
-                    "Rawat2"
-                  ]
+                    "Rawat 2"
+                  ],
+                  "validators": [Validators.required]
                 },
                 {
                     "type": "radio",
@@ -115,7 +120,8 @@ export class FormsWizardsComponent implements OnInit
                     "options": [
                       "L",
                       "P"
-                    ]
+                    ],
+                    "validators": [Validators.required]
                 },
                 {
                     "type": "radio",
@@ -124,11 +130,13 @@ export class FormsWizardsComponent implements OnInit
                       "Suami",
                       "Istri",
                       "Anak",
-                    ]
+                    ],
+                    "validators": [Validators.required]
                 },
                 {
                     "type": "email",
                     "label": "Email",
+                    "validators": [Validators.required,  Validators.email]
                 }
               ]
             }
@@ -151,23 +159,56 @@ export class FormsWizardsComponent implements OnInit
 
     createForm() {
         const formGroup = {};
+
         this.formData[0].formFields.forEach((field) => {
           if (field.type === 'checkbox') {
+            const checkboxesGroup = {};
             field.options.forEach((option) => {
-              formGroup[`${field.label}_${option}`] = this.fb.control(false);
+              checkboxesGroup[option] = this.fb.control(false);
             });
+            formGroup[field.label] = this.fb.group(checkboxesGroup, { validators: [this.checkboxValidator] });
+          } else if (field.type === 'radio') {
+            formGroup[field.label] = this.fb.control('', { validators: [Validators.required] });
           } else {
-            formGroup[field.label] = this.fb.control('');
+            const validators = field.validators || [];
+            formGroup[field.label] = this.fb.control('', { validators: validators });
           }
         });
+
         return this.fb.group(formGroup);
       }
 
-      getFormControl(fieldName: string) {
-        return this.form.get(fieldName);
+      checkboxValidator(group: FormGroup) {
+        const controls = Object.values(group.controls);
+
+        const isValid = controls.some(control => control.value === true);
+
+        return isValid ? null : { atLeastOne: true };
       }
 
+
+
+    getFormControl(fieldName: string) {
+        return this.form.get(fieldName);
+    }
+
     onSubmit() {
-        console.log(this.form.value);
+        if (this.form.valid) {
+          const formData = this.form.value;
+          console.log(formData);
+        } else {
+          this.markFormGroupTouched(this.form);
+        }
+      }
+
+    // Helper function to mark all controls in a form group as touched
+    markFormGroupTouched(formGroup: FormGroup) {
+        Object.values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control instanceof FormGroup) {
+                this.markFormGroupTouched(control);
+            }
+        });
     }
 }

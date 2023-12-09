@@ -1,18 +1,27 @@
 <div class="flex flex-col flex-auto min-w-0">
-
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
+    >
         <div class="flex-1 min-w-0">
             <!-- Breadcrumbs -->
             <div class="flex flex-wrap items-center font-medium">
                 <div>
-                    <a class="whitespace-nowrap text-primary-500" routerLink="/apps/file-manager">Formulir</a>
+                    <a
+                        class="whitespace-nowrap text-primary-500"
+                        routerLink="/apps/file-manager"
+                    >
+                        Formulir
+                    </a>
                 </div>
                 <div class="flex items-center ml-1 whitespace-nowrap">
                     <mat-icon
                         class="icon-size-5 text-secondary"
-                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
-                    <a class="ml-1 text-primary-500">{{ formData[0].formName }}</a>
+                        [svgIcon]="'heroicons_mini:chevron-right'"
+                    ></mat-icon>
+                    <a class="ml-1 text-primary-500">
+                        {{ formData[0].formName }}
+                    </a>
                 </div>
             </div>
         </div>
@@ -20,9 +29,7 @@
 
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10">
-
         <div class="max-w-3xl">
-
             <div class="prose prose-sm max-w-3xl">
                 <h2>{{ formData[0].formName }}</h2>
                 <p>
@@ -32,72 +39,156 @@
 
             <!-- dynamic-form.component.html -->
 
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+            <form
+                [formGroup]="form"
+                (ngSubmit)="onSubmit()"
+                class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+            >
                 <div *ngFor="let field of formData[0].formFields">
-                    <div class="flex" *ngIf="field.type === 'text' || field.type === 'textarea' || field.type === 'number'">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto">
-                        <mat-label>{{ field.label }}</mat-label>
-                        <input matInput *ngIf="field.type === 'text' || field.type === 'number'" [type]="field.type" [formControl]="getFormControl(field.label)">
-                        <textarea matInput cdkTextareaAutosize [cdkAutosizeMinRows]="3" *ngIf="field.type === 'textarea'" [formControl]="getFormControl(field.label)"></textarea>
+                    <div
+                        class="flex"
+                        *ngIf="
+                            field.type === 'text' ||
+                            field.type === 'textarea' ||
+                            field.type === 'number'
+                        "
+                    >
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="flex-auto"
+                        >
+                            <mat-label>{{ field.label }}</mat-label>
+                            <input
+                                matInput
+                                *ngIf="
+                                    field.type === 'text' ||
+                                    field.type === 'number'
+                                "
+                                [type]="field.type"
+                                [formControl]="getFormControl(field.label)"
+                            />
+                            <textarea
+                                matInput
+                                cdkTextareaAutosize
+                                [cdkAutosizeMinRows]="3"
+                                *ngIf="field.type === 'textarea'"
+                                [formControl]="getFormControl(field.label)"
+                            ></textarea>
+                            <mat-error *ngIf="getFormControl(field.label).hasError('required')">{{ field.label }} is required</mat-error>
                         </mat-form-field>
                     </div>
 
                     <div class="flex" *ngIf="field.type === 'select'">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto">
-                        <mat-label>{{ field.label }}</mat-label>
-                        <mat-select [formControl]="getFormControl(field.label)">
-                            <mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option>
-                        </mat-select>
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="flex-auto"
+                        >
+                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-select
+                                [formControl]="getFormControl(field.label)"
+                            >
+                                <mat-option
+                                    *ngFor="let option of field.options"
+                                    [value]="option"
+                                >
+                                    {{ option }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="getFormControl(field.label).hasError('required')">{{ field.label }} is required</mat-error>
                         </mat-form-field>
                     </div>
 
                     <div class="flex" *ngIf="field.type === 'date'">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto">
-                        <mat-label>{{ field.label }}</mat-label>
-                        <input matInput [matDatepicker]="picker" [formControl]="getFormControl(field.label)">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="flex-auto"
+                        >
+                            <mat-label>{{ field.label }}</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="picker"
+                                [formControl]="getFormControl(field.label)"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="picker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="getFormControl(field.label).hasError('required')">{{ field.label }} is required</mat-error>
                         </mat-form-field>
                     </div>
 
                     <div class="flex" *ngIf="field.type === 'email'">
                         <mat-form-field class="flex-auto">
                             <mat-label>{{ field.label }}</mat-label>
-                            <input matInput [formControl]="getFormControl(field.label)">
+                            <input
+                                matInput
+                                [formControl]="getFormControl(field.label)"
+                            />
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:envelope'"
+                            ></mat-icon>
+                            <mat-error *ngIf="getFormControl(field.label).hasError('required')">{{ field.label }} is required</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div class="flex flex-col" *ngIf="field.type === 'checkbox'">
-                        <span class="font-semibold mb-2">{{ field.label }}</span>
+                    <div
+                        class="flex flex-col"
+                        *ngIf="field.type === 'checkbox'"
+                    >
+                        <span class="font-semibold mb-2">
+                            {{ field.label }}
+                        </span>
                         <div class="flex flex-col">
-                            <mat-checkbox *ngFor="let option of field.options" class="mb-2" [checked]="form.get(field.label + '_' + option)?.value" [color]="'primary'" [formControlName]="field.label + '_' + option">
+                            <mat-checkbox
+                                *ngFor="let option of field.options"
+                                class="mb-2"
+                                [checked]="
+                                    form.get(field.label)?.get(option)?.value
+                                "
+                                [color]="'primary'"
+                                [formControl]="
+                                    getFormControl(field.label).get(option)
+                                "
+                            >
                                 {{ option }}
                             </mat-checkbox>
                         </div>
                     </div>
 
-                    <div class="flex flex-col mt-8" *ngIf="field.type === 'radio'">
-                        <span class="font-semibold mb-2">{{ field.label }}</span>
+                    <div
+                        class="flex flex-col mt-8"
+                        *ngIf="field.type === 'radio'"
+                    >
+                        <span class="font-semibold mb-2">
+                            {{ field.label }}
+                        </span>
                         <mat-radio-group
+                            [formControl]="getFormControl(field.label)"
                             class="flex flex-col"
                             [color]="'primary'"
-                            [value]="option == L">
+                        >
                             <mat-radio-button
                                 *ngFor="let option of field.options"
                                 class="mb-2"
-                                [value]="'option'">
+                                [value]="option"
+                            >
                                 {{ option }}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
                 </div>
-
+                <button
+                    class="px-6 ml-3"
+                    mat-flat-button
+                    type="submit"
+                    [color]="'primary'"
+                >
+                    Save
+                </button>
             </form>
-
         </div>
     </div>
 </div>
