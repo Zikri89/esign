@@ -24,4 +24,16 @@ export class FormBuilderService {
         return this._httpClient.post<DynamicForm>(environment.apiUrl + 'dynamicForm', data, { headers });
     }
 
+    onGetById(params: any): Observable<DynamicForm> {
+        const headers = new HttpHeaders({
+            'x-api-key': environment.apiKey,
+        });
+
+        return this._httpClient
+        .get<DynamicForm>(environment.apiUrl+'dynamicForm/'+params['formulirId'], {headers}).pipe(tap((data) => {
+            this._data.next(data);
+            })
+        );
+    }
+
 }

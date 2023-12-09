@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterLink } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormBuilderService } from './build-form.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -74,11 +74,13 @@ export class FormBuilderComponent implements OnInit
     onSubmit() {
         const angularFormValue = this.form.value;
         const finalFormData = this.formFields.map(field => ({ ...angularFormValue[field.label], ...field }));
-
-        this.items = {
-            formName : "contoh nama form",
-            formFields : finalFormData
-        }
+        this._activatedRoute.paramMap.subscribe(params => {
+            const formId = params.get('id');
+            this.items = {
+                formManager: formId,
+                formFields : finalFormData
+            }
+          });
 
         this.formBuilderService.onPost(this.items).subscribe({
             next: (response) => {
@@ -90,7 +92,6 @@ export class FormBuilderComponent implements OnInit
                 this._router.navigate(['../'], {relativeTo: this._activatedRoute});
                 this._changeDetectorRef.markForCheck();
             }, error: (error) => {
-
                 let errorMessage = 'Error posting data';
 
                 if (error && error.error && error.error.message) {
