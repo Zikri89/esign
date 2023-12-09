@@ -47,7 +47,7 @@ import { FormManagerData } from 'app/modules/admin/master/form-manager/form-mana
 })
 export class FormsWizardsComponent implements OnInit
 {
-    @Input() formData: DynamicForm;
+    @Input() formData: FormManagerData;
     form: FormGroup;
 
     formFieldHelpers: string[] = [''];
@@ -60,7 +60,7 @@ export class FormsWizardsComponent implements OnInit
      */
     constructor(
         private _route: ActivatedRoute,
-        private _formBuilderService : FormBuilderService,
+        private _formManagerService: FormManagerService,
         private fb: FormBuilder
         )
     {
@@ -75,12 +75,12 @@ export class FormsWizardsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.form = this.createForm();
         this._route.params.subscribe((params: Params) => {
             const formulirId = params['formulirId'];
-            this._formBuilderService.onGetById(formulirId).subscribe({
+            this._formManagerService.onGetById(formulirId).subscribe({
                 next: (value) => {
                     this.formData = value;
+                    this.form = this.createForm();
                 }, error: (err) => {
                     console.log(err);
                 }
@@ -90,8 +90,8 @@ export class FormsWizardsComponent implements OnInit
 
     createForm() {
         const formGroup = {};
-
-        this.formData[0].formFields.forEach((field) => {
+        var test = this.formData;
+        this.formData.dynamicForm['formFields'].forEach((field) => {
           if (field.type === 'checkbox') {
             const checkboxesGroup = {};
             field.options.forEach((option) => {

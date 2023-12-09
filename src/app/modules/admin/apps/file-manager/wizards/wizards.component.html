@@ -20,7 +20,7 @@
                         [svgIcon]="'heroicons_mini:chevron-right'"
                     ></mat-icon>
                     <a class="ml-1 text-primary-500">
-                        {{ formData[0].formName }}
+                        {{ formData?.name }}
                     </a>
                 </div>
             </div>
@@ -31,9 +31,9 @@
     <div class="flex-auto p-6 sm:p-10">
         <div class="max-w-3xl">
             <div class="prose prose-sm max-w-3xl">
-                <h2>{{ formData[0].formName }}</h2>
+                <h2>{{ formData?.name }}</h2>
                 <p>
-                    {{ formData[0].description }}
+                    {{ formData?.description }}
                 </p>
             </div>
 
@@ -44,7 +44,7 @@
                 (ngSubmit)="onSubmit()"
                 class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
             >
-                <div *ngFor="let field of formData[0].formFields">
+                <div *ngFor="let field of formData.dynamicForm['formFields']">
                     <div
                         class="flex"
                         *ngIf="
