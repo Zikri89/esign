@@ -45,7 +45,7 @@
                 (ngSubmit)="onSubmit()"
                 class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
             >
-                <div *ngFor="let field of formData?.dynamicForm['formFields']">
+                <div *ngFor="let field of formData.dynamicForm['formFields']">
                     <div
                         class="flex"
                         *ngIf="
