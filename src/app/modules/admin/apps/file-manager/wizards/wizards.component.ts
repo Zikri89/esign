@@ -139,26 +139,37 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     }
 
     createForm() {
-        const formFields = {}
-        for (const field of this.formData.dynamicForm['formFields']) {
-            const validators = []
-            if (field.required) {
-                validators.push(Validators.required)
-            }
+        const formFields = {};
 
-            let initialValue = field.type === 'checkbox' ? {} : ''
+        for (const field of this.formData.dynamicForm['formFields']) {
+          const validators = [];
+
+          if (field.required) {
+            validators.push(Validators.required);
+          }
+
+          let initialValue: string | { [key: string]: boolean } | number = '';
 
             if (field.type === 'checkbox') {
-                for (const option of field.options) {
-                    initialValue[option] = false
-                }
+            initialValue = {}; // For checkboxes, initialize as an empty object
+            for (const option of field.options) {
+                initialValue[option] = false;
+            }
+            } else if (field.type === 'number') {
+            initialValue = null; // For numbers, initialize as null or another appropriate value
             }
 
-            formFields[field.label] = new FormControl(initialValue, validators)
-        }
+          if (field.type === 'select' || field.type === 'radio') {
+            // For select and radio, you might want to provide options and default value
+            const options = field.options || [];
+            initialValue = options.length > 0 ? options[0] : null;
+          }
 
-        this.form = this.fb.group(formFields)
-    }
+          formFields[field.label] = new FormControl(initialValue, validators);
+        }
+        console.log(formFields);
+        this.form = this.fb.group(formFields);
+      }
 
     getFormControl(label: string) {
         return this.form.get(label)

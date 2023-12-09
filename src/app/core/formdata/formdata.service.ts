@@ -75,6 +75,6 @@ export class FormDataService
         'x-api-key': environment.apiKey,
         });
 
-        return this._httpClient.post<FormData>(environment.apiUrl + 'formData', data, { headers });
+        return this._httpClient.post<FormData>(environment.apiUrl + 'formDataPasien', data, { headers });
     }
 }
