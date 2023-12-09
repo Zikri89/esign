@@ -75,9 +75,10 @@ export class FormsWizardsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        // this.form = this.createForm();
+        this.form = this.createForm();
         this._route.params.subscribe((params: Params) => {
-            this._formBuilderService.onGetById(params).subscribe({
+            const formulirId = params['formulirId'];
+            this._formBuilderService.onGetById(formulirId).subscribe({
                 next: (value) => {
                     this.formData = value;
                 }, error: (err) => {
@@ -108,13 +109,13 @@ export class FormsWizardsComponent implements OnInit
         return this.fb.group(formGroup);
       }
 
-    checkboxValidator(group: FormGroup) {
-      const controls = Object.values(group.controls);
+      checkboxValidator(group: FormGroup) {
+        const controls = Object.values(group.controls);
 
-      const isValid = controls.some(control => control.value === true);
+        const isValid = controls.some(control => control.value === true);
 
-      return isValid ? null : { atLeastOne: true };
-    }
+        return isValid ? null : { atLeastOne: true };
+      }
 
     getFormControl(fieldName: string) {
         return this.form.get(fieldName);

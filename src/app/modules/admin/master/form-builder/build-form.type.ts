@@ -1,5 +1,4 @@
 export interface DynamicForm {
-    formManager: string;
     formFields: DynamicFormField[];
 }
 
