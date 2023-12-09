@@ -38,14 +38,13 @@
             </div>
 
             <!-- dynamic-form.component.html -->
-
             <form
-                *ngIf="form"
+            *ngIf="form && formData.dynamicForm != ''; else noItems"
                 [formGroup]="form"
                 (ngSubmit)="onSubmit()"
                 class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
             >
-                <div *ngFor="let field of formData.dynamicForm['formFields']">
+                <div *ngFor="let field of formData?.dynamicForm['formFields']">
                     <div
                         class="flex"
                         *ngIf="
@@ -263,6 +262,15 @@
                     Save
                 </button>
             </form>
+            <ng-template #noItems>
+                <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                    <mat-icon
+                        class="icon-size-24"
+                        [svgIcon]="'heroicons_outline:table-cells'"></mat-icon>
+                    <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Formulir belum di buat!</div>
+                    <a class="whitespace-nowrap text-primary-500" routerLink="/master/form-manager">Buat Formulir</a>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>

@@ -28,6 +28,8 @@ import { MatInputModule } from '@angular/material/input'
 import { MatRadioModule } from '@angular/material/radio'
 import { MatSelectModule } from '@angular/material/select'
 import { ActivatedRoute, Params, RouterLink } from '@angular/router'
+import { FormDataService } from 'app/core/formdata/formdata.service'
+import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
 import { FormManagerData } from 'app/modules/admin/master/form-manager/form-manager.types'
 import SignaturePad from 'signature_pad'
@@ -62,6 +64,8 @@ import SignaturePad from 'signature_pad'
 export class FormsWizardsComponent implements OnInit, AfterViewInit {
     @Input() formData: FormManagerData
     form: FormGroup
+    formDatas: FormData;
+    noRkmMedis: string;
 
     signPad: any
     @ViewChild('signPadCanvas', { static: false }) signaturePadElement: any
@@ -86,6 +90,8 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     constructor(
         private _route: ActivatedRoute,
         private _formManagerService: FormManagerService,
+        private _formDataService: FormDataService,
+        private _activatedRoute: ActivatedRoute,
         private fb: FormBuilder
     ) {}
 
@@ -109,7 +115,9 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.signPad = new SignaturePad(this.signaturePadElement.nativeElement)
+        if (this.signaturePadElement) {
+            this.signPad = new SignaturePad(this.signaturePadElement.nativeElement);
+        }
     }
 
     startSignPadDrawing(event: Event) {
@@ -162,7 +170,23 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             const base64ImageData = this.signPad.toDataURL()
             this.signImage = base64ImageData
             formData.signature = this.signImage;
-            console.log(formData)
+            this._activatedRoute.paramMap.subscribe(params => {
+                this.noRkmMedis = params.get('patientId');
+              });
+
+            this.formDatas = {
+                noRkmMedis : this.noRkmMedis,
+                dataJson: formData,
+            }
+
+            this._formDataService.onPost(this.formDatas).subscribe({
+                next: (res) => {
+                    console.log(res);
+                },
+                error : (err) => {
+                    console.log(err);
+                }
+            });
         } else {
             this.markFormGroupTouched(this.form)
         }
