@@ -32,16 +32,17 @@ import {
 } from '@angular/router'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import {
-    MatSnackBar,
+    MatSnackBar, MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar'
 import {
-    DynamicForm,
+    DynamicForm, DynamicFormField,
 } from './build-form.type'
 import { FormManagerService } from '../form-manager/form-manager.service'
 import { FormManagerData } from '../form-manager/form-manager.types'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { SharedDataService } from 'app/core/share/shared-date-service'
 import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
+import { FormBuilderService } from './build-form.service'
 
 @Component({
     selector: 'build-form',
@@ -73,17 +74,16 @@ import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer
 })
 export class FormBuilderComponent implements OnInit {
     @Input()position: FuseDrawerPosition;
-    drawerMode: string;
-    drawerOpened : boolean;
+    drawerMode: string
+    drawerOpened : boolean
     receivedFormData: any
     items: DynamicForm
     dynamicFormId: string
     formId: string
     formManagerData: FormManagerData
     form: FormGroup;
-    formFields: any[];
-
-    esignData: any;
+    formFields: any[]
+    formData: DynamicFormField[] = [];
 
     typeOptions: string[] = [
         'text',
@@ -113,7 +113,7 @@ export class FormBuilderComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private fb: FormBuilder,
-        private _sharedDataService: SharedDataService,
+        private _formBuilderService: FormBuilderService
     ) {
         this.form = this.fb.group({});
     }
@@ -122,6 +122,16 @@ export class FormBuilderComponent implements OnInit {
         this.initializeForm()
         this.drawerMode = 'side';
         this.drawerOpened = false;
+        this._formManagerService.data$.subscribe({
+            next: (res) => {
+                if(res.dynamicForm != null){
+                    this.formFields = res.dynamicForm['formFields']
+                }
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
     }
 
     initializeForm() {
@@ -190,7 +200,7 @@ export class FormBuilderComponent implements OnInit {
                 .map(option => option.trim())
         }
 
-        this.formFields.push(newField)
+        this.formData.push(newField)
         this.form.addControl(newField.name, this.fb.control('', []))
 
         // Clear the form controls for the next input
@@ -199,12 +209,8 @@ export class FormBuilderComponent implements OnInit {
         this.form.get('newFieldValidation').setValue('')
 
         // Convert the form data to JSON and send it
-        this.formFields = this.formFields
-
-          // Go back to the list
-          this._router.navigate(['../'], {
-            relativeTo: this._activatedRoute,
-        })
+        this.formFields = this.formData
+        this.drawerOpened = false;
     }
 
     generateNameFromLabel(label: string): string {
@@ -221,68 +227,68 @@ export class FormBuilderComponent implements OnInit {
         return camelCaseName
     }
 
-    // removeField(index: number) {
-    //     this.formFields.splice(index, 1)
-    // }
+    removeField(index: number) {
+        this.formFields.splice(index, 1)
+    }
 
-    // onSubmit() {
-    //     const angularFormValue = this.form.value
-    //     const finalFormData = this.formFields.map(field => ({
-    //         ...angularFormValue[field.label],
-    //         ...field,
-    //     }))
+    onSubmit() {
+        const angularFormValue = this.form.value
+        const finalFormData = this.formFields.map(field => ({
+            ...angularFormValue[field.label],
+            ...field,
+        }))
 
-    //     this.items = {
-    //         formFields: finalFormData,
-    //     }
+        this.items = {
+            formFields: finalFormData,
+        }
 
-    //     this._activatedRoute.paramMap.subscribe(params => {
-    //         this.formId = params.get('id')
-    //     })
+        this._activatedRoute.paramMap.subscribe(params => {
+            this.formId = params.get('id')
+        })
 
-    //     this.formBuilderService.onPost(this.items).subscribe({
-    //         next: response => {
-    //             this.addDynamicFormToFormManager(response)
-    //             this._snackBar.open('Data posted successfully', 'Close', {
-    //                 duration: 3000,
-    //                 verticalPosition: 'top' as MatSnackBarVerticalPosition,
-    //             })
+        this._formBuilderService.onPost(this.items).subscribe({
+            next: response => {
+                this.addDynamicFormToFormManager(response)
+                this._snackBar.open('Data posted successfully', 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                })
 
-    //             // this._router.navigate(['../'], {relativeTo: this._activatedRoute});
-    //             // this._changeDetectorRef.markForCheck();
-    //         },
-    //         error: error => {
-    //             let errorMessage = 'Error posting data'
+                // this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                // this._changeDetectorRef.markForCheck();
+            },
+            error: error => {
+                let errorMessage = 'Error posting data'
 
-    //             if (error && error.error && error.error.message) {
-    //                 errorMessage = error.error.message
-    //             }
+                if (error && error.error && error.error.message) {
+                    errorMessage = error.error.message
+                }
 
-    //             this._snackBar.open(errorMessage, 'Close', {
-    //                 duration: 3000,
-    //                 verticalPosition: 'top' as MatSnackBarVerticalPosition,
-    //             })
-    //         },
-    //     })
-    // }
+                this._snackBar.open(errorMessage, 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                })
+            },
+        })
+    }
 
-    // addDynamicFormToFormManager(response) {
-    //     this.dynamicFormId = response['result']['id']
-    //     this.formManagerData = {
-    //         dynamicForm: this.dynamicFormId,
-    //     }
+    addDynamicFormToFormManager(response) {
+        this.dynamicFormId = response['result']['id']
+        this.formManagerData = {
+            dynamicForm: this.dynamicFormId,
+        }
 
-    //     this._formManagerService
-    //         .onPut(this.formManagerData, this.formId)
-    //         .subscribe({
-    //             next: value => {
-    //                 console.log(value)
-    //             },
-    //             error: err => {
-    //                 console.log(err)
-    //             },
-    //         })
-    // }
+        this._formManagerService
+            .onPut(this.formManagerData, this.formId)
+            .subscribe({
+                next: value => {
+                    console.log(value)
+                },
+                error: err => {
+                    console.log(err)
+                },
+            })
+    }
 
     /**
      * On backdrop clicked
