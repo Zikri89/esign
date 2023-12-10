@@ -1,69 +1,144 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
-    <mat-drawer-container
-        class="flex-auto h-full bg-card dark:bg-transparent"
-        (backdropClick)="onBackdropClicked()"
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
     >
-        <mat-drawer
-            class="w-full sm:w-100 dark:bg-gray-900"
-            [mode]="drawerMode"
-            [opened]="false"
-            [position]="'end'"
-            [disableClose]="true"
-            #matDrawer
-        >
-            <router-outlet></router-outlet>
-        </mat-drawer>
-
-        <mat-drawer-content
-            class="flex flex-col bg-gray-100 dark:bg-transparent"
-        >
-            <!-- Header -->
-            <div
-                class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
-            >
-                <div class="flex-1 min-w-0">
-                    <!-- Breadcrumbs -->
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
                     <div>
-                        <div
-                            class="hidden sm:flex flex-wrap items-center font-medium"
-                        >
-                            <div>
-                                <a class="whitespace-nowrap text-primary-500">
-                                    Dynamic Form
-                                </a>
-                            </div>
-                        </div>
+                        <a class="whitespace-nowrap text-primary-500">
+                            Dynamic Form
+                        </a>
                     </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
-                        >
-                            Form Builder
-                        </h2>
-                    </div>
-                </div>
-                <!-- Actions -->
-                <div class="flex shrink-0 items-center flex flex-col">
-                    <button
-                        class="ml-3 mb-5"
-                        mat-flat-button
-                        (click)="addCustomField()"
-                        [color]="'accent'"
-                    >
-                        <mat-icon
-                            class="icon-size-4"
-                            [svgIcon]="'heroicons_mini:plus'"
-                        ></mat-icon>
-                        <span class="ml-2">Add Field</span>
-                    </button>
                 </div>
             </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2
+                    class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
+                >
+                    Form Builder
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center flex flex-col">
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                (click)="toggleDrawerOpen()"
+                [color]="'accent'"
+            >
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"
+                ></mat-icon>
+                <span class="ml-2">Add Field</span>
+            </button>
+        </div>
+    </div>
+    <div class="relative flex overflow-hidden border mt-8 min-h-80">
+        <fuse-drawer
+            [name]="'rightDrawer'"
+            [opened]="drawerOpened"
+            [position]="'right'"
+            [fixed]="true"
+            [mode]="'over'"
+        >
+            <div class="flex gt-xs:flex-row w-full">
+                <!-- Name & Type -->
+                <form
+                    [formGroup]="form"
+                    class="flex p-8 rounded-2xl overflow-hidden w-full"
+                >
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field class="w-full">
+                            <mat-label>New Field Label</mat-label>
+                            <input
+                                title="label"
+                                matInput
+                                formControlName="newFieldLabel"
+                            />
+                            <mat-icon
+                                class="icon-size-5"
+                                matSuffix
+                                [svgIcon]="'heroicons_solid:document-text'"
+                            ></mat-icon>
+                        </mat-form-field>
 
+                        <mat-form-field class="w-full">
+                            <mat-label>New Field Type</mat-label>
+                            <mat-select formControlName="newFieldType">
+                                <mat-option
+                                    *ngFor="let typeOption of typeOptions"
+                                    [value]="typeOption"
+                                >
+                                    {{ typeOption }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field
+                                class="w-full"
+                                *ngIf="shouldShowOptionField()"
+                            >
+                                <mat-label>New Option Field</mat-label>
+                                <input
+                                    title="option"
+                                    matInput
+                                    formControlName="newOptionField"
+                                />
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matSuffix
+                                    [svgIcon]="'heroicons_solid:document-text'"
+                                ></mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-form-field class="w-full">
+                            <mat-label>New Field Validation</mat-label>
+                            <mat-select formControlName="newFieldValidation">
+                                <mat-option
+                                    *ngFor="
+                                        let validationOption of validationOptions
+                                    "
+                                    [value]="validationOption"
+                                >
+                                    {{ validationOption }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon
+                                class="icon-size-5"
+                                matSuffix
+                                [svgIcon]="'heroicons_solid:document-text'"
+                            ></mat-icon>
+                        </mat-form-field>
+
+                        <div class="flex justify-end mt-8">
+                            <button
+                                class="w-full"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="button"
+                                (click)="addField()"
+                            >
+                                Tambah Data
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fuse-drawer>
+
+        <div class="flex-auto bg-gray-100 p-4">
             <!-- Main -->
             <div class="flex-auto p-6 sm:p-10 overflow-y-auto" cdkScrollable>
                 <!-- CONTENT GOES HERE -->
-                <!-- <form
+                <form
                     [formGroup]="form"
                     class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
                 >
@@ -193,11 +268,9 @@
                         </button>
                     </div>
                     <button
-                        *ngIf="formFields.length > 0"
                         class="ml-3 mb-5"
                         mat-flat-button
                         type="button"
-                        (click)="onSubmit()"
                         [color]="'accent'"
                     >
                         <mat-icon
@@ -206,8 +279,22 @@
                         ></mat-icon>
                         <span class="ml-2">Create Form</span>
                     </button>
-                </form> -->
+                </form>
             </div>
-        </mat-drawer-content>
-    </mat-drawer-container>
+        </div>
+
+        <!-- Right drawer must be positioned after the content
+
+            <fuse-drawer
+                [name]="'leftDrawer'"
+                [opened]="true"
+                [position]="'right'"
+                [mode]="'side'">
+                <div class="p-4">
+                    Right drawer
+                </div>
+            </fuse-drawer>
+
+        -->
+    </div>
 </div>

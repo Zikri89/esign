@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Item} from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { BehaviorSubject, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { FormDataFormulir } from './details/details.types';
-import { SharedDataService } from 'app/services/shared-date-service';
+import { SharedDataService } from 'app/core/share/shared-date-service';
 import { environment } from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
