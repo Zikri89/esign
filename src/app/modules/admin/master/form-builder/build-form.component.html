@@ -1,207 +1,213 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()"
+    >
+        <mat-drawer
+            class="w-full sm:w-100 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer
+        >
+            <router-outlet></router-outlet>
+        </mat-drawer>
 
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
-        <div class="flex-1 min-w-0">
-            <!-- Breadcrumbs -->
-            <div>
-                <div class="hidden sm:flex flex-wrap items-center font-medium">
+        <mat-drawer-content
+            class="flex flex-col bg-gray-100 dark:bg-transparent"
+        >
+            <!-- Header -->
+            <div
+                class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
+            >
+                <div class="flex-1 min-w-0">
+                    <!-- Breadcrumbs -->
                     <div>
-                        <a class="whitespace-nowrap text-primary-500">Dynamic Form</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Title -->
-            <div class="mt-2">
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    Form Builder
-                </h2>
-            </div>
-        </div>
-        <!-- Actions -->
-        <div class="flex shrink-0 items-center flex flex-col">
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addTextarea()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Text Area</span>
-            </button>
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addEmail()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Email</span>
-            </button>
-        </div>
-        <div class="flex shrink-0 items-center flex flex-col">
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addTextField()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Text Field</span>
-            </button>
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addCheckbox()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Checkbox</span>
-            </button>
-        </div>
-        <div class="flex shrink-0 items-center flex flex-col">
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addRadio()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Radio</span>
-            </button>
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addSelect()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Select</span>
-            </button>
-        </div>
-        <div class="flex shrink-0 items-center flex flex-col">
-            <button
-                class="ml-3 mb-5"
-                mat-flat-button
-                (click)="addDate()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:plus'"></mat-icon>
-                <span class="ml-2">Add Date</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Main -->
-    <div
-        class="flex-auto p-6 sm:p-10 overflow-y-auto"
-        cdkScrollable>
-        <!-- CONTENT GOES HERE -->
-        <form [formGroup]="form"  class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
-            <div *ngFor="let field of formFields; let i = index">
-                <div [ngSwitch]="field.type">
-                    <label *ngSwitchCase="'text'">{{ field.label }}:
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="w-full">
-                            <input
-                                matInput
-                                [placeholder]="'Placeholder only'" type="field.type">
-                        </mat-form-field>
-                    </label>
-                    <label *ngSwitchCase="'email'">{{ field.label }}:
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="w-full">
-                            <input
-                                matInput
-                                [placeholder]="'Placeholder only'" type="field.type">
-                        </mat-form-field>
-                    </label>
-                    <label *ngSwitchCase="'checkbox'">{{ field.label }}:
-                        <div class="flex flex-col">
-                            <div *ngFor="let option of field.options">
-                                <mat-checkbox
-                                    class="mb-2"
-                                    [checked]="false"
-                                    [color]="'primary'">
-                                    {{ option }}
-                                </mat-checkbox>
+                        <div
+                            class="hidden sm:flex flex-wrap items-center font-medium"
+                        >
+                            <div>
+                                <a class="whitespace-nowrap text-primary-500">
+                                    Dynamic Form
+                                </a>
                             </div>
                         </div>
-                    </label>
-                    <label *ngSwitchCase="'radio'">{{ field.label }}:
-                        <div class="flex flex-col">
-                            <mat-radio-group
-                                class="flex flex-col"
-                                [color]="'primary'"
-                                [value]="'just-good'">
-                                <div *ngFor="let option of field.options">
-                                    <mat-radio-button
-                                        class="mb-2"
-                                        [value]="option">
-                                        {{ option }}
-                                    </mat-radio-button>
-                                </div>
-                            </mat-radio-group>
-                        </div>
-                    </label>
-                    <label *ngSwitchCase="'select'">{{ field.label }}:
-                        <div class="flex flex-col">
-                            <mat-form-field class="flex-auto">
-                                <mat-select>
-                                    <mat-option *ngFor="let option of field.options" [value]="field.options">
-                                        {{ option }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </label>
-                    <label *ngSwitchCase="'textarea'">{{ field.label }}:
-                        <div class="flex">
-                            <mat-form-field
-                                [ngClass]="formFieldHelpers"
-                                class="flex-auto">
-                                <textarea
-                                    matInput
-                                    [placeholder]="'Textarea with autosize'"
-                                    cdkTextareaAutosize></textarea>
-                            </mat-form-field>
-                        </div>
-                    </label>
-                    <label *ngSwitchCase="'date'">{{ field.label }}:
-                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                            <input matInput [placeholder]="'Select Date'" [matDatepicker]="picker" formControlName="{{ field.label }}">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                    </label>
+                    </div>
+                    <!-- Title -->
+                    <div class="mt-2">
+                        <h2
+                            class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
+                        >
+                            Form Builder
+                        </h2>
+                    </div>
                 </div>
-                <button
-                    mat-icon-button
-                    color="warn"
-                    (click)="removeField(i)">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                <!-- Actions -->
+                <div class="flex shrink-0 items-center flex flex-col">
+                    <button
+                        class="ml-3 mb-5"
+                        mat-flat-button
+                        (click)="addCustomField()"
+                        [color]="'accent'"
+                    >
+                        <mat-icon
+                            class="icon-size-4"
+                            [svgIcon]="'heroicons_mini:plus'"
+                        ></mat-icon>
+                        <span class="ml-2">Add Field</span>
+                    </button>
+                </div>
             </div>
-            <button *ngIf="formFields.length > 0"
-                class="ml-3 mb-5"
-                mat-flat-button
-                type="button"
-                (click) = "onSubmit()"
-                [color]="'accent'">
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:list-bullet'"></mat-icon>
-                <span class="ml-2">Create Form</span>
-            </button>
-        </form>
-    </div>
+
+            <!-- Main -->
+            <div class="flex-auto p-6 sm:p-10 overflow-y-auto" cdkScrollable>
+                <!-- CONTENT GOES HERE -->
+                <!-- <form
+                    [formGroup]="form"
+                    class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+                >
+                    <div *ngFor="let field of formFields; let i = index">
+                        <div [ngSwitch]="field.type">
+                            <label *ngSwitchCase="'text'">
+                                {{ field.label }}:
+                                <mat-form-field
+                                    [ngClass]="formFieldHelpers"
+                                    class="w-full"
+                                >
+                                    <input
+                                        matInput
+                                        [placeholder]="'Placeholder only'"
+                                        type="field.type"
+                                    />
+                                </mat-form-field>
+                            </label>
+                            <label *ngSwitchCase="'email'">
+                                {{ field.label }}:
+                                <mat-form-field
+                                    [ngClass]="formFieldHelpers"
+                                    class="w-full"
+                                >
+                                    <input
+                                        matInput
+                                        [placeholder]="'Placeholder only'"
+                                        type="field.type"
+                                    />
+                                </mat-form-field>
+                            </label>
+                            <label *ngSwitchCase="'checkbox'">
+                                {{ field.label }}:
+                                <div class="flex flex-col">
+                                    <div *ngFor="let option of field.options">
+                                        <mat-checkbox
+                                            class="mb-2"
+                                            [checked]="false"
+                                            [color]="'primary'"
+                                        >
+                                            {{ option }}
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                            </label>
+                            <label *ngSwitchCase="'radio'">
+                                {{ field.label }}:
+                                <div class="flex flex-col">
+                                    <mat-radio-group
+                                        class="flex flex-col"
+                                        [color]="'primary'"
+                                        [value]="'just-good'"
+                                    >
+                                        <div
+                                            *ngFor="let option of field.options"
+                                        >
+                                            <mat-radio-button
+                                                class="mb-2"
+                                                [value]="option"
+                                            >
+                                                {{ option }}
+                                            </mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                            </label>
+                            <label *ngSwitchCase="'select'">
+                                {{ field.label }}:
+                                <div class="flex flex-col">
+                                    <mat-form-field class="flex-auto">
+                                        <mat-select>
+                                            <mat-option
+                                                *ngFor="
+                                                    let option of field.options
+                                                "
+                                                [value]="field.options"
+                                            >
+                                                {{ option }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </label>
+                            <label *ngSwitchCase="'textarea'">
+                                {{ field.label }}:
+                                <div class="flex">
+                                    <mat-form-field
+                                        [ngClass]="formFieldHelpers"
+                                        class="flex-auto"
+                                    >
+                                        <textarea
+                                            matInput
+                                            [placeholder]="
+                                                'Textarea with autosize'
+                                            "
+                                            cdkTextareaAutosize
+                                        ></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </label>
+                            <label *ngSwitchCase="'date'">
+                                {{ field.label }}:
+                                <mat-form-field
+                                    [ngClass]="formFieldHelpers"
+                                    class="w-full"
+                                >
+                                    <input
+                                        matInput
+                                        [placeholder]="'Select Date'"
+                                        [matDatepicker]="picker"
+                                        formControlName="{{ field.label }}"
+                                    />
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="picker"
+                                    ></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </label>
+                        </div>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="removeField(i)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <button
+                        *ngIf="formFields.length > 0"
+                        class="ml-3 mb-5"
+                        mat-flat-button
+                        type="button"
+                        (click)="onSubmit()"
+                        [color]="'accent'"
+                    >
+                        <mat-icon
+                            class="icon-size-4"
+                            [svgIcon]="'heroicons_mini:list-bullet'"
+                        ></mat-icon>
+                        <span class="ml-2">Create Form</span>
+                    </button>
+                </form> -->
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
 </div>

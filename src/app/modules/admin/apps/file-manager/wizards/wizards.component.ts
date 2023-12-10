@@ -140,7 +140,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
 
     createForm() {
         const formFields = {};
-
+        var test = this.formData ;
         for (const field of this.formData.dynamicForm['formFields']) {
           const validators = [];
 
