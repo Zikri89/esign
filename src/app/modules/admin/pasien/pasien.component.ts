@@ -50,7 +50,6 @@ export class PasienComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _pasienService: PasienService,
-        private datePipe: DatePipe,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
