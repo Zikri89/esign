@@ -73,7 +73,7 @@ export class PasienComponent implements OnInit, OnDestroy {
                     title: 'Tanggal Registrasi',
                     data: 'tgl_registrasi',
                     render: function(data, type, row){
-                        return data
+                        return new Date(data).toLocaleDateString()
                     }
                 },
                 {
