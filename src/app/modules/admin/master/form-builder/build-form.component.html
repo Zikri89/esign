@@ -59,6 +59,15 @@
                                         [placeholder]="'Placeholder only'"
                                         type="field.type"
                                     />
+                                    <button
+                                        mat-icon-button
+                                        matSuffix
+                                        (click)="removeField(i)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    </button>
                                 </mat-form-field>
                             </label>
                             <label *ngSwitchCase="'email'">
@@ -72,6 +81,15 @@
                                         [placeholder]="'Placeholder only'"
                                         type="field.type"
                                     />
+                                    <button
+                                        mat-icon-button
+                                        matSuffix
+                                        (click)="removeField(i)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    </button>
                                 </mat-form-field>
                             </label>
                             <label *ngSwitchCase="'checkbox'">
@@ -87,6 +105,15 @@
                                         </mat-checkbox>
                                     </div>
                                 </div>
+                                <button
+                                    mat-icon-button
+                                    matSuffix
+                                    (click)="removeField(i)"
+                                    >
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                </button>
                             </label>
                             <label *ngSwitchCase="'radio'">
                                 {{ field.label }}:
@@ -106,6 +133,15 @@
                                         </div>
                                     </mat-radio-group>
                                 </div>
+                                <button
+                                    mat-icon-button
+                                    matSuffix
+                                    (click)="removeField(i)"
+                                    >
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                </button>
                             </label>
                             <label *ngSwitchCase="'select'">
                                 {{ field.label }}:
@@ -119,6 +155,15 @@
                                                 {{ option }}
                                             </mat-option>
                                         </mat-select>
+                                        <button
+                                            mat-icon-button
+                                            matSuffix
+                                            (click)="removeField(i)"
+                                            >
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                        </button>
                                     </mat-form-field>
                                 </div>
                             </label>
@@ -133,7 +178,17 @@
                                             matInput
                                             [placeholder]="'Textarea with autosize'"
                                             cdkTextareaAutosize
-                                        ></textarea>
+                                        >
+                                    </textarea>
+                                    <button
+                                        mat-icon-button
+                                        matSuffix
+                                        (click)="removeField(i)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    </button>
                                     </mat-form-field>
                                 </div>
                             </label>
@@ -154,19 +209,43 @@
                                         [for]="picker"
                                     ></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
+                                    <button
+                                        mat-icon-button
+                                        matSuffix
+                                        (click)="removeField(i)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </label>
+                            <label *ngSwitchCase="'file'">
+                                {{ field.label }}:
+                                <mat-form-field
+                                    [ngClass]="formFieldHelpers"
+                                    class="w-full"
+                                >
+                                    <input
+                                        matInput
+                                        [placeholder]="'Select File'"
+                                        formControlName="{{ field.label }}"
+                                    />
+                                    <button
+                                        mat-icon-button
+                                        matSuffix
+                                        (click)="removeField(i)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    </button>
                                 </mat-form-field>
                             </label>
                         </div>
-                        <button
-                            type="button"
-                            mat-icon-button
-                            color="warn"
-                            (click)="removeField(i)"
-                        >
-                            <mat-icon>delete</mat-icon>
-                        </button>
                     </div>
                     <button
+                        *ngIf="formFields.length > 0"
                         class="ml-3 mb-5"
                         mat-flat-button
                         type="button"
