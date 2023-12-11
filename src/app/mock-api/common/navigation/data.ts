@@ -2,19 +2,35 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
+    // {
+    //     id      : 'dashboards',
+    //     title   : 'Dashboards',
+    //     subtitle: 'Menampilkan data rekapan sesuai kebutuhan',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'dashboards.statistik',
+    //             title: 'Statistik',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:clipboard-document-check',
+    //             link : '/dashboards/statistik',
+    //         },
+    //     ],
+    // },
     {
-        id      : 'dashboards',
-        title   : 'Dashboards',
-        subtitle: 'Menampilkan data rekapan sesuai kebutuhan',
+        id      : 'pasienList',
+        title   : 'List Pasien',
+        subtitle: 'Menampilkan data pasien',
         type    : 'group',
-        icon    : 'heroicons_outline:home',
+        icon    : 'heroicons_outline:users',
         children: [
             {
-                id   : 'dashboards.statistik',
-                title: 'Statistik',
+                id   : 'pasien.list',
+                title: 'Pasien',
                 type : 'basic',
-                icon : 'heroicons_outline:clipboard-document-check',
-                link : '/dashboards/statistik',
+                icon : 'heroicons_outline:users',
+                link : '/pasien/list',
             },
         ],
     },

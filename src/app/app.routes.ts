@@ -10,14 +10,14 @@ import { LayoutComponent } from 'app/layout/layout.component';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/dashboards/statistik'
-    {path: '', pathMatch : 'full', redirectTo: 'dashboards/statistik'},
+    {path: '', pathMatch : 'full', redirectTo: 'pasien/list'},
 
     // Redirect signed-in user to the '/dashboards/statistik'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboards/statistik'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'pasien/list'},
 
     // Auth routes for guests
     {
@@ -84,6 +84,11 @@ export const appRoutes: Route[] = [
             // Apps
             {path: 'apps', children: [
                 {path: 'file-manager', loadChildren: () => import('app/modules/admin/apps/file-manager/file-manager.routes')},
+            ]},
+
+            // pasien
+            {path: 'pasien', children: [
+                {path: 'list', loadChildren: () => import('app/modules/admin/pasien/pasien.routes')},
             ]},
         ]
     },
