@@ -32,6 +32,7 @@ import { FormDataService } from 'app/core/formdata/formdata.service'
 import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
 import { FormManagerData } from 'app/modules/admin/master/form-manager/form-manager.types'
+import { DynamicDialogRef } from 'primeng/dynamicdialog'
 import SignaturePad from 'signature_pad'
 
 @Component({
@@ -92,7 +93,8 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
         private _formManagerService: FormManagerService,
         private _formDataService: FormDataService,
         private _activatedRoute: ActivatedRoute,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        public ref: DynamicDialogRef,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -112,6 +114,8 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
                 console.log(err)
             },
         })
+
+        this.ref.close();
     }
 
     ngAfterViewInit() {

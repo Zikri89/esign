@@ -13,7 +13,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
   standalone: true,
   imports: [OrderListModule, RouterLink],
   templateUrl: './dialog.component.html',
-  styleUrl: './dialog.component.scss'
+  styleUrl: './dialog.component.scss',
 })
 export class DialogComponent implements OnInit {
     formManager: FormManagerData;
