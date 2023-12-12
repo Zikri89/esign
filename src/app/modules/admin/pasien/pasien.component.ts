@@ -5,10 +5,10 @@ import {
     OnDestroy,
     OnInit,
     ViewEncapsulation,
-    ViewChild,
     ChangeDetectorRef,
+    Input,
 } from '@angular/core'
-import { MatButtonModule } from '@angular/material/button'
+import { MatButtonModule, MatIconButton } from '@angular/material/button'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import {
     ActivatedRoute,
@@ -20,7 +20,13 @@ import { Subject, takeUntil } from 'rxjs'
 import { MatCardModule } from '@angular/material/card'
 import { PasienService } from './pasien.service'
 import { Pasien } from './pasien.types'
-import { DataTablesModule } from 'angular-datatables'
+import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatIconModule } from '@angular/material/icon'
+import { Table, TableModule } from 'primeng/table';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { OrderListModule } from 'primeng/orderlist';
+import { DialogComponent } from './dialog/dialog.component'
 
 @Component({
     selector: 'pasien',
@@ -36,12 +42,28 @@ import { DataTablesModule } from 'angular-datatables'
         MatButtonModule,
         MatTooltipModule,
         MatCardModule,
-        DataTablesModule,
+        MatSidenavModule,
+        RouterOutlet,
+        NgIf,
+        FuseDrawerComponent,
+        MatIconModule,
+        TableModule,
+        DatePipe,
+        OrderListModule,
+        DynamicDialogModule
     ],
+    providers: [DialogService]
 })
 export class PasienComponent implements OnInit, OnDestroy {
+    pasien: Pasien[] = [];
+    selectedPasien!: Pasien;
+    loading: boolean = true;
+    nmPasien : any;
+    noRawat : any;
+    noRkmMedis : any;
+
+    ref: DynamicDialogRef | undefined;
     private _unsubscribeAll: Subject<any> = new Subject<any>()
-    dtOptions: DataTables.Settings = {}
     /**
      * Constructor
      */
@@ -50,6 +72,7 @@ export class PasienComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _pasienService: PasienService,
+        public dialogService: DialogService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -60,80 +83,16 @@ export class PasienComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.dtOptions = {
-            ajax: (dataTablesParameters: any, callback: any) => {
-                this._pasienService.data$.subscribe(data => {
-                    callback({
-                        data: data,
-                    })
-                })
+        this._pasienService.data$.subscribe({
+            next: (res) => {
+                this.pasien = res;
+                this.loading = false;
+                this.pasien.forEach((pasien) => (pasien.tgl_registrasi = new Date(<Date>pasien.tgl_registrasi)));
             },
-            columns: [
-                {
-                    title: 'Tanggal Registrasi',
-                    data: 'tgl_registrasi',
-                    render: function(data, type, row){
-                        return new Date(data).toLocaleDateString()
-                    }
-                },
-                {
-                    title: 'Jam Registrasi',
-                    data: 'jam_reg',
-                },
-                {
-                    title: 'Nomor Antrian',
-                    data: 'nomor_antrian',
-                },
-                {
-                    title: 'No Rekam Medis',
-                    data: 'no_rkm_medis',
-                },
-                {
-                    title: 'Nama Pasien',
-                    data: 'nm_pasien',
-                },
-                {
-                    title: 'Usia',
-                    data: 'umurdaftar',
-                    render: function(data, type, row){
-                        row.u
-                        return `${row.umurdaftar}  ${row.sttsumur}`;
-                    }
-                },
-                {
-                    title: 'Penanggung Jawab',
-                    data: 'png_jawab',
-                },
-                {
-                    title: 'Nama Poli',
-                    data: 'nm_poli',
-                },
-                {
-                    title: 'Nama Dokter',
-                    data: 'nm_dokter',
-                },
-                {
-                    title: 'No Rawat',
-                    data: 'no_rawat',
-                },
-                {
-                    title: 'Status',
-                    data: 'stts',
-                },
-                {
-                    title: 'Biaya Registrasi',
-                    data: 'biaya_reg',
-                },
-                {
-                    title: 'Kode Dokter',
-                    data: 'kd_dokter',
-                },
-                {
-                    title: 'Kode Poli',
-                    data: 'kd_poli',
-                },
-            ],
-        }
+            error: (err) => {
+                console.log(err);
+            }
+        })
     }
 
     /**
@@ -143,5 +102,26 @@ export class PasienComponent implements OnInit, OnDestroy {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null)
         this._unsubscribeAll.complete()
+    }
+
+    onRowSelect(event: any) {
+        this.nmPasien = event.data.nm_pasien
+        this.noRawat = event.data.no_rawat
+        this.noRkmMedis = event.data.no_rkm_medis
+    }
+
+    onRowUnselect(event: any) {
+        console.log('unselected')
+    }
+
+    show() {
+        this.ref = this.dialogService.open(DialogComponent, {
+            data: {
+                nmPasien: this.nmPasien,
+                noRawat: this.noRawat,
+                noRkmMedis: this.noRkmMedis
+            },
+            header: 'Pilih Formulir'
+        });
     }
 }

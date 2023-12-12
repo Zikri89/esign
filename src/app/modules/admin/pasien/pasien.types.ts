@@ -1,5 +1,5 @@
 export class Pasien {
-    tgl_registrasi: string
+    tgl_registrasi: Date
     jam_reg: string
     nomor_antrian: string
     no_rkm_medis: string

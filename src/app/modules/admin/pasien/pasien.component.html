@@ -9,7 +9,7 @@
                 <div class="hidden sm:flex flex-wrap items-center font-medium">
                     <div>
                         <a class="whitespace-nowrap text-primary-500">
-                            Pasien List
+                            Dynamic Form
                         </a>
                     </div>
                 </div>
@@ -19,25 +19,122 @@
                 <h2
                     class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
                 >
-                    Daftar Nama Pasien
+                    Form Builder
                 </h2>
             </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center flex flex-col">
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                [color]="'accent'"
+            >
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"
+                ></mat-icon>
+                <span class="ml-2">Add Field</span>
+            </button>
         </div>
     </div>
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10 overflow-y-auto" cdkScrollable>
-        <div class="min-h-50 overflow-hidden overflow-x-auto border-2 p-5 border-gray-300 rounded-2xl bg-white">
-            <table datatable [dtOptions]="dtOptions" class="row-border hover"></table>
+        <div class="card">
+            <p-table
+                #dt1
+                [value]="pasien"
+                dataKey="id"
+                [rows]="10"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [loading]="loading"
+                [paginator]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [globalFilterFields]="['no_rawat', 'nm_pasien', 'no_rkm_medis', 'tgl_registrasi']"
+                [(selection)]="selectedPasien"
+                dataKey="nm_pasien"
+                selectionMode="single"
+                dataKey="no_rawat"
+                (onRowSelect)="onRowSelect($event)"
+                (onRowUnselect)="onRowUnselect($event)"
+                >
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                Tanggal Registrasi
+                                <p-columnFilter type="text" field="tgl_registrasi" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                No Rekam medis
+                                <p-columnFilter type="text" field="no_rkm_medis" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                No Rawat
+                                <p-columnFilter type="text" field="no_rawat" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                Nama Pasien
+                                <p-columnFilter type="text" field="nm_pasien" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                Nama Dokter
+                                <p-columnFilter type="text" field="nm_dokter" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width:15rem">
+                            <div class="flex align-items-center">
+                                Nama Poli
+                                <p-columnFilter type="text" field="nm_poli" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pasien>
+                    <tr [pSelectableRow]="pasien" (click)="show()">
+                        <td>
+                            {{ pasien.tgl_registrasi | date:'d-M-y'}} {{ pasien.jam_reg }}
+                        </td>
+                        <td>
+                            {{ pasien.no_rkm_medis }}
+                        </td>
+                        <td>
+                            {{ pasien.no_rawat }}
+                        </td>
+                        <td>
+                            {{ pasien.nm_pasien }}
+                        </td>
+                        <td>
+                            {{ pasien.nm_dokter }}
+                        </td>
+                        <td>
+                            {{ pasien.nm_poli }}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No customers found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
-
-        <!-- No items template -->
-        <ng-template #noItems>
-            <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
-                <mat-icon
-                    class="icon-size-24"
-                    [svgIcon]="'heroicons_outline:folder-open'"></mat-icon>
-                <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">There are no items!</div>
-            </div>
-        </ng-template>
     </div>
 </div>

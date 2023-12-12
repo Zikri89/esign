@@ -117,7 +117,7 @@ export default [
         component: FileManagerComponent,
         children : [
             {
-                path     : 'formulir/:formulirId/:patientId',
+                path     : 'formulir/:formulirId',
                 component: FormsWizardsComponent,
                 resolve : {
                     formData : formResolver
