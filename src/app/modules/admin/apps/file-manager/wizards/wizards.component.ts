@@ -174,14 +174,14 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
                 initialValue = options.length > 0 ? options[0] : null;
             }
 
-          formField[field.label] = new FormControl(initialValue, validators);
+          formField[field.name] = new FormControl(initialValue, validators);
         }
         console.log(formField);
         this.form = this.fb.group(formField);
       }
 
-    getFormControl(label: string) {
-        return this.form.get(label)
+    getFormControl(name: string) {
+        return this.form.get(name)
     }
 
     onSubmit() {

@@ -65,18 +65,18 @@
                                     field.type === 'number'
                                 "
                                 [type]="field.type"
-                                [formControl]="getFormControl(field.label)"
+                                [formControl]="getFormControl(field.name)"
                             />
                             <textarea
                                 matInput
                                 cdkTextareaAutosize
                                 [cdkAutosizeMinRows]="3"
                                 *ngIf="field.type === 'textarea'"
-                                [formControl]="getFormControl(field.label)"
+                                [formControl]="getFormControl(field.name)"
                             ></textarea>
                             <mat-error
                                 *ngIf="
-                                    getFormControl(field.label).hasError(
+                                    getFormControl(field.name).hasError(
                                         'required'
                                     )
                                 "
@@ -93,7 +93,7 @@
                         >
                             <mat-label>{{ field.label }}</mat-label>
                             <mat-select
-                                [formControl]="getFormControl(field.label)"
+                                [formControl]="getFormControl(field.name)"
                             >
                                 <mat-option
                                     *ngFor="let option of field.options"
@@ -104,7 +104,7 @@
                             </mat-select>
                             <mat-error
                                 *ngIf="
-                                    getFormControl(field.label).hasError(
+                                    getFormControl(field.name).hasError(
                                         'required'
                                     )
                                 "
@@ -123,7 +123,7 @@
                             <input
                                 matInput
                                 [matDatepicker]="picker"
-                                [formControl]="getFormControl(field.label)"
+                                [formControl]="getFormControl(field.name)"
                             />
                             <mat-datepicker-toggle
                                 matSuffix
@@ -132,7 +132,7 @@
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error
                                 *ngIf="
-                                    getFormControl(field.label).hasError(
+                                    getFormControl(field.name).hasError(
                                         'required'
                                     )
                                 "
@@ -147,7 +147,7 @@
                             <mat-label>{{ field.label }}</mat-label>
                             <input
                                 matInput
-                                [formControl]="getFormControl(field.label)"
+                                [formControl]="getFormControl(field.name)"
                             />
                             <mat-icon
                                 class="icon-size-5"
@@ -156,7 +156,7 @@
                             ></mat-icon>
                             <mat-error
                                 *ngIf="
-                                    getFormControl(field.label).hasError(
+                                    getFormControl(field.name).hasError(
                                         'required'
                                     )
                                 "
@@ -178,11 +178,11 @@
                                 *ngFor="let option of field.options"
                                 class="mb-2"
                                 [checked]="
-                                    form.get(field.label)?.get(option)?.value
+                                    form.get(field.name)?.get(option)?.value
                                 "
                                 [color]="'primary'"
                                 [formControl]="
-                                    getFormControl(field.label).get(option)
+                                    getFormControl(field.name).get(option)
                                 "
                             >
                                 {{ option }}
@@ -198,7 +198,7 @@
                             {{ field.label }}
                         </span>
                         <mat-radio-group
-                            [formControl]="getFormControl(field.label)"
+                            [formControl]="getFormControl(field.name)"
                             class="flex flex-col"
                             [color]="'primary'"
                         >
@@ -218,7 +218,7 @@
                         <span class="font-semibold mb-2">
                             {{ field.label }}
                         </span>
-                        <p-editor [formControl]="getFormControl(field.label)" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
+                        <p-editor [formControl]="getFormControl(field.name)" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
                     </div>
                 </div>
 
