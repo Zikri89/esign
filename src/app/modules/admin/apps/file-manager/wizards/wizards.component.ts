@@ -31,7 +31,7 @@ import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { FormDataService } from 'app/core/formdata/formdata.service'
 import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
-import { FormManagerData } from 'app/modules/admin/master/form-manager/form-manager.types'
+import { FormManagerData, FormManagerFormField } from 'app/modules/admin/master/form-manager/form-manager.types'
 import { DynamicDialogRef } from 'primeng/dynamicdialog'
 import SignaturePad from 'signature_pad'
 
@@ -61,9 +61,10 @@ import SignaturePad from 'signature_pad'
         RouterLink,
         ReactiveFormsModule,
     ],
+    providers: [DynamicDialogRef]
 })
 export class FormsWizardsComponent implements OnInit, AfterViewInit {
-    @Input() formData: FormManagerData
+    formData: FormManagerFormField
     form: FormGroup
     formDatas: FormData;
     noRkmMedis: string;
@@ -105,7 +106,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
      * On init
      */
     ngOnInit(): void {
-        this._formManagerService.data$.subscribe({
+        this._formManagerService.formFields$.subscribe({
             next: value => {
                 this.formData = value
                 this.createForm()
@@ -123,6 +124,8 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             this.signPad = new SignaturePad(this.signaturePadElement.nativeElement);
         }
     }
+
+    ngOn
 
     startSignPadDrawing(event: Event) {
         console.log(event)
@@ -143,8 +146,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     }
 
     createForm() {
-        const formFields = {};
-        var test = this.formData ;
+        const formField = {};
         for (const field of this.formData.dynamicForm['formFields']) {
           const validators = [];
 
@@ -169,10 +171,10 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             initialValue = options.length > 0 ? options[0] : null;
           }
 
-          formFields[field.label] = new FormControl(initialValue, validators);
+          formField[field.label] = new FormControl(initialValue, validators);
         }
-        console.log(formFields);
-        this.form = this.fb.group(formFields);
+        console.log(formField);
+        this.form = this.fb.group(formField);
       }
 
     getFormControl(label: string) {

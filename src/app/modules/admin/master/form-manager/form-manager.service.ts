@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
-import { FormManagerData } from './form-manager.types';
+import { FormManagerData, FormManagerFormField } from './form-manager.types';
 import { environment } from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FormManagerService {
     private _data: ReplaySubject<FormManagerData> = new ReplaySubject<FormManagerData>(1);
+    private _formFields: ReplaySubject<FormManagerFormField> = new ReplaySubject<FormManagerFormField>(1);
 
     // Inject HttpClient in the constructor
     constructor(private _httpClient: HttpClient) {}
@@ -14,6 +15,10 @@ export class FormManagerService {
     // Getter for data
     get data$(): Observable<FormManagerData> {
         return this._data.asObservable();
+    }
+
+    get formFields$(): Observable<FormManagerFormField> {
+        return this._formFields.asObservable();
     }
 
     // Get all formManagerData data
@@ -30,14 +35,14 @@ export class FormManagerService {
     }
 
      // Get by id formManagerData data
-    onGetById(formId: string): Observable<FormManagerData> {
+    onGetById(formId: string): Observable<FormManagerFormField> {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,
         });
 
         return this._httpClient
-        .get<FormManagerData>(environment.apiUrl+'formManager/'+formId, {headers}).pipe(tap((data) => {
-            this._data.next(data);
+        .get<FormManagerFormField>(environment.apiUrl+'formManager/'+formId, {headers}).pipe(tap((data) => {
+            this._formFields.next(data);
             })
         );
     }

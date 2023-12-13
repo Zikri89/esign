@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Pasien } from '../pasien.types';
-import { PasienService } from '../pasien.service';
 import { OrderListModule } from 'primeng/orderlist';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormManagerData } from '../../master/form-manager/form-manager.types';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
 import { RouterLink } from '@angular/router';
-import { HttpUrlEncodingCodec } from '@angular/common/http';
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [OrderListModule, RouterLink],
+  imports: [OrderListModule, RouterLink,DynamicDialogModule],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',
+  providers: [DynamicDialogRef]
 })
 export class DialogComponent implements OnInit {
     formManager: FormManagerData;
