@@ -1,4 +1,4 @@
 export interface FormData {
-    noRkmMedis: string;
+    noRawat: string;
     dataJson: Record<string, any>;
 }

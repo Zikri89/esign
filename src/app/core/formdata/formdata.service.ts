@@ -43,14 +43,14 @@ export class FormDataService
         );
     }
 
-    onGetById(noRkmMedis: string): Observable<FormData>
+    onGetById(noRawat: string): Observable<FormData>
     {
         return this._formData.pipe(
             take(1),
             map((formData) =>
             {
                 // Find within the folders and files
-                const item = [formData].find(value => value.noRkmMedis === noRkmMedis) || null;
+                const item = [formData].find(value => value.noRawat === noRawat) || null;
 
                 // Update the item
                 this._formData.next(item);
@@ -62,7 +62,7 @@ export class FormDataService
             {
                 if ( !item )
                 {
-                    return throwError('Could not found the data with id of ' + noRkmMedis + '!');
+                    return throwError('Could not found the data with id of ' + noRawat + '!');
                 }
 
                 return of(item);

@@ -69,7 +69,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     formData: FormManagerFormField
     form: FormGroup
     formDatas: FormData;
-    noRkmMedis: string;
+    noRawat: string;
 
     signPad: any
     @ViewChild('signPadCanvas', { static: false }) signaturePadElement: any
@@ -192,11 +192,11 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             // this.signImage = base64ImageData
             formData.signature = this.signImage;
             this._activatedRoute.paramMap.subscribe(params => {
-                this.noRkmMedis = params.get('patientId');
+                this.noRawat = params.get('noRawat');
               });
 
             this.formDatas = {
-                noRkmMedis : this.noRkmMedis,
+                noRawat : this.noRawat,
                 dataJson: formData,
             }
 
