@@ -190,7 +190,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             // aktfikan jika mau ada ttd digital di bagian form, jangan lupa aktifkan juga attribute model di backend nya
             // const base64ImageData = this.signPad.toDataURL()
             // this.signImage = base64ImageData
-            formData.signature = this.signImage;
+            // formData.signature = this.signImage;
             this._activatedRoute.paramMap.subscribe(params => {
                 this.noRawat = params.get('noRawat');
               });

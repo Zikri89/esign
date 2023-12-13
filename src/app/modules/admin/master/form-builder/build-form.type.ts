@@ -7,6 +7,7 @@ export interface DynamicFormField {
     label: string;
     name: string;
     options?: string[];
+    value?: string;
     validate?: DynamicFormFieldValidation;
 }
 
