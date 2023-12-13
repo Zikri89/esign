@@ -242,8 +242,17 @@
                                     </button>
                                 </mat-form-field>
                             </label>
+                            {{ field.label }}:
+                            <p-editor formControlName="editor" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
                         </div>
                     </div>
+                    <!-- aktifkan jika menggunakan ckeditor5 berbayar -->
+                    <!-- <ckeditor class="mb-4"
+                        [editor]="Editor"
+                        data="<p>Hello from CKEditor5!</p>"
+                        (ready)="onReady($event)"
+                        >
+                    </ckeditor> -->
                     <button
                         class="ml-3 mb-5"
                         mat-flat-button

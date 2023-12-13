@@ -4,7 +4,7 @@
             <div class="flex-1 flex flex-column gap-2">
                 <div class="flex align-items-center gap-2">
                     <i class="pi pi-tag text-sm"></i>
-                    <span routerLink="../../apps/file-manager/formulir/{{ formManager.id }}/{{ encodeId(noRawat) }}">{{ formManager.name }}</span>
+                    <span [routerLink]="['../../apps/file-manager/formulir', formManager.id , noRawat]">{{ formManager.name }}</span>
                 </div>
             </div>
         </div>

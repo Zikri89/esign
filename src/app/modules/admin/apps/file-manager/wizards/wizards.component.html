@@ -211,9 +211,18 @@
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
+                    <div
+                        class="flex flex-col mt-8"
+                        *ngIf="field.type === 'editor'"
+                    >
+                        <span class="font-semibold mb-2">
+                            {{ field.label }}
+                        </span>
+                        <p-editor [formControl]="getFormControl(field.label)" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
+                    </div>
                 </div>
 
-                <div
+                <!-- <div
                     class="signature-container"
                     fxLayout="column"
                     fxLayoutAlign="center center"
@@ -252,7 +261,7 @@
                             Undo
                         </a>
                     </div>
-                </div>
+                </div> -->
                 <button
                     class="px-6 ml-3"
                     mat-flat-button

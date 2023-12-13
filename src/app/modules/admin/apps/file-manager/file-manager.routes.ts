@@ -8,7 +8,7 @@ import { catchError, throwError } from 'rxjs';
 import { FormsWizardsComponent } from './wizards/wizards.component';
 import { PatientService } from '../../master/pasien/patients.service';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
-
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 /**
  * Folder resolver
  *
@@ -26,7 +26,6 @@ const itemResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
 {
     const fileManagerService = inject(FileManagerService);
     const router = inject(Router);
-
     return fileManagerService.getItemById(route.paramMap.get('id')).pipe(
         // Error here means the requested item is not available
         catchError((error) =>
@@ -50,8 +49,12 @@ const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
 {
     const fileManagerService = inject(FormManagerService);
     const router = inject(Router);
+    const codec = new HttpUrlEncodingCodec();
 
-    return fileManagerService.onGetById(route.paramMap.get('formulirId')).pipe(
+    const formulirId = route.paramMap.get('formulirId');
+    const noRawat = codec.encodeValue(route.paramMap.get('noRawat'));
+
+    return fileManagerService.onGetById(formulirId).pipe(
         // Error here means the requested item is not available
         catchError((error) =>
         {
@@ -117,11 +120,12 @@ export default [
         component: FileManagerComponent,
         children : [
             {
-                path     : 'formulir/:formulirId',
+                path     : 'formulir/:formulirId/:noRawat',
                 component: FormsWizardsComponent,
                 resolve : {
                     formData : formResolver
-                }
+                },
+                pathMatch: 'full'
             },
             {
                 path     : '',

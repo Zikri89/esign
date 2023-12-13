@@ -4,6 +4,7 @@ import { DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'prim
 import { FormManagerData } from '../../master/form-manager/form-manager.types';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
 import { RouterLink } from '@angular/router';
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 
 @Component({
   selector: 'app-dialog',
@@ -13,11 +14,13 @@ import { RouterLink } from '@angular/router';
   styleUrl: './dialog.component.scss',
   providers: [DynamicDialogRef]
 })
+
 export class DialogComponent implements OnInit {
     formManager: FormManagerData;
     nmPasien: any;
     noRawat: any;
     noRkmMedis: any;
+    codec = new HttpUrlEncodingCodec();
 
     constructor(
         private _formManagerService: FormManagerService,
@@ -38,7 +41,7 @@ export class DialogComponent implements OnInit {
         })
     }
 
-    encodeId(id: string): void {
-        encodeURIComponent(id);
+    encodeId(noRawat: string): string {
+       return this.codec.encodeValue(noRawat);
     }
 }

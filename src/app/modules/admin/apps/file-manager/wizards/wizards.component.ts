@@ -33,6 +33,7 @@ import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
 import { FormManagerData, FormManagerFormField } from 'app/modules/admin/master/form-manager/form-manager.types'
 import { DynamicDialogRef } from 'primeng/dynamicdialog'
+import { EditorModule } from 'primeng/editor'
 import SignaturePad from 'signature_pad'
 
 @Component({
@@ -60,6 +61,7 @@ import SignaturePad from 'signature_pad'
         MatRadioModule,
         RouterLink,
         ReactiveFormsModule,
+        EditorModule
     ],
     providers: [DynamicDialogRef]
 })
@@ -125,7 +127,6 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    ngOn
 
     startSignPadDrawing(event: Event) {
         console.log(event)
@@ -157,19 +158,21 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
           let initialValue: string | { [key: string]: boolean } | number = '';
 
             if (field.type === 'checkbox') {
-            initialValue = {}; // For checkboxes, initialize as an empty object
-            for (const option of field.options) {
-                initialValue[option] = false;
-            }
+                initialValue = {}; // For checkboxes, initialize as an empty object
+
+                for (const option of field.options) {
+                    initialValue[option] = false;
+                }
+
             } else if (field.type === 'number') {
-            initialValue = null; // For numbers, initialize as null or another appropriate value
+                initialValue = null; // For numbers, initialize as null or another appropriate value
             }
 
-          if (field.type === 'select' || field.type === 'radio') {
-            // For select and radio, you might want to provide options and default value
-            const options = field.options || [];
-            initialValue = options.length > 0 ? options[0] : null;
-          }
+            if (field.type === 'select' || field.type === 'radio') {
+                // For select and radio, you might want to provide options and default value
+                const options = field.options || [];
+                initialValue = options.length > 0 ? options[0] : null;
+            }
 
           formField[field.label] = new FormControl(initialValue, validators);
         }
@@ -184,8 +187,9 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     onSubmit() {
         if (this.form.valid) {
             const formData = this.form.value
-            const base64ImageData = this.signPad.toDataURL()
-            this.signImage = base64ImageData
+            // aktfikan jika mau ada ttd digital di bagian form, jangan lupa aktifkan juga attribute model di backend nya
+            // const base64ImageData = this.signPad.toDataURL()
+            // this.signImage = base64ImageData
             formData.signature = this.signImage;
             this._activatedRoute.paramMap.subscribe(params => {
                 this.noRkmMedis = params.get('patientId');

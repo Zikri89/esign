@@ -2,6 +2,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling'
 import { TextFieldModule } from '@angular/cdk/text-field'
 import { CommonModule, NgClass, NgIf } from '@angular/common'
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
     Input,
@@ -43,6 +44,10 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 import { SharedDataService } from 'app/core/share/shared-date-service'
 import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
 import { FormBuilderService } from './build-form.service'
+import { EditorModule } from 'primeng/editor';
+// aktifkan jika menggunakan ckeditor 5 berbayar
+// import * as Editor from '../../../../../../ckeditor5-custom-build/build/ckeditor';
+// import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
 
 @Component({
     selector: 'build-form',
@@ -69,10 +74,13 @@ import { FormBuilderService } from './build-form.service'
         MatSidenavModule,
         RouterOutlet,
         NgIf,
-        FuseDrawerComponent
+        FuseDrawerComponent,
+        EditorModule
+        // aktifkan jika menggunakan ckeditor5 berbayar
+        // CKEditorModule
     ],
 })
-export class FormBuilderComponent implements OnInit {
+export class FormBuilderComponent implements OnInit, AfterViewInit {
     @Input()position: FuseDrawerPosition;
     drawerMode: string
     drawerOpened : boolean
@@ -84,6 +92,8 @@ export class FormBuilderComponent implements OnInit {
     form: FormGroup;
     formFields: any[]
     formData: DynamicFormField[] = [];
+    // aktifkan jika menggunakan ckeditor5 berbayar
+    // public Editor: any = Editor;
 
     typeOptions: string[] = [
         'text',
@@ -95,6 +105,7 @@ export class FormBuilderComponent implements OnInit {
         'file',
         'radio',
         'checkbox',
+        'editor'
     ]
     validationOptions: string[] = [
         'required',
@@ -122,7 +133,7 @@ export class FormBuilderComponent implements OnInit {
         this.initializeForm()
         this.drawerMode = 'side';
         this.drawerOpened = false;
-        this._formManagerService.data$.subscribe({
+        this._formManagerService.formFields$.subscribe({
             next: (res) => {
                 if(res.dynamicForm != null){
                     this.formFields = res.dynamicForm['formFields']
@@ -134,6 +145,19 @@ export class FormBuilderComponent implements OnInit {
         })
     }
 
+    ngAfterViewInit(): void {
+        // aktifkan jika menggunakan ckeditor5 berbayar
+        // this.Editor.create('#editor', {
+        //     plugins: [ ],
+        //     // licenseKey: 'ZWt0UlIyQS9ZMjh5T1FpVTA5czlYWE8ra294dFE3bko5N1p2bjhKMzNncWhRY1B5ZGY2cFVGeG1PWmtGLU1qQXlOREF4TVRJPQ==',
+        //     toolbar: [],
+        // })
+    }
+
+    // public onReady(editor: any) {
+    //     console.log("CKEditor5 Angular Component is ready to use!", editor);
+    // }
+
     initializeForm() {
         this.form = this.fb.group({
             // Initialize your form controls as needed
@@ -141,7 +165,8 @@ export class FormBuilderComponent implements OnInit {
             newFieldType: ['text', Validators.required],
             newFieldValidation: [''],
             newOptionField: [''],
-            newFieldOptions: this.fb.control('')
+            editor: ['editor', Validators.required],
+            newFieldOptions: this.fb.control(''),
         })
     }
 
