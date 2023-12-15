@@ -4,7 +4,7 @@ import { FileManagerDetailsComponent } from 'app/modules/admin/apps/file-manager
 import { FileManagerComponent } from 'app/modules/admin/apps/file-manager/file-manager.component';
 import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
 import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
-import { catchError, forkJoin, throwError } from 'rxjs';
+import { catchError, forkJoin, switchMap, throwError } from 'rxjs';
 import { FormsWizardsComponent } from './wizards/wizards.component';
 import { PatientService } from '../../master/pasien/patients.service';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
@@ -13,6 +13,7 @@ import { PasienService } from '../../pasien/services/pasien.service';
 import { RegPeriksaService } from '../../pasien/regperiksa/regperiksa.service';
 import { GeneralConcentComponent } from './wizards/general-concent/general-concent.component';
 import { FormDataPasienService } from './wizards/form-data-pasien.service';
+import { FormBuilderService } from '../../master/form-builder/build-form.service';
 /**
  * Folder resolver
  *
@@ -126,12 +127,16 @@ const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
 const formResolverDataPasien = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
 {
     const formDataPasienService = inject(FormDataPasienService);
+    const formBuilderService = inject(FormBuilderService);
     const router = inject(Router);
 
     const noRawat = encodeURIComponent(route.paramMap.get('noRawat'));
+    const formulirId = route.paramMap.get('formulirId');
 
     return formDataPasienService.onGetById(noRawat).pipe(
-        // Error here means the requested item is not available
+        switchMap((formDataPasienData) => {
+            return formBuilderService.onGetById(formulirId);
+        }),
         catchError((error) =>
         {
             // Log the error
