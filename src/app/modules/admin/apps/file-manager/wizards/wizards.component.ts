@@ -1,11 +1,8 @@
 import { TextFieldModule } from '@angular/cdk/text-field'
 import { CommonModule, NgClass } from '@angular/common'
 import {
-    AfterViewInit,
     Component,
-    Input,
     OnInit,
-    ViewChild,
     ViewEncapsulation,
 } from '@angular/core'
 import {
@@ -31,10 +28,11 @@ import { ActivatedRoute, Params, RouterLink } from '@angular/router'
 import { FormDataService } from 'app/core/formdata/formdata.service'
 import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
-import { FormManagerData, FormManagerFormField } from 'app/modules/admin/master/form-manager/form-manager.types'
+import { FormManagerFormField } from 'app/modules/admin/master/form-manager/form-manager.types'
+import { RegPeriksaService } from 'app/modules/admin/pasien/regperiksa/regperiksa.service'
+import { RegPeriksa } from 'app/modules/admin/pasien/regperiksa/regperiksa.type'
 import { DynamicDialogRef } from 'primeng/dynamicdialog'
 import { EditorModule } from 'primeng/editor'
-import SignaturePad from 'signature_pad'
 
 @Component({
     selector: 'forms-wizards',
@@ -65,15 +63,12 @@ import SignaturePad from 'signature_pad'
     ],
     providers: [DynamicDialogRef]
 })
-export class FormsWizardsComponent implements OnInit, AfterViewInit {
+export class FormsWizardsComponent implements OnInit {
     formData: FormManagerFormField
     form: FormGroup
     formDatas: FormData;
     noRawat: string;
-
-    signPad: any
-    @ViewChild('signPadCanvas', { static: false }) signaturePadElement: any
-    signImage: any
+    regPeriksa: RegPeriksa;
 
     formFieldHelpers: string[] = ['']
     fixedSubscriptInput: FormControl = new FormControl('', [
@@ -98,6 +93,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
         private _activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
         public ref: DynamicDialogRef,
+        public _regPeriksaService: RegPeriksaService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -111,6 +107,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
         this._formManagerService.formFields$.subscribe({
             next: value => {
                 this.formData = value
+                this.regPeriksa = this._activatedRoute.snapshot.data.formData['regData'];
                 this.createForm()
             },
             error: err => {
@@ -119,31 +116,6 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
         })
 
         this.ref.close();
-    }
-
-    ngAfterViewInit() {
-        if (this.signaturePadElement) {
-            this.signPad = new SignaturePad(this.signaturePadElement.nativeElement);
-        }
-    }
-
-
-    startSignPadDrawing(event: Event) {
-        console.log(event)
-    }
-
-    movedFinger(event: Event) {}
-
-    undoSign() {
-        const data = this.signPad.toData()
-        if (data) {
-            data.pop() // remove the last step
-            this.signPad.fromData(data)
-        }
-    }
-
-    clearSignPad() {
-        this.signPad.clear()
     }
 
     createForm() {
@@ -158,25 +130,41 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
           let initialValue: string | { [key: string]: boolean } | number = '';
 
             if (field.type === 'checkbox') {
-                initialValue = {}; // For checkboxes, initialize as an empty object
+                initialValue = {};
 
                 for (const option of field.options) {
                     initialValue[option] = false;
                 }
 
             } else if (field.type === 'number') {
-                initialValue = null; // For numbers, initialize as null or another appropriate value
+                initialValue = null;
             }
 
             if (field.type === 'select' || field.type === 'radio') {
-                // For select and radio, you might want to provide options and default value
                 const options = field.options || [];
                 initialValue = options.length > 0 ? options[0] : null;
             }
 
-          formField[field.name] = new FormControl(initialValue, validators);
+            // General Concent Formulir
+            if(field.label == 'Nama'){
+                initialValue = this.regPeriksa.rows[0].nm_pasien;
+            }
+
+            if(field.label == 'Tanggal Lahir'){
+                initialValue = this.regPeriksa.rows[0].tgl_lahir;
+            }
+
+            if(field.label == 'Alamat'){
+                initialValue = this.regPeriksa.rows[0].alam_pasien;
+            }
+
+            if(field.label == 'No. Telpon'){
+                initialValue = this.regPeriksa.rows[0].tlp_pasien;
+            }
+            // end general concent
+
+            formField[field.name] = new FormControl(initialValue, validators);
         }
-        console.log(formField);
         this.form = this.fb.group(formField);
       }
 
@@ -187,10 +175,6 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     onSubmit() {
         if (this.form.valid) {
             const formData = this.form.value
-            // aktfikan jika mau ada ttd digital di bagian form, jangan lupa aktifkan juga attribute model di backend nya
-            // const base64ImageData = this.signPad.toDataURL()
-            // this.signImage = base64ImageData
-            // formData.signature = this.signImage;
             this._activatedRoute.paramMap.subscribe(params => {
                 this.noRawat = params.get('noRawat');
               });

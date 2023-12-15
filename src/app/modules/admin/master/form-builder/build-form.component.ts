@@ -75,7 +75,7 @@ import { EditorModule } from 'primeng/editor';
         RouterOutlet,
         NgIf,
         FuseDrawerComponent,
-        EditorModule
+        EditorModule,
         // aktifkan jika menggunakan ckeditor5 berbayar
         // CKEditorModule
     ],
@@ -90,10 +90,34 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     formId: string
     formManagerData: FormManagerData
     form: FormGroup;
+    formEditor: FormGroup;
     formFields: any[]
+    showComponent: boolean | false;
     formData: DynamicFormField[] = [];
     // aktifkan jika menggunakan ckeditor5 berbayar
     // public Editor: any = Editor;
+    modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean']
+        ]
+    };
 
     typeOptions: string[] = [
         'text',
@@ -104,8 +128,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         'textarea',
         'file',
         'radio',
-        'checkbox',
-        'editor'
+        'checkbox'
     ]
     validationOptions: string[] = [
         'required',
@@ -121,8 +144,6 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         private _snackBar: MatSnackBar,
         private _activatedRoute: ActivatedRoute,
         private _formManagerService: FormManagerService,
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _router: Router,
         private fb: FormBuilder,
         private _formBuilderService: FormBuilderService
     ) {
@@ -131,13 +152,32 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.initializeForm()
+        this.formEditor = this.fb.group({
+            editor: ['']
+          });
         this.drawerMode = 'side';
         this.drawerOpened = false;
         this._formManagerService.formFields$.subscribe({
             next: (res) => {
                 if(res.dynamicForm != null){
                     this.formFields = res.dynamicForm['formFields']
+                    this.showComponent = true;
+                }else {
+                    this.formFields = []
+                    this.showComponent = false;
                 }
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
+
+        this._formBuilderService.data$.subscribe({
+            next: (res) => {
+                this.items = res
+                this.formEditor = this.fb.group({
+                    editor: this.items.formulir
+                  });
             },
             error: (err) => {
                 console.log(err)
@@ -259,7 +299,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     onSubmit() {
         const angularFormValue = this.form.value
         const finalFormData = this.formFields.map(field => ({
-            ...angularFormValue[field.label],
+            ...angularFormValue[field.name],
             ...field,
         }))
 
@@ -278,6 +318,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
                     duration: 3000,
                     verticalPosition: 'top' as MatSnackBarVerticalPosition,
                 })
+
+                this.showComponent = true;
 
                 // this._router.navigate(['../'], {relativeTo: this._activatedRoute});
                 // this._changeDetectorRef.markForCheck();
@@ -315,7 +357,25 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             })
     }
 
-    /**
-     * On backdrop clicked
-     */
+    onSubmitFormat() {
+        const editorContent = this.formEditor.get('editor').value;
+        this._activatedRoute.paramMap.subscribe(params => {
+            this.formId = params.get('id')
+        })
+
+        this.items = {
+            formulir : editorContent
+        }
+
+        this._formBuilderService.onPut(this.items, this.formId).subscribe({
+            next: (res) => {
+                // this.items.formulir
+                console.log(res);
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
+      }
+
 }

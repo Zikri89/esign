@@ -1,5 +1,6 @@
 export interface DynamicForm {
     formFields?: DynamicFormField[];
+    formulir?: any;
 }
 
 export interface DynamicFormField {

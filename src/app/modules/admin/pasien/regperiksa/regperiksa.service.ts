@@ -1,32 +1,30 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
-import { Pasien } from './pasien.types';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
+import { RegPeriksa } from './regperiksa.type';
 
 @Injectable({ providedIn: 'root' })
-export class PasienService {
-    private _data: ReplaySubject<Pasien[]> = new ReplaySubject<Pasien[]>(1);
+export class RegPeriksaService {
+    private _data: ReplaySubject<RegPeriksa> = new ReplaySubject<RegPeriksa>(1);
 
     // Inject HttpClient in the constructor
     constructor(private _httpClient: HttpClient) {}
 
     // Getter for data
-    get data$(): Observable<Pasien[]> {
+    get data$(): Observable<RegPeriksa> {
         return this._data.asObservable();
     }
 
-    // Get all Pasien data
-    onGet(): Observable<Pasien[]> {
+    onGetById(noRawat: string): Observable<RegPeriksa> {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,
         });
 
         return this._httpClient
-        .get<Pasien[]>(environment.apiUrl+'regPeriksa/patientList', {headers}).pipe(tap((data) => {
+        .get<RegPeriksa>(environment.apiUrl+'regPeriksa/'+noRawat, {headers}).pipe(tap((data) => {
             this._data.next(data);
             })
         );
     }
-
 }

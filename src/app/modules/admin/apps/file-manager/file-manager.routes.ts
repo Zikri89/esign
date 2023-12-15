@@ -4,11 +4,15 @@ import { FileManagerDetailsComponent } from 'app/modules/admin/apps/file-manager
 import { FileManagerComponent } from 'app/modules/admin/apps/file-manager/file-manager.component';
 import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
 import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
-import { catchError, throwError } from 'rxjs';
+import { catchError, forkJoin, throwError } from 'rxjs';
 import { FormsWizardsComponent } from './wizards/wizards.component';
 import { PatientService } from '../../master/pasien/patients.service';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { PasienService } from '../../pasien/services/pasien.service';
+import { RegPeriksaService } from '../../pasien/regperiksa/regperiksa.service';
+import { GeneralConcentComponent } from './wizards/general-concent/general-concent.component';
+import { FormDataPasienService } from './wizards/form-data-pasien.service';
 /**
  * Folder resolver
  *
@@ -48,13 +52,85 @@ const itemResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
 const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
 {
     const fileManagerService = inject(FormManagerService);
+    const regPeriksaService = inject(RegPeriksaService);
+    const formDataPasienService = inject(FormDataPasienService);
     const router = inject(Router);
+
     const codec = new HttpUrlEncodingCodec();
-
     const formulirId = route.paramMap.get('formulirId');
-    const noRawat = codec.encodeValue(route.paramMap.get('noRawat'));
+    const noRawat = encodeURIComponent(route.paramMap.get('noRawat'));
 
-    return fileManagerService.onGetById(formulirId).pipe(
+    const fileManagerObservable = fileManagerService.onGetById(formulirId).pipe(
+        // Error here means the requested item is not available
+        catchError((error) =>
+        {
+            // Log the error
+            console.error(error);
+
+            // Get the parent url
+            const parentUrl = state.url.split('/').slice(0, -1).join('/');
+
+            // Navigate to there
+            router.navigateByUrl(parentUrl);
+
+            // Throw an error
+            return throwError(error);
+        }),
+    );
+
+    const regPeriksaObservable = regPeriksaService.onGetById(noRawat).pipe(
+        // Error here means the requested item is not available
+        catchError((error) =>
+        {
+            // Log the error
+            console.error(error);
+
+            // Get the parent url
+            const parentUrl = state.url.split('/').slice(0, -1).join('/');
+
+            // Navigate to there
+            router.navigateByUrl(parentUrl);
+
+            // Throw an error
+            return throwError(error);
+        }),
+    );
+
+    const formDataPasienObservable = formDataPasienService.onGetById(noRawat).pipe(
+        // Error here means the requested item is not available
+        catchError((error) =>
+        {
+            // Log the error
+            console.error(error);
+
+            // Get the parent url
+            const parentUrl = state.url.split('/').slice(0, -1).join('/');
+
+            // Navigate to there
+            router.navigateByUrl(parentUrl);
+
+            // Throw an error
+            return throwError(error);
+        }),
+    );
+
+    return forkJoin({
+        formData: fileManagerObservable,
+        regData: regPeriksaObservable,
+        formDataPasien: formDataPasienObservable
+      });
+
+
+};
+
+const formResolverDataPasien = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+{
+    const formDataPasienService = inject(FormDataPasienService);
+    const router = inject(Router);
+
+    const noRawat = encodeURIComponent(route.paramMap.get('noRawat'));
+
+    return formDataPasienService.onGetById(noRawat).pipe(
         // Error here means the requested item is not available
         catchError((error) =>
         {
@@ -125,30 +201,25 @@ export default [
                 resolve : {
                     formData : formResolver
                 },
-                pathMatch: 'full'
             },
             {
-                path     : '',
-                component: FileManagerListComponent,
-                resolve  : {
-                    items: () => {
-                        return inject(FileManagerService).getItems();
+                path: 'formulir/:formulirId/:noRawat/general-concent',
+                component: GeneralConcentComponent,
+                resolve : {
+                    formData : formResolverDataPasien,
+                }
+            },
+            {
+                path         : 'details/:id',
+                component    : FileManagerDetailsComponent,
+                resolve      : {
+                    item: itemResolver,
+                    patient: () => {
+                        return inject(PatientService).onGet();
                     }
                 },
-                children : [
-                    {
-                        path         : 'details/:id',
-                        component    : FileManagerDetailsComponent,
-                        resolve      : {
-                            item: itemResolver,
-                            patient: () => {
-                                return inject(PatientService).onGet();
-                            }
-                        },
-                        canDeactivate: [canDeactivateFileManagerDetails],
-                    },
-                ],
-            }
+                canDeactivate: [canDeactivateFileManagerDetails],
+            },
         ],
     },
 ] as Routes;

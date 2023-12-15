@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderListModule } from 'primeng/orderlist';
-import { DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormManagerData } from '../../master/form-manager/form-manager.types';
 import { FormManagerService } from '../../master/form-manager/form-manager.service';
 import { RouterLink } from '@angular/router';
@@ -24,7 +24,8 @@ export class DialogComponent implements OnInit {
 
     constructor(
         private _formManagerService: FormManagerService,
-        public ref: DynamicDialogRef, public config: DynamicDialogConfig
+        public ref: DynamicDialogRef, public config: DynamicDialogConfig,
+        public dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -39,6 +40,10 @@ export class DialogComponent implements OnInit {
                 console.log(err);
             }
         })
+    }
+
+    hideDialog(): void {
+        this.ref.close
     }
 
     encodeId(noRawat: string): string {

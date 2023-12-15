@@ -1,0 +1,40 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:pt-12 bg-default dark:bg-transparent">
+
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto -mt-16 p-6 sm:p-10 rounded-t-2xl shadow bg-card">
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+            <div
+                class="signature-container"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+            >
+                <mat-label>Tanda tangan pasien atau keluarga pasien</mat-label>
+
+                <div>
+                    <canvas
+                        #signPadCanvas
+                        (touchstart)="startSignPadDrawing($event)"
+                        (touchmove)="movedFinger($event)"
+                    ></canvas>
+                </div>
+
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="center center"
+                    fxLayoutGap="10px"
+                >
+                    <a mat-raised-button color="warn" (click)="clearSignPad()">Clear</a>
+                    <a mat-raised-button color="accent" (click)="undoSign()">Undo</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

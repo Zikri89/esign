@@ -58,7 +58,7 @@
                             class="flex-auto"
                         >
                             <mat-label>{{ field.label }}</mat-label>
-                            <input
+                            <input title="field.name"
                                 matInput
                                 *ngIf="
                                     field.type === 'text' ||
@@ -67,7 +67,7 @@
                                 [type]="field.type"
                                 [formControl]="getFormControl(field.name)"
                             />
-                            <textarea
+                            <textarea title="field.name"
                                 matInput
                                 cdkTextareaAutosize
                                 [cdkAutosizeMinRows]="3"
@@ -120,7 +120,7 @@
                             class="flex-auto"
                         >
                             <mat-label>{{ field.label }}</mat-label>
-                            <input
+                            <input title="field.name"
                                 matInput
                                 [matDatepicker]="picker"
                                 [formControl]="getFormControl(field.name)"
@@ -145,7 +145,7 @@
                     <div class="flex" *ngIf="field.type === 'email'">
                         <mat-form-field class="flex-auto">
                             <mat-label>{{ field.label }}</mat-label>
-                            <input
+                            <input title="field.name"
                                 matInput
                                 [formControl]="getFormControl(field.name)"
                             />
@@ -221,47 +221,6 @@
                         <p-editor [formControl]="getFormControl(field.name)" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
                     </div>
                 </div>
-
-                <!-- <div
-                    class="signature-container"
-                    fxLayout="column"
-                    fxLayoutAlign="center center"
-                    style="margin-top: 30px"
-                >
-                    <mat-label>
-                        Tanda tangan pasien atau keluarga pasien
-                    </mat-label>
-
-                    <div>
-                        <canvas
-                            #signPadCanvas
-                            (touchstart)="startSignPadDrawing($event)"
-                            (touchmove)="movedFinger($event)"
-                        ></canvas>
-                    </div>
-
-                    <div
-                        fxLayout="row"
-                        fxLayoutAlign="center center"
-                        fxLayoutGap="10px"
-                        style="margin-top: 10px"
-                    >
-                        <a
-                            mat-raised-button
-                            color="warn"
-                            (click)="clearSignPad()"
-                        >
-                            Clear
-                        </a>
-                        <a
-                            mat-raised-button
-                            color="accent"
-                            (click)="undoSign()"
-                        >
-                            Undo
-                        </a>
-                    </div>
-                </div> -->
                 <button
                     class="px-6 ml-3"
                     mat-flat-button

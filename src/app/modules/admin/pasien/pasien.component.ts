@@ -18,7 +18,7 @@ import {
 } from '@angular/router'
 import { Subject, takeUntil } from 'rxjs'
 import { MatCardModule } from '@angular/material/card'
-import { PasienService } from './pasien.service'
+import { PasienService } from './services/pasien.service'
 import { Pasien } from './pasien.types'
 import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
 import { MatSidenavModule } from '@angular/material/sidenav'
