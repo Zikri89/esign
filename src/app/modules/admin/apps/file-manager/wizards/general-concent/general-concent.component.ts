@@ -74,10 +74,10 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
     replacePlaceholders(formulir) {
         this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY');
         this.replacedText = formulir
-          .replace('%namaPasien%', this.formDataPasien.dataJson['nama'])
-          .replace('%tanggalLahir%', this.tanggalLahir)
-          .replace('%alamatPasien%', this.formDataPasien.dataJson['alamat'])
-          .replace('%noTelponPasien%', this.formDataPasien.dataJson['noTelpon'])
+          .replace('%namaPasien%', this.formDataPasien.dataJson['nama'] ?? '............')
+          .replace('%tanggalLahir%', this.tanggalLahir ?? '............')
+          .replace('%alamatPasien%', this.formDataPasien.dataJson['alamat'] ?? '............')
+          .replace('%noTelponPasien%', this.formDataPasien.dataJson['noTelpon'] ?? '............')
           .replace('%namaWali1%', this.formDataPasien.dataJson['namaWali1'] ?? '..........')
           .replace('%namaWali2%', this.formDataPasien.dataJson['namaWali2'] ?? '..........')
           .replace('%namaWali3%', this.formDataPasien.dataJson['namaWali3'] ?? '..........')
