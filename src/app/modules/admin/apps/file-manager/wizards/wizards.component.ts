@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatInputModule } from '@angular/material/input'
 import { MatRadioModule } from '@angular/material/radio'
 import { MatSelectModule } from '@angular/material/select'
-import { ActivatedRoute, Params, RouterLink } from '@angular/router'
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router'
 import { FormDataService } from 'app/core/formdata/formdata.service'
 import { FormData } from 'app/core/formdata/formdata.types'
 import { FormManagerService } from 'app/modules/admin/master/form-manager/form-manager.service'
@@ -97,7 +97,8 @@ export class FormsWizardsComponent implements OnInit {
         private fb: FormBuilder,
         public ref: DynamicDialogRef,
         public _regPeriksaService: RegPeriksaService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private _router: Router
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -188,13 +189,17 @@ export class FormsWizardsComponent implements OnInit {
                 dataJson: formData,
             }
 
+            const noRawat = encodeURIComponent(this._activatedRoute.snapshot.paramMap.get('noRawat'));
+            const noRkmMedis = encodeURIComponent(this._activatedRoute.snapshot.paramMap.get('noRkmMedis'));
+
             this._formDataService.onPost(this.formDatas).subscribe({
                 next: (res) => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: `Formulir ${this.formData.name} berhasil di buat` });
+                    this._router.navigate([`apps/file-manager/formulir/${this.formData.id}/${noRawat}/${noRkmMedis}/formulir`])
                 },
                 error : (err) => {
                     if(err.error.error == 'Unique constraint violated.'){
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + this.noRawat + ' sudah membuat formulir ' + this.formData.name});
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + noRawat + ' sudah membuat formulir ' + this.formData.name});
                     }else{
                         this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
                     }
