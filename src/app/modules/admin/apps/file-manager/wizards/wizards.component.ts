@@ -31,8 +31,10 @@ import { FormManagerService } from 'app/modules/admin/master/form-manager/form-m
 import { FormManagerFormField } from 'app/modules/admin/master/form-manager/form-manager.types'
 import { RegPeriksaService } from 'app/modules/admin/pasien/regperiksa/regperiksa.service'
 import { RegPeriksa } from 'app/modules/admin/pasien/regperiksa/regperiksa.type'
+import { MessageService } from 'primeng/api'
 import { DynamicDialogRef } from 'primeng/dynamicdialog'
 import { EditorModule } from 'primeng/editor'
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'forms-wizards',
@@ -59,9 +61,10 @@ import { EditorModule } from 'primeng/editor'
         MatRadioModule,
         RouterLink,
         ReactiveFormsModule,
-        EditorModule
+        EditorModule,
+        ToastModule
     ],
-    providers: [DynamicDialogRef]
+    providers: [DynamicDialogRef, MessageService]
 })
 export class FormsWizardsComponent implements OnInit {
     formData: FormManagerFormField
@@ -93,7 +96,8 @@ export class FormsWizardsComponent implements OnInit {
         private _activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
         public ref: DynamicDialogRef,
-        public _regPeriksaService: RegPeriksaService
+        public _regPeriksaService: RegPeriksaService,
+        private messageService: MessageService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -186,10 +190,13 @@ export class FormsWizardsComponent implements OnInit {
 
             this._formDataService.onPost(this.formDatas).subscribe({
                 next: (res) => {
-                    console.log(res);
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
                 },
                 error : (err) => {
-                    console.log(err);
+                    if(err.error.error == 'Unique constraint violated.'){
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + this.noRawat + ' sudah membuat formulir ' });
+                        console.log(err);
+                    }
                 }
             });
         } else {
