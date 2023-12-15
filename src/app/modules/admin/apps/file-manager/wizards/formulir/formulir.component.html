@@ -19,14 +19,13 @@
             >
                 <mat-label>Tanda tangan pasien atau keluarga pasien</mat-label>
 
-                <div>
+                <div class="signature-box">
                     <canvas
                         #signPadCanvas
                         (touchstart)="startSignPadDrawing($event)"
                         (touchmove)="movedFinger($event)"
                     ></canvas>
                 </div>
-
                 <div
                     fxLayout="row"
                     fxLayoutAlign="center center"
@@ -36,6 +35,14 @@
                     <a mat-raised-button color="accent" (click)="undoSign()">Undo</a>
                 </div>
             </div>
+            <button
+                    class="w-full"
+                    mat-flat-button
+                    type="submit"
+                    [color]="'primary'"
+                >
+                    Save
+                </button>
         </div>
 
     </div>

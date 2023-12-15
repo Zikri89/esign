@@ -71,6 +71,7 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
         }
     }
 
+
     replacePlaceholders(formulir) {
         this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY');
         this.replacedText = formulir

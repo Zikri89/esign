@@ -67,6 +67,7 @@ import { ToastModule } from 'primeng/toast';
     providers: [DynamicDialogRef, MessageService]
 })
 export class FormsWizardsComponent implements OnInit {
+
     formData: FormManagerFormField
     form: FormGroup
     formDatas: FormData;

@@ -1,13 +1,26 @@
+.signature-container {
+    text-align: right;
+}
+
+.signature-box {
+    position: relative;
+    text-align: right;
+    padding-bottom: 150px;
+}
+
 
 canvas {
     display: block;
     border: 1px solid rgb(105, 105, 105);
     background-color: var(--ion-color-success);
+    right: 0;
+    position: absolute;
   }
 
   a {
     margin: 10px;
   }
+
 
   @media (max-width: 600px) {
     canvas {
