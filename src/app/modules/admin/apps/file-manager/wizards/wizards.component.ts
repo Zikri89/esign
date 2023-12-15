@@ -194,8 +194,9 @@ export class FormsWizardsComponent implements OnInit {
                 },
                 error : (err) => {
                     if(err.error.error == 'Unique constraint violated.'){
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + this.noRawat + ' sudah membuat formulir ' });
-                        console.log(err);
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + this.noRawat + ' sudah membuat formulir ' + this.formData.name});
+                    }else{
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
                     }
                 }
             });

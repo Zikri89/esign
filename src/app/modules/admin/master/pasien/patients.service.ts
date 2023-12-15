@@ -31,13 +31,13 @@ export class PatientService {
     }
 
      // Get by id Patient data
-    onGetById(formId: string): Observable<Patient> {
+    onGetById(noRkmMedis: string): Observable<Patient> {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,
         });
 
         return this._httpClient
-        .get<Patient>(environment.apiUrl+'pasien/'+formId, {headers}).pipe(tap((data) => {
+        .get<Patient>(environment.apiUrl+'pasien/'+noRkmMedis, {headers}).pipe(tap((data) => {
             this._data.next([data]);
             })
         );

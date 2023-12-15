@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormDataPasienService } from '../form-data-pasien.service';
-import { FormDataPasien } from './general-concent.type';
+import { FormDataPasien } from './formulir.type';
 import SignaturePad from 'signature_pad'
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,8 +27,8 @@ import * as moment from 'moment';
         EditorModule,
         MomentModule
   ],
-  templateUrl: './general-concent.component.html',
-  styleUrl: './general-concent.component.scss'
+  templateUrl: './formulir.component.html',
+  styleUrl: './formulir.component.scss'
 })
 export class GeneralConcentComponent implements OnInit, AfterViewInit {
     @ViewChild('signPadCanvas', { static: false }) signaturePadElement: any

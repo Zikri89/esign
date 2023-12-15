@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
-import { Pasien } from '../../../pasien/pasien.types';
 import { environment } from '../../../../../../environments/environment';
-import { FormDataPasien } from './general-concent/general-concent.type';
+import { FormDataPasien } from './formulir/formulir.type';
 
 @Injectable({ providedIn: 'root' })
 export class FormDataPasienService {
@@ -17,7 +16,7 @@ export class FormDataPasienService {
         return this._data.asObservable();
     }
 
-    // Get all Pasien data
+    // Get by id Form Data pasien Pasien data
     onGetById(noRawat : string): Observable<FormDataPasien> {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,

@@ -11,7 +11,7 @@ import { FormManagerService } from '../../master/form-manager/form-manager.servi
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { PasienService } from '../../pasien/services/pasien.service';
 import { RegPeriksaService } from '../../pasien/regperiksa/regperiksa.service';
-import { GeneralConcentComponent } from './wizards/general-concent/general-concent.component';
+import { GeneralConcentComponent } from './wizards/formulir/formulir.component';
 import { FormDataPasienService } from './wizards/form-data-pasien.service';
 import { FormBuilderService } from '../../master/form-builder/build-form.service';
 /**
@@ -54,12 +54,13 @@ const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
 {
     const fileManagerService = inject(FormManagerService);
     const regPeriksaService = inject(RegPeriksaService);
-    const formDataPasienService = inject(FormDataPasienService);
+    const pasienService = inject(PatientService);
     const router = inject(Router);
 
     const codec = new HttpUrlEncodingCodec();
     const formulirId = route.paramMap.get('formulirId');
     const noRawat = encodeURIComponent(route.paramMap.get('noRawat'));
+    const noRkmMedis = encodeURIComponent(route.paramMap.get('noRkmMedis'));
 
     const fileManagerObservable = fileManagerService.onGetById(formulirId).pipe(
         // Error here means the requested item is not available
@@ -97,7 +98,7 @@ const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
         }),
     );
 
-    const formDataPasienObservable = formDataPasienService.onGetById(noRawat).pipe(
+    const pasienObservable = pasienService.onGetById(noRkmMedis).pipe(
         // Error here means the requested item is not available
         catchError((error) =>
         {
@@ -118,7 +119,7 @@ const formResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     return forkJoin({
         formData: fileManagerObservable,
         regData: regPeriksaObservable,
-        formDataPasien: formDataPasienObservable
+        formDataPasien: pasienObservable
       });
 
 
@@ -201,14 +202,14 @@ export default [
         component: FileManagerComponent,
         children : [
             {
-                path     : 'formulir/:formulirId/:noRawat',
+                path     : 'formulir/:formulirId/:noRawat/:noRkmMedis',
                 component: FormsWizardsComponent,
                 resolve : {
                     formData : formResolver
                 },
             },
             {
-                path: 'formulir/:formulirId/:noRawat/general-concent',
+                path: 'formulir/:formulirId/:noRawat/:noRkmMedis/formulir',
                 component: GeneralConcentComponent,
                 resolve : {
                     formData : formResolverDataPasien,
