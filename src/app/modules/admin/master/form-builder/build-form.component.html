@@ -296,13 +296,6 @@
                     </label>
                 </div>
             </div>
-            <!-- aktifkan jika menggunakan ckeditor5 berbayar -->
-            <!-- <ckeditor class="mb-4"
-                        [editor]="Editor"
-                        data="<p>Hello from CKEditor5!</p>"
-                        (ready)="onReady($event)"
-                        >
-                    </ckeditor> -->
             <button
                 *ngIf="formFields.length > 0"
                 class="ml-3 mb-5"
@@ -319,13 +312,7 @@
             </button>
         </form>
         <form *ngIf="showComponent == true;" [formGroup]="formEditor" class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
-            <!-- <p-editor
-                formControlName="editor"
-                [modules]="modules"
-                [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"
-            >
-            </p-editor> -->
-            <editor formControlName="editor" apiKey="15cypndxpleftzaesw3impuj8xes14259rkqzh447mqb5f1m"
+            <editor formControlName="editor" apiKey="15cypndxpleftzaesw3impuj8xes14259rkqzh447mqb5f1m" [ngStyle]="{margin: '0px 0px 10px 0px'}"
                 [init]="{
                     plugins: 'lists link image table code help wordcount fullscreen',
                     toolbar: '

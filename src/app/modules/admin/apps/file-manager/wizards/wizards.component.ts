@@ -75,6 +75,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
     formDatas: FormData;
     noRawat: string;
     regPeriksa: RegPeriksa;
+    formulirId: string;
 
     formFieldHelpers: string[] = ['']
     fixedSubscriptInput: FormControl = new FormControl('', [
@@ -188,10 +189,12 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             const formData = this.form.value
             this._activatedRoute.paramMap.subscribe(params => {
                 this.noRawat = params.get('noRawat');
+                this.formulirId = params.get('formulirId');
               });
 
             this.formDatas = {
                 noRawat : this.noRawat,
+                formulir : this.formulirId,
                 dataJson: formData,
             }
 
@@ -201,14 +204,12 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             this._formDataService.onPost(this.formDatas).subscribe({
                 next: (res) => {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: `Formulir ${this.formData.name} berhasil di buat` });
-                    this._router.navigate([`apps/file-manager/formulir/${this.formData.id}/${noRawat}/${noRkmMedis}/formulir`])
+                    setTimeout(() => {
+                        this._router.navigate([`apps/file-manager/formulir/${this.formData.id}/${noRawat}/${noRkmMedis}/formulir`])
+                    }, 1000);
                 },
                 error : (err) => {
-                    if(err.error.error == 'Unique constraint violated.'){
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Pasien ' + this.regPeriksa.rows[0].nm_pasien + ' ' + noRawat + ' sudah membuat formulir ' + this.formData.name});
-                    }else{
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
-                    }
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error });
                 }
             });
         } else {

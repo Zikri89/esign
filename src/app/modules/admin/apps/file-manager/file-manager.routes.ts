@@ -131,10 +131,11 @@ const formResolverDataPasien = (route: ActivatedRouteSnapshot, state: RouterStat
     const formBuilderService = inject(FormBuilderService);
     const router = inject(Router);
 
-    const noRawat = encodeURIComponent(route.paramMap.get('noRawat'));
+    const noRawatEncode = encodeURIComponent(route.paramMap.get('noRawat'));
+    const noRawat = noRawatEncode.replace(/%25/g, '%');
     const formulirId = route.paramMap.get('formulirId');
 
-    return formDataPasienService.onGetById(noRawat).pipe(
+    return formDataPasienService.onGetById(noRawat, formulirId).pipe(
         switchMap((formDataPasienData) => {
             return formBuilderService.onGetById(formulirId);
         }),

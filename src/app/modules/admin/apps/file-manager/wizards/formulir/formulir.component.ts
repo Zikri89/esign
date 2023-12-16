@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Pipe, PipeTransform, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormDataPasienService } from '../form-data-pasien.service';
 import { FormDataPasien } from './formulir.type';
 import SignaturePad from 'signature_pad'
@@ -12,6 +12,8 @@ import { DynamicForm } from 'app/modules/admin/master/form-builder/build-form.ty
 import { EditorModule } from 'primeng/editor';
 import { MomentModule } from 'ngx-moment';
 import * as moment from 'moment';
+import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-general-concent',
@@ -25,22 +27,27 @@ import * as moment from 'moment';
         MatButtonModule,
         MatIconModule,
         EditorModule,
-        MomentModule
+        MomentModule,
+        FormsModule,
   ],
   templateUrl: './formulir.component.html',
-  styleUrl: './formulir.component.scss'
+  styleUrl: './formulir.component.scss',
 })
+
 export class GeneralConcentComponent implements OnInit, AfterViewInit {
+    @Pipe({ name: 'safeHtml'})
     @ViewChild('signPadCanvas', { static: false }) signaturePadElement: any
     formDataPasien: FormDataPasien;
     signPad: any
     formulir: DynamicForm
     replacedText: string = '';
+    contentForm: SafeHtml;
     signImage: any
     tanggalLahir: string = '';
     constructor(
         private _formDataPasienService: FormDataPasienService,
-        private _formBuilderService: FormBuilderService
+        private _formBuilderService: FormBuilderService,
+        private sanitized: DomSanitizer
     ) {}
 
     ngOnInit(): void {
@@ -73,7 +80,7 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
 
 
     replacePlaceholders(formulir) {
-        this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY');
+        this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY') ?? '...';
         this.replacedText = formulir
           .replace('%namaPasien%', this.formDataPasien.dataJson['nama'] ?? '............')
           .replace('%tanggalLahir%', this.tanggalLahir ?? '............')
@@ -86,6 +93,9 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
           .replace('%namaProfesi%', this.formDataPasien.dataJson['namaProfesi'] ?? '..........')
           .replace('%lainLain%', this.formDataPasien.dataJson['lainLain'] ?? '..........')
           .replace('%biaya%', this.formDataPasien.dataJson['biaya'] ?? '..........');
+
+          this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);
+
       }
 
 

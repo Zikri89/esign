@@ -17,13 +17,13 @@ export class FormDataPasienService {
     }
 
     // Get by id Form Data pasien Pasien data
-    onGetById(noRawat : string): Observable<FormDataPasien> {
+    onGetById(noRawat : string, formulir : string): Observable<FormDataPasien> {
         const headers = new HttpHeaders({
             'x-api-key': environment.apiKey,
         });
 
         return this._httpClient
-        .get<FormDataPasien>(environment.apiUrl+'formDataPasien/'+noRawat, {headers}).pipe(tap((data) => {
+        .get<FormDataPasien>(environment.apiUrl+'formDataPasien/'+noRawat+'/'+formulir, {headers}).pipe(tap((data) => {
             this._data.next(data);
             })
         );
