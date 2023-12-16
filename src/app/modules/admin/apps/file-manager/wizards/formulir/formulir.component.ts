@@ -124,6 +124,13 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
           .replace('%bulanBuat%', bulan ?? '..........')
           .replace('%tanggalBuat%', tanggal ?? '..........')
           .replace('%pukulBuat%', jam +':'+ menit ?? '..........')
+          .replace('%noRekamMedis%', this.formDataPasien.dataJson['noRekamMedis']?? '..........')
+          .replace('%namaDokterI%', this.formDataPasien.dataJson['namaDokter']?? '..........')
+          .replace('%namaDokterII%', this.formDataPasien.dataJson['namaDokter']?? '..........')
+          .replace('%namaDokterSpesialisI%', this.formDataPasien.dataJson['namaDokterSpesialisI']?? '..........')
+          .replace('%namaDokterSpesialisII%', this.formDataPasien.dataJson['namaDokterSpesialisII']?? '..........')
+          .replace('%namaDokterSubSpesialisI%', this.formDataPasien.dataJson['namaDokterSubSpesialisI']?? '..........')
+          .replace('%namaDokterSubSpesialisII%', this.formDataPasien.dataJson['namaDokterSubSpesialisII']?? '..........')
           .replace('%biaya%', this.formDataPasien.dataJson['biaya'] ?? '..........');
 
           this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);

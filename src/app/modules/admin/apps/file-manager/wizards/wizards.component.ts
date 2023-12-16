@@ -157,7 +157,7 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
                 initialValue = options.length > 0 ? options[0] : null;
             }
 
-            // General Concent Formulir
+
             if(field.label == 'Nama'){
                 initialValue = this.regPeriksa.rows[0].nm_pasien;
             }
@@ -173,7 +173,39 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             if(field.label == 'No. Telpon'){
                 initialValue = this.regPeriksa.rows[0].tlp_pasien;
             }
-            // end general concent
+
+            if(field.label == 'Dokter Pelaksana Tindakan'){
+                initialValue = this.regPeriksa.rows[0].nm_dokter
+            }
+
+            if(field.label == 'Nama Pasien Atau Wali'){
+                initialValue = this.regPeriksa.rows[0].png_jawab
+            }
+
+            if(field.label == 'Nama Pasien'){
+                initialValue = this.regPeriksa.rows[0].nm_pasien
+            }
+
+            if(field.label == 'Umur Pasien'){
+                initialValue = this.regPeriksa.rows[0].umurdaftar
+            }
+
+            if(field.label == 'Alamat Pasien'){
+                initialValue = this.regPeriksa.rows[0].alam_pasien
+            }
+
+            if(field.label == 'No. Rekam Medis') {
+                initialValue = this.regPeriksa.rows[0].no_rkm_medis
+            }
+
+            if(field.label == 'Nama Dokter I'){
+                initialValue = this.regPeriksa.rows[0].nm_dokter
+            }
+
+            if(field.label == 'Nama Dokter II'){
+                initialValue = this.regPeriksa.rows[0].nm_dokter
+            }
+
 
             formField[field.name] = new FormControl(initialValue, validators);
         }

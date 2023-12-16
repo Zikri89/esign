@@ -47,9 +47,12 @@ import { FormBuilderService } from './build-form.service'
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { MessageService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
-// aktifkan jika menggunakan ckeditor 5 berbayar
-// import * as Editor from '../../../../../../ckeditor5-custom-build/build/ckeditor';
-// import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
+import { AutoCompleteModule } from 'primeng/autocomplete';
+
+interface AutoCompleteCompleteEvent {
+    originalEvent: Event;
+    query: string;
+}
 
 @Component({
     selector: 'build-form',
@@ -78,7 +81,8 @@ import { ToastModule } from 'primeng/toast'
         NgIf,
         FuseDrawerComponent,
         EditorModule,
-        ToastModule
+        ToastModule,
+        AutoCompleteModule
     ],
     providers: [MessageService]
 })
@@ -97,6 +101,9 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     showComponent: boolean | false;
     formData: DynamicFormField[] = [];
 
+    optionLabels: any[] | undefined;
+    filteredOptionLabels: any[] | undefined;
+
     typeOptions: string[] = [
         'text',
         'select',
@@ -108,6 +115,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         'radio',
         'checkbox'
     ]
+
     validationOptions: string[] = [
         'required',
         'email',
@@ -116,7 +124,6 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         'maxLength',
         'pattern',
     ]
-
 
     constructor(
         private _snackBar: MatSnackBar,
@@ -162,6 +169,65 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
                 console.log(err)
             }
         })
+
+        this.optionLabels = [
+            { name: 'Nama Pasien' },
+            { name: 'Tanggal Lahir' },
+            { name: 'Alamat Pasien' },
+            { name: 'No Telpon Pasien' },
+            { name: 'Nama Wali1' },
+            { name: 'Nama Wali2' },
+            { name: 'Nama Wali3' },
+            { name: 'Nama Privasi' },
+            { name: 'Nama Profesi' },
+            { name: 'Lain Lain' },
+            { name: 'Dokter Pelaksana Tindakan' },
+            { name: 'Pemberi Informasi' },
+            { name: 'Penerima Informasi' },
+            { name: 'Diagnosis Kerja dan Diagnosis Banding' },
+            { name: 'Kondisi Pasien' },
+            { name: 'Tindakan Yang Diusulkan' },
+            { name: 'Tatacara dan Tujuan Tindakan' },
+            { name: 'Manfaat dan Resiko Tindakan' },
+            { name: 'Nama Orang Yang Mengerjakan Tindakan' },
+            { name: 'Nama Orang Yang Mengerjakan Tindakan' },
+            { name: 'Prognosis Dari Tindakan' },
+            { name: 'Kemungkinan Hasil Yang Tidak Terduga' },
+            { name: 'Kemungkinan Hasil Bila Tidak Dilakukan Tindakan' },
+            { name: 'Nama Pasien atau Wali' },
+            { name: 'Umur Pasien atau Wali' },
+            { name: 'Alamat Pasien atau Wali' },
+            { name: 'Tindakan atau Pengobatan' },
+            { name: 'Umur Pasien' },
+            { name: 'Tahun Buat' },
+            { name: 'Bulan Buat' },
+            { name: 'Tanggal Buat' },
+            { name: 'Pukul Buat' },
+            { name: 'No Rekam Medis' },
+            { name: 'Nama Dokter I' },
+            { name: 'Nama Dokter II' },
+            { name: 'Nama Dokter Spesialis I' },
+            { name: 'Nama Dokter Spesialis II' },
+            { name: 'Nama Dokter Sub Spesialis I' },
+            { name: 'Nama Dokter Sub Spesialis II' },
+            { name: 'Jenis Kelamin' },
+            { name: 'Biaya' }
+          ];
+
+    }
+
+    filterOption(event: AutoCompleteCompleteEvent) {
+        let filtered: any[] = [];
+        let query = event.query;
+
+        for (let i = 0; i < (this.optionLabels as any[]).length; i++) {
+            let option = (this.optionLabels as any[])[i];
+            if (option.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(option);
+            }
+        }
+
+        this.filteredOptionLabels = filtered;
     }
 
     ngAfterViewInit(): void {
@@ -214,7 +280,56 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         return ['select', 'radio', 'checkbox'].includes(selectedFieldType)
     }
 
+    // Di dalam komponen yang terkait
     addField() {
+        const newField = this.createField();
+        this.formFields.push(newField);
+    }
+
+    createField(): any {
+        if (this.form.invalid) {
+            // Mark the form as touched to display validation errors
+            this.form.markAllAsTouched()
+            return
+        }
+
+        const label = this.form.get('newFieldLabel').value
+        const camelCaseName = this.generateNameFromLabel(label)
+
+        const newField = {
+            label: label,
+            name: camelCaseName,
+            type: this.form.get('newFieldType').value,
+            validation: this.form.get('newFieldValidation').value,
+            options: [],
+        }
+
+        // Create FormControl for each option
+        if (
+            newField.type === 'checkbox' ||
+            newField.type === 'radio' ||
+            newField.type === 'select'
+        ) {
+            newField.options = this.form
+                .get('newOptionField')
+                .value.split(',')
+                .map(option => option.trim())
+        }
+
+        this.formData.push(newField)
+        this.form.addControl(newField.name, this.fb.control('', []))
+
+        // Clear the form controls for the next input
+        this.form.get('newFieldLabel').setValue('')
+        this.form.get('newFieldType').setValue('text')
+        this.form.get('newFieldValidation').setValue('')
+
+        this.drawerOpened = false;
+        return newField
+    }
+
+
+    resetField() {
         if (this.form.invalid) {
             // Mark the form as touched to display validation errors
             this.form.markAllAsTouched()
@@ -258,7 +373,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     }
 
     generateNameFromLabel(label: string): string {
-        const sanitizedLabel = label.replace(/[^\w\s]/gi, '') // Remove non-word characters
+        const sanitizedLabel = label['name'].replace(/[^\w\s]/gi, '') // Remove non-word characters
         const camelCaseName = sanitizedLabel
             .split(' ')
             .map((word, index) =>
