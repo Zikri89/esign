@@ -52,7 +52,7 @@
             <div *ngFor="let field of formFields; let i = index" cdkDrag>
                 <div [ngSwitch]="field.type">
                     <label *ngSwitchCase="'text'">
-                        {{ field.label.name }}:
+                        {{ field.label.name }}: (Drag and Drop untuk sesuaikan posisi input form)
                         <mat-form-field
                             [ngClass]="formFieldHelpers"
                             class="w-full"
@@ -427,7 +427,7 @@
                         type="button"
                         (click)="resetField()"
                     >
-                    Reset Field
+                    Reset & Add New Field
                     </button>
                 </div>
             </div>

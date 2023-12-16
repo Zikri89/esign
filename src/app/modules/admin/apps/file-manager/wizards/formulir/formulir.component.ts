@@ -82,60 +82,29 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
 
 
     replacePlaceholders(formulir) {
-        const tanggalString =  this.formDataPasien.dataJson['tanggal'];
-        const tanggalObjek = moment(tanggalString);
+        const tanggalObjek = moment(this.formDataPasien.dataJson['tanggalLahirPasienAtauWali']);
         const tahun = tanggalObjek.format('YYYY');
-        const bulan = tanggalObjek.format('MMMM')
+        const bulan = tanggalObjek.format('MMMM');
         const tanggal = tanggalObjek.format('D');
         const jam = tanggalObjek.format('H');
         const menit = tanggalObjek.format('m');
 
-        this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY') ?? '...';
-        this.replacedText = formulir
-          .replace('%namaPasien%', this.formDataPasien.dataJson['nama'] ?? '............')
-          .replace('%tanggalLahir%', this.tanggalLahir ?? '............')
-          .replace('%alamatPasien%', this.formDataPasien.dataJson['alamat'] ?? '............')
-          .replace('%noTelponPasien%', this.formDataPasien.dataJson['noTelpon'] ?? '............')
-          .replace('%namaWali1%', this.formDataPasien.dataJson['namaWali1'] ?? '..........')
-          .replace('%namaWali2%', this.formDataPasien.dataJson['namaWali2'] ?? '..........')
-          .replace('%namaWali3%', this.formDataPasien.dataJson['namaWali3'] ?? '..........')
-          .replace('%namaPrivasi%', this.formDataPasien.dataJson['namaPrivasi'] ?? '..........')
-          .replace('%namaProfesi%', this.formDataPasien.dataJson['namaProfesi'] ?? '..........')
-          .replace('%lainLain%', this.formDataPasien.dataJson['lainLain'] ?? '..........')
-          .replace('%dokterPelaksanaTindakan%', this.formDataPasien.dataJson['dokterPelaksanaTindakan'] ?? '..........')
-          .replace('%pemberiInformasi%', this.formDataPasien.dataJson['pemberiInformasi'] ?? '..........')
-          .replace('%penerimaInformasi%', this.formDataPasien.dataJson['penerimaInformasi'] ?? '..........')
-          .replace('%diagnosisKerjadanDiagnosisBanding%', this.formDataPasien.dataJson['diagnosisKerjadanDiagnosisBanding'] ?? '..........')
-          .replace('%kondisiPasien%', this.formDataPasien.dataJson['kondisiPasien'] ?? '..........')
-          .replace('%tindakanYangDiUsulkan%', this.formDataPasien.dataJson['tindakanYangDiUsulkan'] ?? '..........')
-          .replace('%tatacaraDanTujuanTindakan%', this.formDataPasien.dataJson['tatacaraDanTujuanTindakan'] ?? '..........')
-          .replace('%manfaatDanResikoTindakan%', this.formDataPasien.dataJson['manfaatDanResikoTindakan'] ?? '..........')
-          .replace('%namaOrangYangMengerjakanTindakan%', this.formDataPasien.dataJson['namaOrangYangMengerjakanTindakan'] ?? '..........')
-          .replace('%namaOrangYangMengerjakanTindakan%', this.formDataPasien.dataJson['namaOrangYangMengerjakanTindakan'] ?? '..........')
-          .replace('%prognosisDariTindakan%', this.formDataPasien.dataJson['prognosisDariTindakan'] ?? '..........')
-          .replace('%kemungkinanHasilYangTidakTerduga%', this.formDataPasien.dataJson['kemungkinanHasilYangTidakTerduga'] ?? '..........')
-          .replace('%kemungkinanHasilBilaTidakDilakukanTindakan%', this.formDataPasien.dataJson['kemungkinanHasilBilaTidakDilakukanTindakan'] ?? '..........')
-          .replace('%namaPasienAtauWali%', this.formDataPasien.dataJson['namaPasienAtauWali'] ?? '..........')
-          .replace('%umurPasienAtauWali%', this.formDataPasien.dataJson['umurPasienAtauWali'] ?? '..........')
-          .replace('%alamatPasienAtauWali%', this.formDataPasien.dataJson['alamatPasienAtauWali'] ?? '..........')
-          .replace('%tindakanAtauPengobatan%', this.formDataPasien.dataJson['tindakanAtauPengobatan'] ?? '..........')
-          .replace('%umurPasien%', this.formDataPasien.dataJson['umurPasien'] ?? '..........')
-          .replace('%tahunBuat%', tahun ?? '..........')
-          .replace('%bulanBuat%', bulan ?? '..........')
-          .replace('%tanggalBuat%', tanggal ?? '..........')
-          .replace('%pukulBuat%', jam +':'+ menit ?? '..........')
-          .replace('%noRekamMedis%', this.formDataPasien.dataJson['noRekamMedis']?? '..........')
-          .replace('%namaDokterI%', this.formDataPasien.dataJson['namaDokter']?? '..........')
-          .replace('%namaDokterII%', this.formDataPasien.dataJson['namaDokter']?? '..........')
-          .replace('%namaDokterSpesialisI%', this.formDataPasien.dataJson['namaDokterSpesialisI']?? '..........')
-          .replace('%namaDokterSpesialisII%', this.formDataPasien.dataJson['namaDokterSpesialisII']?? '..........')
-          .replace('%namaDokterSubSpesialisI%', this.formDataPasien.dataJson['namaDokterSubSpesialisI']?? '..........')
-          .replace('%namaDokterSubSpesialisII%', this.formDataPasien.dataJson['namaDokterSubSpesialisII']?? '..........')
-          .replace('%biaya%', this.formDataPasien.dataJson['biaya'] ?? '..........');
+        const placeholderData = {};
+        Object.entries(this.formDataPasien.dataJson).forEach(([key, value]) => {
+            placeholderData[`%${key}%`] = value ?? '............';
+        });
 
-          this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);
+        placeholderData['%tanggalLahirPasienAtauWali%'] = tanggalObjek.format('D MMMM YYYY');
 
-      }
+        const replacePlaceholders = (template: string, data: any) => {
+            return template.replace(/%\w+%/g, match => data[match] || match);
+        };
+
+        // Mengganti semua placeholder dalam formulir
+        this.replacedText = replacePlaceholders(formulir, placeholderData);
+
+        this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);
+    }
 
 
     startSignPadDrawing(event: Event) {

@@ -158,51 +158,55 @@ export class FormsWizardsComponent implements OnInit, AfterViewInit {
             }
 
 
-            if(field.label == 'Nama'){
+            if(field.label.name == 'Nama Pasien'){
                 initialValue = this.regPeriksa.rows[0].nm_pasien;
             }
 
-            if(field.label == 'Tanggal Lahir'){
+            if(field.label.name == 'Tanggal Lahir Pasien Atau Wali'){
                 initialValue = this.regPeriksa.rows[0].tgl_lahir;
             }
 
-            if(field.label == 'Alamat'){
+            if(field.label.name == 'Alamat Pasien'){
                 initialValue = this.regPeriksa.rows[0].alam_pasien;
             }
 
-            if(field.label == 'No. Telpon'){
+            if(field.label.name == 'No Telpon Pasien'){
                 initialValue = this.regPeriksa.rows[0].tlp_pasien;
             }
 
-            if(field.label == 'Dokter Pelaksana Tindakan'){
+            if(field.label.name == 'Dokter Pelaksana Tindakan'){
                 initialValue = this.regPeriksa.rows[0].nm_dokter
             }
 
-            if(field.label == 'Nama Pasien Atau Wali'){
-                initialValue = this.regPeriksa.rows[0].png_jawab
-            }
-
-            if(field.label == 'Nama Pasien'){
+            if(field.label.name == 'Nama Pasien atau Wali'){
                 initialValue = this.regPeriksa.rows[0].nm_pasien
             }
 
-            if(field.label == 'Umur Pasien'){
+            if(field.label.name == 'Nama Pasien'){
+                initialValue = this.regPeriksa.rows[0].nm_pasien
+            }
+
+            if(field.label.name == 'Umur Pasien'){
                 initialValue = this.regPeriksa.rows[0].umurdaftar
             }
 
-            if(field.label == 'Alamat Pasien'){
+            if(field.label.name == 'Alamat Pasien'){
                 initialValue = this.regPeriksa.rows[0].alam_pasien
             }
 
-            if(field.label == 'No. Rekam Medis') {
+            if(field.label.name == 'Alamat Pasien atau Wali'){
+                initialValue = this.regPeriksa.rows[0].alam_pasien
+            }
+
+            if(field.label.name == 'No Rekam Medis') {
                 initialValue = this.regPeriksa.rows[0].no_rkm_medis
             }
 
-            if(field.label == 'Nama Dokter I'){
+            if(field.label.name == 'Nama Dokter I'){
                 initialValue = this.regPeriksa.rows[0].nm_dokter
             }
 
-            if(field.label == 'Nama Dokter II'){
+            if(field.label.name == 'Nama Dokter II'){
                 initialValue = this.regPeriksa.rows[0].nm_dokter
             }
 

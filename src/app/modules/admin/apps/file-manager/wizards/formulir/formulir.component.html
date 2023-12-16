@@ -8,8 +8,25 @@
     <div class="flex-auto -mt-16 p-6 sm:p-10 rounded-t-2xl shadow bg-card">
 
         <!-- CONTENT GOES HERE -->
-        <div class="h-auto rounded-2xl overflow-y-auto">
-            <div [innerHTML]= "contentForm"></div>
+        <div class="h-auto rounded-2xl container">
+            <div class="header-container">
+                <div class="logo">
+                    <img src="../../../../../../../assets/images/logo/logo.png" alt="Logo RSUD Tanjung Priok">
+                </div>
+                <div class="kop-surat">
+                    <strong>RUMAH SAKIT UMUM DAERAH TANJUNG PRIOK</strong>
+                    <p>Jl. Bugis No. 3 Kel. Kebon Bawang, Kec. Tanjung Priok</p>
+                    <div class="informasi">
+                        <p>Telp : 021-43930348. Fax : 43908923.</p>
+                        <p>e-mail : <span class="email">rsudtanjungpriok&#64;jakarta.go.id</span></p>
+                        <p>J A K A R T A 14320</p>
+                    </div>
+                </div>
+                <div class="logo">
+                </div>
+            </div>
+            <div class="double-line"></div>
+            <div class="content" [innerHTML]="contentForm"></div>
             <div
                 class="signature-container"
                 fxLayout="column"

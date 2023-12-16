@@ -58,7 +58,7 @@
                             [ngClass]="formFieldHelpers"
                             class="flex-auto"
                         >
-                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-label>{{ field.label.name }}</mat-label>
                             <input title="field.name"
                                 matInput
                                 *ngIf="
@@ -82,7 +82,7 @@
                                     )
                                 "
                             >
-                                {{ field.label }} is required
+                                {{ field.label.name }} is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -92,7 +92,7 @@
                             [ngClass]="formFieldHelpers"
                             class="flex-auto"
                         >
-                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-label>{{ field.label.name }}</mat-label>
                             <mat-select
                                 [formControl]="getFormControl(field.name)"
                             >
@@ -110,7 +110,7 @@
                                     )
                                 "
                             >
-                                {{ field.label }} is required
+                                {{ field.label.name }} is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -120,7 +120,7 @@
                             [ngClass]="formFieldHelpers"
                             class="flex-auto"
                         >
-                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-label>{{ field.label.name }}</mat-label>
                             <input title="field.name"
                                 matInput
                                 [matDatepicker]="picker"
@@ -138,14 +138,14 @@
                                     )
                                 "
                             >
-                                {{ field.label }} is required
+                                {{ field.label.name }} is required
                             </mat-error>
                         </mat-form-field>
                     </div>
 
                     <div class="flex" *ngIf="field.type === 'email'">
                         <mat-form-field class="flex-auto">
-                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-label>{{ field.label.name }}</mat-label>
                             <input title="field.name"
                                 matInput
                                 [formControl]="getFormControl(field.name)"
@@ -162,7 +162,7 @@
                                     )
                                 "
                             >
-                                {{ field.label }} is required
+                                {{ field.label.name }} is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -172,7 +172,7 @@
                         *ngIf="field.type === 'checkbox'"
                     >
                         <span class="font-semibold mb-2">
-                            {{ field.label }}
+                            {{ field.label.name }}
                         </span>
                         <div class="flex flex-col">
                             <mat-checkbox
@@ -196,7 +196,7 @@
                         *ngIf="field.type === 'radio'"
                     >
                         <span class="font-semibold mb-2">
-                            {{ field.label }}
+                            {{ field.label.name }}
                         </span>
                         <mat-radio-group
                             [formControl]="getFormControl(field.name)"
@@ -217,7 +217,7 @@
                         *ngIf="field.type === 'editor'"
                     >
                         <span class="font-semibold mb-2">
-                            {{ field.label }}
+                            {{ field.label.name }}
                         </span>
                         <p-editor [formControl]="getFormControl(field.name)" [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"></p-editor>
                     </div>
