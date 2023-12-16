@@ -5,8 +5,10 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     Input,
     OnInit,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core'
 import {
@@ -33,26 +35,30 @@ import {
 } from '@angular/router'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import {
-    MatSnackBar, MatSnackBarVerticalPosition,
+    MatSnackBar,
+    MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar'
-import {
-    DynamicForm, DynamicFormField,
-} from './build-form.type'
+import { DynamicForm, DynamicFormField } from './build-form.type'
 import { FormManagerService } from '../form-manager/form-manager.service'
 import { FormManagerData } from '../form-manager/form-manager.types'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { SharedDataService } from 'app/core/share/shared-date-service'
-import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
+import {
+    FuseDrawerComponent,
+    FuseDrawerPosition,
+} from '@fuse/components/drawer'
 import { FormBuilderService } from './build-form.service'
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorModule } from '@tinymce/tinymce-angular'
 import { MessageService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete'
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop'
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
+import { ListOptionLabelComponent } from './dialog/list-label-option.component'
 
 interface AutoCompleteCompleteEvent {
-    originalEvent: Event;
-    query: string;
+    originalEvent: Event
+    query: string
 }
 
 @Component({
@@ -85,27 +91,31 @@ interface AutoCompleteCompleteEvent {
         EditorModule,
         ToastModule,
         AutoCompleteModule,
-        DragDropModule
+        DragDropModule,
     ],
-    providers: [MessageService]
+    providers: [MessageService, DialogService],
 })
 export class FormBuilderComponent implements OnInit, AfterViewInit {
-    @Input()position: FuseDrawerPosition;
+    @Input() position: FuseDrawerPosition
     drawerMode: string
-    drawerOpened : boolean
+    drawerOpened: boolean
     receivedFormData: any
     items: DynamicForm
     dynamicFormId: string
     formId: string
     formManagerData: FormManagerData
-    form: FormGroup;
-    formEditor: FormGroup;
+    form: FormGroup
+    formEditor: FormGroup
     formFields: any[]
-    showComponent: boolean | false;
-    formData: DynamicFormField[] = [];
+    showComponent: boolean | false
+    formData: DynamicFormField[] = []
 
-    optionLabels: any[] | undefined;
-    filteredOptionLabels: any[] | undefined;
+    ref: DynamicDialogRef | undefined
+
+    optionLabels: any[] | undefined
+    filteredOptionLabels: any[] | undefined
+
+    showOptions: boolean = false
 
     typeOptions: string[] = [
         'text',
@@ -116,7 +126,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         'textarea',
         'file',
         'radio',
-        'checkbox'
+        'checkbox',
     ]
 
     validationOptions: string[] = [
@@ -135,42 +145,43 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         private fb: FormBuilder,
         private _formBuilderService: FormBuilderService,
         private messageService: MessageService,
+        public dialogService: DialogService
     ) {
-        this.form = this.fb.group({});
+        this.form = this.fb.group({})
     }
 
     ngOnInit(): void {
         this.initializeForm()
         this.formEditor = this.fb.group({
-            editor: ['']
-          });
-        this.drawerMode = 'side';
-        this.drawerOpened = false;
+            editor: [''],
+        })
+        this.drawerMode = 'side'
+        this.drawerOpened = false
         this._formManagerService.formFields$.subscribe({
-            next: (res) => {
-                if(res.dynamicForm != null){
+            next: res => {
+                if (res.dynamicForm != null) {
                     this.formFields = res.dynamicForm['formFields']
-                    this.showComponent = true;
-                }else {
+                    this.showComponent = true
+                } else {
                     this.formFields = []
-                    this.showComponent = false;
+                    this.showComponent = false
                 }
             },
-            error: (err) => {
+            error: err => {
                 console.log(err)
-            }
+            },
         })
 
         this._formBuilderService.data$.subscribe({
-            next: (res) => {
+            next: res => {
                 this.items = res
                 this.formEditor = this.fb.group({
-                    editor: this.items.formulir
-                  });
+                    editor: this.items.formulir,
+                })
             },
-            error: (err) => {
+            error: err => {
                 console.log(err)
-            }
+            },
         })
 
         this.optionLabels = [
@@ -224,41 +235,53 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Nama Anggota Keluarga 3' },
             { name: 'Nama Penjenguk' },
             { name: 'Profesi Penjenguk' },
-            { name: 'Saya Menginginkan atau Tidak Menginginkan Privasi Khusus' },
-            { name: 'Biaya Pengobatan atau Biaya Tindakan' }
-          ];
-
+            {
+                name: 'Saya Menginginkan atau Tidak Menginginkan Privasi Khusus',
+            },
+            { name: 'Biaya Pengobatan atau Biaya Tindakan' },
+        ]
     }
 
     filterOption(event: AutoCompleteCompleteEvent) {
-        let filtered: any[] = [];
-        let query = event.query;
+        let filtered: any[] = []
+        let query = event.query
 
         for (let i = 0; i < (this.optionLabels as any[]).length; i++) {
-            let option = (this.optionLabels as any[])[i];
+            let option = (this.optionLabels as any[])[i]
             if (option.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                filtered.push(option);
+                filtered.push(option)
             }
         }
 
-        this.filteredOptionLabels = filtered;
+        this.filteredOptionLabels = filtered
     }
 
-    ngAfterViewInit(): void {
-        // aktifkan jika menggunakan ckeditor5 berbayar
-        // this.Editor.create('#editor', {
-        //     plugins: [ ],
-        //     // licenseKey: 'ZWt0UlIyQS9ZMjh5T1FpVTA5czlYWE8ra294dFE3bko5N1p2bjhKMzNncWhRY1B5ZGY2cFVGeG1PWmtGLU1qQXlOREF4TVRJPQ==',
-        //     toolbar: [],
-        // })
+    ngAfterViewInit(): void {}
+
+    addLabelOption(event: any): void {
+        const pressedKey = event.event.key
+
+        // Hanya melakukan sesuatu jika tombol yang ditekan adalah tombol "%"
+        if (pressedKey === '%') {
+            this.showDialog()
+        }
+    }
+
+    showDialog() {
+        this.ref = this.dialogService.open(ListOptionLabelComponent, {
+            header: 'Pilih Label',
+        })
+    }
+
+    selectOption(option: string): void {
+        this.showOptions = false
     }
 
     onDrop(event: CdkDragDrop<string[]>) {
-        const movedField = this.formFields[event.previousIndex];
-        this.formFields.splice(event.previousIndex, 1);
-        this.formFields.splice(event.currentIndex, 0, movedField);
+        const movedField = this.formFields[event.previousIndex]
+        this.formFields.splice(event.previousIndex, 1)
+        this.formFields.splice(event.currentIndex, 0, movedField)
     }
-
 
     initializeForm() {
         this.form = this.fb.group({
@@ -276,19 +299,16 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         return this.form.get('newFieldOptions') as FormControl
     }
 
-    toggleDrawerMode(): void
-    {
-        this.drawerMode = this.drawerMode === 'side' ? 'over' : 'side';
+    toggleDrawerMode(): void {
+        this.drawerMode = this.drawerMode === 'side' ? 'over' : 'side'
     }
 
-    toggleDrawerOpen(): void
-    {
-        this.drawerOpened = !this.drawerOpened;
+    toggleDrawerOpen(): void {
+        this.drawerOpened = !this.drawerOpened
     }
 
-    drawerOpenedChanged(opened: boolean): void
-    {
-        this.drawerOpened = opened;
+    drawerOpenedChanged(opened: boolean): void {
+        this.drawerOpened = opened
     }
 
     shouldShowOptionField(): boolean {
@@ -299,8 +319,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
     // Di dalam komponen yang terkait
     addField() {
-        const newField = this.createField();
-        this.formFields.push(newField);
+        const newField = this.createField()
+        this.formFields.push(newField)
     }
 
     createField(): any {
@@ -341,10 +361,9 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         this.form.get('newFieldType').setValue('text')
         this.form.get('newFieldValidation').setValue('')
 
-        this.drawerOpened = false;
+        this.drawerOpened = false
         return newField
     }
-
 
     resetField() {
         if (this.form.invalid) {
@@ -386,7 +405,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
         // Convert the form data to JSON and send it
         this.formFields = this.formData
-        this.drawerOpened = false;
+        this.drawerOpened = false
     }
 
     generateNameFromLabel(label: string): string {
@@ -430,7 +449,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
                     verticalPosition: 'top' as MatSnackBarVerticalPosition,
                 })
 
-                this.showComponent = true;
+                this.showComponent = true
 
                 // this._router.navigate(['../'], {relativeTo: this._activatedRoute});
                 // this._changeDetectorRef.markForCheck();
@@ -469,26 +488,33 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     }
 
     onSubmitFormat() {
-        const editorContent = this.formEditor.get('editor').value;
+        const editorContent = this.formEditor.get('editor').value
         this._activatedRoute.paramMap.subscribe(params => {
             this.formId = params.get('id')
         })
 
         this.items = {
-            formulir : editorContent
+            formulir: editorContent,
         }
 
         this._formBuilderService.onPut(this.items, this.formId).subscribe({
-            next: (res) => {
+            next: res => {
                 // this.items.formulir
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: `Formulir berhasil di buat` });
-                console.log(res);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Formulir berhasil di buat`,
+                })
+                console.log(res)
             },
-            error: (err) => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error});
+            error: err => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error.error,
+                })
                 console.log(err)
-            }
+            },
         })
-      }
-
+    }
 }
