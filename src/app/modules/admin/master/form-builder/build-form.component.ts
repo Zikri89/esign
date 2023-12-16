@@ -44,7 +44,9 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 import { SharedDataService } from 'app/core/share/shared-date-service'
 import { FuseDrawerComponent, FuseDrawerPosition } from '@fuse/components/drawer'
 import { FormBuilderService } from './build-form.service'
-import { EditorModule } from 'primeng/editor';
+import { EditorModule } from '@tinymce/tinymce-angular';
+import { MessageService } from 'primeng/api'
+import { ToastModule } from 'primeng/toast'
 // aktifkan jika menggunakan ckeditor 5 berbayar
 // import * as Editor from '../../../../../../ckeditor5-custom-build/build/ckeditor';
 // import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
@@ -76,9 +78,9 @@ import { EditorModule } from 'primeng/editor';
         NgIf,
         FuseDrawerComponent,
         EditorModule,
-        // aktifkan jika menggunakan ckeditor5 berbayar
-        // CKEditorModule
+        ToastModule
     ],
+    providers: [MessageService]
 })
 export class FormBuilderComponent implements OnInit, AfterViewInit {
     @Input()position: FuseDrawerPosition;
@@ -94,30 +96,6 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     formFields: any[]
     showComponent: boolean | false;
     formData: DynamicFormField[] = [];
-    // aktifkan jika menggunakan ckeditor5 berbayar
-    // public Editor: any = Editor;
-    modules = {
-        toolbar: [
-            [{ header: [1, 2, false] }],
-            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-            ['blockquote', 'code-block'],
-
-            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-            [{ 'direction': 'rtl' }],                         // text direction
-
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-
-            ['clean']
-        ]
-    };
 
     typeOptions: string[] = [
         'text',
@@ -145,7 +123,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         private _activatedRoute: ActivatedRoute,
         private _formManagerService: FormManagerService,
         private fb: FormBuilder,
-        private _formBuilderService: FormBuilderService
+        private _formBuilderService: FormBuilderService,
+        private messageService: MessageService,
     ) {
         this.form = this.fb.group({});
     }
@@ -370,9 +349,11 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         this._formBuilderService.onPut(this.items, this.formId).subscribe({
             next: (res) => {
                 // this.items.formulir
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: `Formulir berhasil di buat` });
                 console.log(res);
             },
             error: (err) => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error});
                 console.log(err)
             }
         })

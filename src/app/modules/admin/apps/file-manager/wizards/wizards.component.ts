@@ -1,6 +1,8 @@
 import { TextFieldModule } from '@angular/cdk/text-field'
 import { CommonModule, NgClass } from '@angular/common'
 import {
+    AfterViewChecked,
+    AfterViewInit,
     Component,
     OnInit,
     ViewEncapsulation,
@@ -66,7 +68,7 @@ import { ToastModule } from 'primeng/toast';
     ],
     providers: [DynamicDialogRef, MessageService]
 })
-export class FormsWizardsComponent implements OnInit {
+export class FormsWizardsComponent implements OnInit, AfterViewInit {
 
     formData: FormManagerFormField
     form: FormGroup
@@ -122,6 +124,9 @@ export class FormsWizardsComponent implements OnInit {
         })
 
         this.ref.close();
+    }
+
+    ngAfterViewInit(): void {
     }
 
     createForm() {

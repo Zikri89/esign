@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
     <!-- Header -->
     <div
@@ -318,12 +319,26 @@
             </button>
         </form>
         <form *ngIf="showComponent == true;" [formGroup]="formEditor" class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
-            <p-editor
+            <!-- <p-editor
                 formControlName="editor"
                 [modules]="modules"
                 [style]="{ height: '320px', margin: '0px 0px 10px 0px' }"
             >
-            </p-editor>
+            </p-editor> -->
+            <editor formControlName="editor" apiKey="15cypndxpleftzaesw3impuj8xes14259rkqzh447mqb5f1m"
+                [init]="{
+                    plugins: 'lists link image table code help wordcount fullscreen',
+                    toolbar: '
+                        fullscreen undo redo |
+                        blocks fontfamily fontsize |
+                        bold italic underline strikethrough|
+                        link image media table|
+                        align lineheight |
+                        checklist numlist bullist indent outdent |
+                        removeformat',
+            }"
+            >
+            </editor>
 
             <button *ngIf="showComponent == true;" class="ml-3 mb-5" mat-flat-button type="button" [color]="'accent'" (click)="onSubmitFormat()">
                 <mat-icon class="icon-size-4" [svgIcon]="'heroicons_mini:list-bullet'"></mat-icon>
