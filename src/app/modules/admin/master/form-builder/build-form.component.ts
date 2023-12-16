@@ -48,6 +48,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { MessageService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop'
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -57,6 +58,7 @@ interface AutoCompleteCompleteEvent {
 @Component({
     selector: 'build-form',
     templateUrl: './build-form.component.html',
+    styleUrl: './build-form.scss',
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
@@ -82,7 +84,8 @@ interface AutoCompleteCompleteEvent {
         FuseDrawerComponent,
         EditorModule,
         ToastModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        DragDropModule
     ],
     providers: [MessageService]
 })
@@ -172,7 +175,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
         this.optionLabels = [
             { name: 'Nama Pasien' },
-            { name: 'Tanggal Lahir' },
+            { name: 'Tanggal Lahir Pasien Atau Wali' },
             { name: 'Alamat Pasien' },
             { name: 'No Telpon Pasien' },
             { name: 'Nama Wali1' },
@@ -202,6 +205,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Tahun Buat' },
             { name: 'Bulan Buat' },
             { name: 'Tanggal Buat' },
+            { name: 'Tanggal Lahir Pasien' },
             { name: 'Pukul Buat' },
             { name: 'No Rekam Medis' },
             { name: 'Nama Dokter I' },
@@ -210,7 +214,10 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Nama Dokter Spesialis II' },
             { name: 'Nama Dokter Sub Spesialis I' },
             { name: 'Nama Dokter Sub Spesialis II' },
-            { name: 'Jenis Kelamin' },
+            { name: 'Jenis Kelamin Pasien Atau Wali' },
+            { name: 'Jenis Kelamin Pasien' },
+            { name: 'Tanggal Masuk Rawat Inap' },
+            { name: 'Ruang Atau Kelas' },
             { name: 'Biaya' }
           ];
 
@@ -239,9 +246,12 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         // })
     }
 
-    // public onReady(editor: any) {
-    //     console.log("CKEditor5 Angular Component is ready to use!", editor);
-    // }
+    onDrop(event: CdkDragDrop<string[]>) {
+        const movedField = this.formFields[event.previousIndex];
+        this.formFields.splice(event.previousIndex, 1);
+        this.formFields.splice(event.currentIndex, 0, movedField);
+    }
+
 
     initializeForm() {
         this.form = this.fb.group({

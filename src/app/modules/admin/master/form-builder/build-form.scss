@@ -1,0 +1,7 @@
+[cdkDrag] {
+    cursor: grab;
+}
+
+[cdkDragPreview], [cdkDragPlaceholder] {
+    cursor: grabbing;
+}
