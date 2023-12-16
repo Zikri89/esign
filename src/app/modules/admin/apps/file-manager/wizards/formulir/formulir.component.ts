@@ -80,6 +80,14 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
 
 
     replacePlaceholders(formulir) {
+        const tanggalString = this.formDataPasien.dataJson['tanggal'];
+        const tanggalObjek = new Date(tanggalString);
+        const tahun = tanggalObjek.getFullYear();
+        const bulan = tanggalObjek.getMonth() + 1; // Perlu ditambah 1 karena bulan dimulai dari 0
+        const tanggal = tanggalObjek.getDate();
+        const jam = tanggalObjek.getHours();
+        const menit = tanggalObjek.getMinutes();
+
         this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY') ?? '...';
         this.replacedText = formulir
           .replace('%namaPasien%', this.formDataPasien.dataJson['nama'] ?? '............')
@@ -92,6 +100,29 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
           .replace('%namaPrivasi%', this.formDataPasien.dataJson['namaPrivasi'] ?? '..........')
           .replace('%namaProfesi%', this.formDataPasien.dataJson['namaProfesi'] ?? '..........')
           .replace('%lainLain%', this.formDataPasien.dataJson['lainLain'] ?? '..........')
+          .replace('%dokterPelaksanaTindakan%', this.formDataPasien.dataJson['dokterPelaksanaTindakan'] ?? '..........')
+          .replace('%pemberiInformasi%', this.formDataPasien.dataJson['pemberiInformasi'] ?? '..........')
+          .replace('%penerimaInformasi%', this.formDataPasien.dataJson['penerimaInformasi'] ?? '..........')
+          .replace('%diagnosisKerjadanDiagnosisBanding%', this.formDataPasien.dataJson['diagnosisKerjadanDiagnosisBanding'] ?? '..........')
+          .replace('%kondisiPasien%', this.formDataPasien.dataJson['kondisiPasien'] ?? '..........')
+          .replace('%tindakanYangDiUsulkan%', this.formDataPasien.dataJson['tindakanYangDiUsulkan'] ?? '..........')
+          .replace('%tatacaraDanTujuanTindakan%', this.formDataPasien.dataJson['tatacaraDanTujuanTindakan'] ?? '..........')
+          .replace('%manfaatDanResikoTindakan%', this.formDataPasien.dataJson['manfaatDanResikoTindakan'] ?? '..........')
+          .replace('%namaOrangYangMengerjakanTindakan%', this.formDataPasien.dataJson['namaOrangYangMengerjakanTindakan'] ?? '..........')
+          .replace('%namaOrangYangMengerjakanTindakan%', this.formDataPasien.dataJson['namaOrangYangMengerjakanTindakan'] ?? '..........')
+          .replace('%prognosisDariTindakan%', this.formDataPasien.dataJson['prognosisDariTindakan'] ?? '..........')
+          .replace('%kemungkinanHasilYangTidakTerduga%', this.formDataPasien.dataJson['kemungkinanHasilYangTidakTerduga'] ?? '..........')
+          .replace('%kemungkinanHasilBilaTidakDilakukanTindakan%', this.formDataPasien.dataJson['kemungkinanHasilBilaTidakDilakukanTindakan'] ?? '..........')
+          .replace('%namaPasienAtauWali%', this.formDataPasien.dataJson['namaPasienAtauWali'] ?? '..........')
+          .replace('%umurPasienAtauWali%', this.formDataPasien.dataJson['umurPasienAtauWali'] ?? '..........')
+          .replace('%alamatPasienAtauWali%', this.formDataPasien.dataJson['alamatPasienAtauWali'] ?? '..........')
+          .replace('%tindakanAtauPengobatan%', this.formDataPasien.dataJson['tindakanAtauPengobatan'] ?? '..........')
+          .replace('%umurPasien%', this.formDataPasien.dataJson['umurPasien'] ?? '..........')
+          .replace('%tahunBuat%', tahun ?? '..........')
+          .replace('%bulanBuat%', bulan ?? '..........')
+          .replace('%tanggalBuat%', tanggal ?? '..........')
+          .replace('%jamBuat%', jam ?? '..........')
+          .replace('%menitBuat%', menit ?? '..........')
           .replace('%biaya%', this.formDataPasien.dataJson['biaya'] ?? '..........');
 
           this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);

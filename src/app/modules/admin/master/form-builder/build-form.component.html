@@ -314,7 +314,7 @@
         <form *ngIf="showComponent == true;" [formGroup]="formEditor" class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
             <editor formControlName="editor" apiKey="15cypndxpleftzaesw3impuj8xes14259rkqzh447mqb5f1m" [ngStyle]="{margin: '0px 0px 10px 0px'}"
                 [init]="{
-                    plugins: 'lists link image table code help wordcount fullscreen',
+                    plugins: 'lists checklist link image table code help wordcount fullscreen',
                     toolbar: '
                         fullscreen undo redo |
                         blocks fontfamily fontsize |
@@ -322,14 +322,20 @@
                         link image media table|
                         align lineheight |
                         checklist numlist bullist indent outdent |
-                        removeformat',
-            }"
+                        removeformat checklist',
+                    menu: {
+                            format: {
+                                title: 'Format',
+                                items: 'checklist | bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align | forecolor backcolor | removeformat'
+                            }
+                        },
+                    }"
             >
             </editor>
 
             <button *ngIf="showComponent == true;" class="ml-3 mb-5" mat-flat-button type="button" [color]="'accent'" (click)="onSubmitFormat()">
                 <mat-icon class="icon-size-4" [svgIcon]="'heroicons_mini:list-bullet'"></mat-icon>
-                <span class="ml-2">Create Format</span>
+                <span class="ml-2">Save</span>
               </button>
         </form>
     </div>
