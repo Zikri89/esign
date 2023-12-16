@@ -48,7 +48,9 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
         private _formDataPasienService: FormDataPasienService,
         private _formBuilderService: FormBuilderService,
         private sanitized: DomSanitizer
-    ) {}
+    ) {
+        moment.locale('id');
+    }
 
     ngOnInit(): void {
         this._formDataPasienService.data$.subscribe({
@@ -80,13 +82,13 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
 
 
     replacePlaceholders(formulir) {
-        const tanggalString = this.formDataPasien.dataJson['tanggal'];
-        const tanggalObjek = new Date(tanggalString);
-        const tahun = tanggalObjek.getFullYear();
-        const bulan = tanggalObjek.getMonth() + 1; // Perlu ditambah 1 karena bulan dimulai dari 0
-        const tanggal = tanggalObjek.getDate();
-        const jam = tanggalObjek.getHours();
-        const menit = tanggalObjek.getMinutes();
+        const tanggalString =  this.formDataPasien.dataJson['tanggal'];
+        const tanggalObjek = moment(tanggalString);
+        const tahun = tanggalObjek.format('YYYY');
+        const bulan = tanggalObjek.format('MMMM')
+        const tanggal = tanggalObjek.format('D');
+        const jam = tanggalObjek.format('H');
+        const menit = tanggalObjek.format('m');
 
         this.tanggalLahir = moment.utc(this.formDataPasien.dataJson['tanggalLahir']).local().format('MM-DD-YYYY') ?? '...';
         this.replacedText = formulir
@@ -121,8 +123,7 @@ export class GeneralConcentComponent implements OnInit, AfterViewInit {
           .replace('%tahunBuat%', tahun ?? '..........')
           .replace('%bulanBuat%', bulan ?? '..........')
           .replace('%tanggalBuat%', tanggal ?? '..........')
-          .replace('%jamBuat%', jam ?? '..........')
-          .replace('%menitBuat%', menit ?? '..........')
+          .replace('%pukulBuat%', jam +':'+ menit ?? '..........')
           .replace('%biaya%', this.formDataPasien.dataJson['biaya'] ?? '..........');
 
           this.contentForm = this.sanitized.bypassSecurityTrustHtml(this.replacedText);
