@@ -17,7 +17,7 @@
                     [ngClass]="formFieldHelpers"
                     class="w-full">
                     <mat-label>Nama Formulir</mat-label>
-                    <input matInput formControlName="name">
+                    <input title="name" matInput formControlName="name">
                     <mat-icon
                         class="icon-size-5"
                         matSuffix
@@ -28,7 +28,7 @@
                     [ngClass]="formFieldHelpers"
                     class="flex-auto">
                     <mat-label>Deskripsi</mat-label>
-                    <textarea
+                    <textarea title="description"
                         matInput
                         cdkTextareaAutosize
                         [cdkAutosizeMinRows]="3" formControlName="description"></textarea>

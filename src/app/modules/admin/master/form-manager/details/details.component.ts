@@ -89,8 +89,18 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
         return this.myForm.controls;
     }
 
+    ucwords(str: string): string {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+    ucwordsAfterPeriod(str: string): string {
+        return str.replace(/(?:^|\.\s|!\s|\?\s)\S/g, function(txt){return txt.toUpperCase();});
+    }
+
     onSubmit() {
         if (this.myForm.valid) {
+            this.myForm.value.name = this.ucwords(this.myForm.value.name)
+            this.myForm.value.description = this.ucwordsAfterPeriod(this.myForm.value.description)
             this._formManagerService.onPost(this.myForm.value).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
@@ -102,11 +112,7 @@ export class FormManagerDetailsComponent implements OnInit, OnDestroy
                     this._changeDetectorRef.markForCheck();
                 }, error: (error) => {
 
-                    let errorMessage = 'Error posting data';
-
-                    if (error && error.error && error.error.message) {
-                        errorMessage = error.error.message;
-                    }
+                    let errorMessage = error.error.message;
 
                     this._snackBar.open(errorMessage, 'Close', {
                         duration: 3000,

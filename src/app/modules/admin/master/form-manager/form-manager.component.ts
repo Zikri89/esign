@@ -16,6 +16,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FuseConfirmationService } from '@fuse/services/confirmation/confirmation.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
 @Component({
     selector       : 'form-manager',
     templateUrl    : './form-manager.component.html',
@@ -31,7 +32,7 @@ import { FormsModule } from '@angular/forms';
         MatButtonModule,
         MatIconModule,
         MatTooltipModule,
-        MatTableModule,
+        TableModule,
         MatCardModule,
         MatSortModule,
         FuseDrawerComponent,
@@ -90,9 +91,8 @@ export class FormManagerComponent implements OnInit, OnDestroy
             {
                 // Store the data
                 this.items = data;
-
-                // Store the table data
-                this.formManagerDataSource = this.items;
+                this.items.forEach((data) => (data.createdAt = new Date(<Date>data.createdAt)));
+                this.items.sort((a, b) => (b.createdAt.getTime() - a.createdAt.getTime()));
             });
 
         this._fuseMediaWatcherService.onMediaQueryChange$('(min-width: 1440px)')

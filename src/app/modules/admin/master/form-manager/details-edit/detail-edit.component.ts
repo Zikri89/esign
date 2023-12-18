@@ -68,7 +68,7 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
         // Open the drawer
         this._formManagerComponent.matDrawer.open();
 
-        this._formManagerService.data$
+        this._formManagerService.formFields$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) =>
             {
@@ -81,8 +81,8 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
             });
 
         this.myForm = this.fb.group({
-            name: [this.items[0].name, Validators.required],
-            description: [this.items[0].description, Validators.required]
+            name: [this.items.name, Validators.required],
+            description: [this.items.description, Validators.required]
         });
     }
 
@@ -100,9 +100,19 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
         return this.myForm.controls;
     }
 
+    ucwords(str: string): string {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+    ucwordsAfterPeriod(str: string): string {
+        return str.replace(/(?:^|\.\s|!\s|\?\s)\S/g, function(txt){return txt.toUpperCase();});
+    }
+
     onSubmit() {
         if (this.myForm.valid) {
-            this._formManagerService.onPut(this.myForm.value, this.items[0].id).subscribe({
+            this.myForm.value.name = this.ucwords(this.myForm.value.name)
+            this.myForm.value.description = this.ucwordsAfterPeriod(this.myForm.value.description)
+            this._formManagerService.onPut(this.myForm.value, this.items.id).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
                         duration: 3000,
@@ -113,11 +123,7 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
                     this._changeDetectorRef.markForCheck();
                 }, error: (error) => {
 
-                    let errorMessage = 'Error posting data';
-
-                    if (error && error.error && error.error.message) {
-                        errorMessage = error.error.message;
-                    }
+                    let errorMessage = error.error.error;
 
                     this._snackBar.open(errorMessage, 'Close', {
                         duration: 3000,
