@@ -50,7 +50,7 @@
                             <ng-container matColumnDef="description">
                                 <th mat-header-cell *matHeaderCellDef>Description</th>
                                 <td mat-cell *matCellDef="let el" class="description-cell" matTooltip="{{ el.description }}">
-                                  {{ el.description }}
+                                  {{ el.description | slice:0:50 }}....
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="action">

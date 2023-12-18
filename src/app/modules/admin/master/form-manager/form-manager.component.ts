@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +15,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { MatChipsModule } from '@angular/material/chips';
 import { FuseConfirmationService } from '@fuse/services/confirmation/confirmation.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormsModule } from '@angular/forms';
 @Component({
     selector       : 'form-manager',
     templateUrl    : './form-manager.component.html',
@@ -35,6 +36,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
         MatSortModule,
         FuseDrawerComponent,
         MatChipsModule,
+        CommonModule
     ],
     animations: [
         trigger('buttonAnimation', [
