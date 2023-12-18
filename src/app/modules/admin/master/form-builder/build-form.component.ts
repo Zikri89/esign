@@ -237,9 +237,17 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Nama Anggota Keluarga 3' },
             { name: 'Nama Penjenguk' },
             { name: 'Profesi Penjenguk' },
-            {
-                name: 'Saya Menginginkan atau Tidak Menginginkan Privasi Khusus',
-            },
+            { name: 'Tempat Lahir Pasien' },
+            { name: 'Tempat Lahir Pasien Atau Wali' },
+            { name: 'Status Pasien Sebagai' },
+            { name: 'Nama yang Bertanda Tangan' },
+            { name: 'Umur yang Bertanda Tangan' },
+            { name: 'Tempat Lahir yang Bertanda Tangan' },
+            { name: 'Tanggal Lahir yang Bertanda Tangan' },
+            { name: 'Alamat Lahir yang Bertanda Tangan' },
+            { name: 'Nama Dokter Penanggung Jawab' },
+            { name: 'Alamat Yang Bertanda Tangan' },
+            {name: 'Saya Menginginkan atau Tidak Menginginkan Privasi Khusus'},
             { name: 'Biaya Pengobatan atau Biaya Tindakan' },
         ]
     }
