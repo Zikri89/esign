@@ -236,6 +236,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Nama Dokter Sub Spesialis II' },
             { name: 'Jenis Kelamin Pasien Atau Wali' },
             { name: 'Jenis Kelamin Pasien' },
+            { name: 'Jenis Kelamin Yang Bertanda Tangan' },
+            { name: 'Hubungan Dengan Pasien' },
             { name: 'Tanggal Masuk Rawat Inap' },
             { name: 'Ruangan Atau Kelas' },
             { name: 'No Telpon pasien Atau Wali' },
