@@ -435,13 +435,14 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             ...field,
         }))
 
-        this.items = {
-            formFields: finalFormData,
-        }
-
         this._activatedRoute.paramMap.subscribe(params => {
             this.formId = params.get('id')
         })
+
+        this.items = {
+            formManager : this.formId,
+            formFields: finalFormData,
+        }
 
         this._formBuilderService.onPost(this.items).subscribe({
             next: response => {
@@ -496,6 +497,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         })
 
         this.items = {
+            formManager: this.formId,
             formulir: editorContent,
         }
 
