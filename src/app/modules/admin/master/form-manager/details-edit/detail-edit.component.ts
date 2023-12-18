@@ -81,8 +81,8 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
             });
 
         this.myForm = this.fb.group({
-            name: [this.items.name, Validators.required],
-            description: [this.items.description, Validators.required]
+            name: [this.items[0].name, Validators.required],
+            description: [this.items[0].description, Validators.required]
         });
     }
 
@@ -102,7 +102,7 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
 
     onSubmit() {
         if (this.myForm.valid) {
-            this._formManagerService.onPut(this.myForm.value, this.items.id).subscribe({
+            this._formManagerService.onPut(this.myForm.value, this.items[0].id).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
                         duration: 3000,
