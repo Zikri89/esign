@@ -99,7 +99,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     @Input() position: FuseDrawerPosition
     drawerMode: string
     drawerOpened: boolean
-    receivedFormData: any
+    headerData: any
     items: DynamicForm
     dynamicFormId: string
     formId: string
@@ -166,6 +166,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
                     this.formFields = []
                     this.showComponent = false
                 }
+
+                this.headerData = res;
             },
             error: err => {
                 console.log(err)

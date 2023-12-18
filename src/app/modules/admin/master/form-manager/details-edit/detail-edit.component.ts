@@ -110,8 +110,12 @@ export class FormManagerDetailEditComponent implements OnInit, OnDestroy
 
     onSubmit() {
         if (this.myForm.valid) {
+            this.myForm.value.name = this.myForm.value.name.toLowerCase();
+            this.myForm.value.description = this.myForm.value.description.toLowerCase();
+
             this.myForm.value.name = this.ucwords(this.myForm.value.name)
             this.myForm.value.description = this.ucwordsAfterPeriod(this.myForm.value.description)
+
             this._formManagerService.onPut(this.myForm.value, this.items.id).subscribe({
                 next: (response) => {
                     this._snackBar.open('Data posted successfully', 'Close', {
