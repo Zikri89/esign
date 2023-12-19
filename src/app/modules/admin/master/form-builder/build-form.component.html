@@ -335,6 +335,23 @@
                 }"
             >
             </editor>
+            <p-dialog header="Header" [(visible)]="visible" [style]="{ width: '50vw' }">
+                <div class="flex py-2 justify-content-center">
+                    <p-orderList [value]="optionLabels" [listStyle]="{ 'max-height': '30rem' }" header="List Label" filterBy="name" filterPlaceholder="Cari Formulir">
+                        <ng-template let-optionLabels pTemplate="item">
+                            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                                <div class="flex-1 flex flex-column gap-2">
+                                    <div class="flex align-items-center gap-2">
+                                        <i class="pi pi-tag text-sm"></i>
+                                        <span (click)="onOptionSelect(optionLabels.name)">{{ optionLabels.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-orderList>
+                </div>
+            </p-dialog>
+
             <div *ngIf="showOptions" class="options-list">
                 <ul>
                   <li *ngFor="let option of arrayOptions" (click)="selectOption(option)">{{ option }}</li>

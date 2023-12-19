@@ -1,6 +1,7 @@
 import { CdkScrollable } from '@angular/cdk/scrolling'
 import { TextFieldModule } from '@angular/cdk/text-field'
 import { CommonModule, NgClass, NgIf } from '@angular/common'
+import { DialogModule } from 'primeng/dialog';
 import {
     AfterViewInit,
     ChangeDetectorRef,
@@ -54,7 +55,7 @@ import { ToastModule } from 'primeng/toast'
 import { AutoCompleteModule } from 'primeng/autocomplete'
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
-import { ListOptionLabelComponent } from './dialog/list-label-option.component'
+import { OrderListModule } from 'primeng/orderlist'
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event
@@ -92,6 +93,8 @@ interface AutoCompleteCompleteEvent {
         ToastModule,
         AutoCompleteModule,
         DragDropModule,
+        OrderListModule,
+        DialogModule
     ],
     providers: [MessageService, DialogService],
 })
@@ -116,6 +119,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     filteredOptionLabels: any[] | undefined
 
     showOptions: boolean = false
+    visible: boolean = false;
 
     typeOptions: string[] = [
         'text',
@@ -343,13 +347,34 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     }
 
     showDialog() {
-        this.ref = this.dialogService.open(ListOptionLabelComponent, {
-            header: 'Pilih Label',
-        })
+        this.visible = true
     }
 
     selectOption(option: string): void {
         this.showOptions = false
+    }
+
+    onOptionSelect(option: string): void {
+        this.visible = false;
+        const camelCaseOption = this.convertToCamelCase(option);
+        const wrappedOption = `%${camelCaseOption}%`;
+        this.copyToClipboard(wrappedOption);
+    }
+
+    convertToCamelCase(value: string): string {
+        return value.replace(/\s+/g, '').replace(/(?:^\w|[A-Z]|\b\w)/g, (match, index) => {
+            if (+match === 0) return ''; // menghilangkan spasi jika ada
+            return index === 0 ? match.toLowerCase() : match.toUpperCase();
+        });
+    }
+
+    copyToClipboard(text: string): void {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
     }
 
     onDrop(event: CdkDragDrop<string[]>) {
