@@ -55,6 +55,7 @@ import { ToastModule } from 'primeng/toast'
 import { AutoCompleteModule } from 'primeng/autocomplete'
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
+import { ListOptionLabelComponent } from './dialog/list-label-option.component'
 import { OrderListModule } from 'primeng/orderlist'
 
 interface AutoCompleteCompleteEvent {
