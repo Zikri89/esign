@@ -121,6 +121,9 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
     showOptions: boolean = false
     visible: boolean = false;
+    visibleDuplicateForm: boolean = false;
+
+    createDuplicateForm: FormManagerData[]
 
     typeOptions: string[] = [
         'text',
@@ -162,6 +165,11 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         })
         this.drawerMode = 'side'
         this.drawerOpened = false
+
+        this._activatedRoute.paramMap.subscribe(params => {
+            this.formId = params.get('id')
+        })
+
         this._formManagerService.formFields$.subscribe({
             next: res => {
                 if (res.dynamicForm != null) {
@@ -403,6 +411,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         ]
     }
 
+
+
     filterOption(event: AutoCompleteCompleteEvent) {
         let filtered: any[] = []
         let query = event.query
@@ -417,7 +427,22 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         this.filteredOptionLabels = filtered
     }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void {
+        this._formManagerService.onGet().subscribe({
+            next: (res: FormManagerData) => {
+                if (Array.isArray(res)) {
+                    this.createDuplicateForm = res.filter((el) => el.dynamicForm != null);
+                }
+            },
+            error: err => {
+                console.log(err);
+            },
+        });
+    }
+
+    duplicateForm(): void {
+        this.showDialogDuplicateForm()
+    }
 
     addLabelOption(event: any): void {
         const pressedKey = event.event.key
@@ -428,8 +453,49 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         }
     }
 
+    addDuplicateForm(index: number) : void {
+
+        const filteredData = this.createDuplicateForm[index]
+        this.items = {
+            formManager : this.formId,
+            formFields: filteredData.dynamicForm['formFields'],
+            formulir: filteredData.dynamicForm['formulir'],
+        }
+
+        this._formBuilderService.onPost(this.items).subscribe({
+            next: response => {
+                this.addDynamicFormToFormManager(response)
+                this._snackBar.open('Data posted successfully', 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                })
+
+                this.showComponent = true
+            },
+            error: error => {
+                let errorMessage = 'Error posting data'
+
+                if (error && error.error && error.error.message) {
+                    errorMessage = error.error.message
+                }
+
+                this._snackBar.open(errorMessage, 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top' as MatSnackBarVerticalPosition,
+                })
+            },
+        })
+
+        this.visibleDuplicateForm = false
+    }
+
+
     showDialog() {
         this.visible = true
+    }
+
+    showDialogDuplicateForm() {
+        this.visibleDuplicateForm = true
     }
 
     selectOption(option: string): void {

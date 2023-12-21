@@ -38,6 +38,18 @@
                 ></mat-icon>
                 <span class="ml-2">Add Field</span>
             </button>
+            <button
+                class="ml-3 mb-5"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="showDialogDuplicateForm()"
+            >
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:plus'"
+                ></mat-icon>
+                <span class="ml-2">Duplicate Form</span>
+            </button>
         </div>
     </div>
     <!-- Main -->
@@ -363,6 +375,23 @@
                 <span class="ml-2">Save</span>
               </button>
         </form>
+
+        <p-dialog header="Header" [(visible)]="visibleDuplicateForm" [style]="{ width: '50vw' }">
+            <div class="flex py-2 justify-content-center">
+                <p-orderList [value]="createDuplicateForm" [listStyle]="{ 'max-height': '30rem' }" header="List Form" filterBy="name" filterPlaceholder="Cari Form">
+                    <ng-template let-createDuplicateForm let-i="index" pTemplate="item">
+                        <div class="flex flex-wrap p-2 align-items-center gap-3">
+                            <div class="flex-1 flex flex-column gap-2">
+                                <div class="flex align-items-center gap-2">
+                                    <i class="pi pi-tag text-sm"></i>
+                                    <span (click)="addDuplicateForm(i)" >{{ createDuplicateForm.name  }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-orderList>
+            </div>
+        </p-dialog>
     </div>
 </div>
 
