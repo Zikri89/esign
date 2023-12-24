@@ -500,6 +500,15 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Nama Pengantar'},
             { name: 'Asal Pasien'},
             { name: 'Riwayat Kesehatan yang Lalu'},
+            { name: 'Bidan yang mengasesmen'},
+            { name: 'Ya, Penyakit'},
+            { name: 'Ya, Diagnosa'},
+            { name: 'Ya, Kapan'},
+            { name: 'Ya, Kapan'},
+            { name: 'Ya, Di'},
+            { name: 'Ya, Jenis Operasi'},
+            { name: 'Ya, Obat'},
+            { name: 'Ya, Sebutkan'},
         ]
     }
 
