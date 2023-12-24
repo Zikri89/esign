@@ -410,7 +410,7 @@
         >
             <div class="flex flex-col gt-xs:flex-row w-full">
                 <mat-label>New Field Label</mat-label>
-                <p-autoComplete formControlName="newFieldLabel" [suggestions]="filteredOptionLabels" (completeMethod)="filterOption($event)" field="name"></p-autoComplete>
+                <p-autoComplete formControlName="newFieldLabel" [suggestions]="filteredOptionLabels" (completeMethod)="filterOption($event)" field="name" [style]="'border:solid 1px black;'"></p-autoComplete>
 
                 <mat-form-field class="w-full">
                     <mat-label>New Field Type</mat-label>
