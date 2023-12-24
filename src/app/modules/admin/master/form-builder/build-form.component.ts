@@ -590,8 +590,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Volume'},
             { name: 'Lama Menikah Dengan Suami 1'},
             { name: 'Riwayat Kehamilan Sekarang'},
-            { name: 'Asuhan antenatal'},
-            { name: 'Keluhan saat hamil'},
+            { name: 'Asuhan Antenatal'},
+            { name: 'Keluhan Saat Hamil'},
         ]
     }
 
