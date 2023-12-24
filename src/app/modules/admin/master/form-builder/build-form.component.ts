@@ -551,6 +551,14 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Kebutuhan Khusus'},
             { name: 'Perawatan Lanjutan (Kontrol)'},
             { name: 'Jenis Atau Nama Obat'},
+            { name: 'Pernah Di Operasi'},
+            { name: 'Reaksi Utama Yang Timbul'},
+            { name: 'Jumlah Atau Hari'},
+            { name: 'Lama'},
+            { name: 'Ya, Jelaskan'},
+            { name: 'Reaksi utama Yang Timbul'},
+            { name: 'Reaksi Yang Timbul'},
+            { name: 'Jenis'},
         ]
     }
 
