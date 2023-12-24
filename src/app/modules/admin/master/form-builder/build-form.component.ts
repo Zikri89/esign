@@ -550,6 +550,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'DM Atau KEMOTERAPI Atau HEMODIALISA Atau GEATRI'},
             { name: 'Kebutuhan Khusus'},
             { name: 'Perawatan Lanjutan (Kontrol)'},
+            { name: 'Jenis Atau Nama Obat'},
         ]
     }
 
