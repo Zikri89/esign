@@ -498,6 +498,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Kontrol'},
             { name: 'Tiba di Ruangan'},
             { name: 'Nama Pengantar'},
+            { name: 'Asal Pasien'},
         ]
     }
 
