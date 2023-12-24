@@ -592,6 +592,14 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Riwayat Kehamilan Sekarang'},
             { name: 'Asuhan Antenatal'},
             { name: 'Keluhan Saat Hamil'},
+            { name: 'Persepsi Dan Harapan Nyeri'},
+            { name: 'Nyeri Hilang Bila'},
+            { name: 'Durasi'},
+            { name: 'Lokasi'},
+            { name: 'Kateter, Terpasang Tanggal Atau pukul'},
+            { name: 'Kateter, Ukuran Kateter'},
+            { name: 'Kateter, Tipe'},
+            { name: 'Skala Nyeri'},
         ]
     }
 
