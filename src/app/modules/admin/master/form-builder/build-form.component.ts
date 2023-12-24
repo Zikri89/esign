@@ -548,6 +548,8 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Daftar Masalah Keperawatan'},
             { name: 'Rencana Keperawatan'},
             { name: 'DM Atau KEMOTERAPI Atau HEMODIALISA Atau GEATRI'},
+            { name: 'Kebutuhan Khusus'},
+            { name: 'Perawatan Lanjutan (Kontrol)'},
         ]
     }
 
