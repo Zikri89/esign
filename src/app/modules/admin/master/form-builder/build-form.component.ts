@@ -600,7 +600,9 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Kateter, Ukuran Kateter'},
             { name: 'Kateter, Tipe'},
             { name: 'Skala Nyeri'},
-            { name: 'Skala Nyeri 2'},
+            { name: 'Nama Obat'},
+            { name: 'Dosis'},
+            { name: 'Lama Penggunaan'},
         ]
     }
 
