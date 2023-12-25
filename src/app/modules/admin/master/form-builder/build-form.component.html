@@ -29,7 +29,7 @@
             <button
                 class="ml-3 mb-5"
                 mat-flat-button
-                (click)="toggleDrawerOpen()"
+                (click)="showAddfieldForm()"
                 [color]="'accent'"
             >
                 <mat-icon
@@ -394,23 +394,15 @@
         </p-dialog>
     </div>
 </div>
-
-<fuse-drawer
-    [name]="'rightDrawer'"
-    [opened]="drawerOpened"
-    [position]="'right'"
-    [fixed]="true"
-    [mode]="'over'"
->
-    <div class="flex gt-xs:flex-row w-full">
-        <!-- Name & Type -->
+<p-dialog appendTo="body" header="Header" [(visible)]="visibleaddFieldForm" [style]="{ width: '50vw' }">
+    <div class="flex py-2 justify-content-center">
         <form
             [formGroup]="form"
             class="flex p-8 rounded-2xl overflow-hidden w-full"
         >
             <div class="flex flex-col gt-xs:flex-row w-full">
                 <mat-label>New Field Label</mat-label>
-                <p-autoComplete formControlName="newFieldLabel" [suggestions]="filteredOptionLabels" (completeMethod)="filterOption($event)" field="name" [style]="'border:solid 1px black;'"></p-autoComplete>
+                <p-autoComplete formControlName="newFieldLabel" [suggestions]="filteredOptionLabels" (completeMethod)="filterOption($event)" field="name"></p-autoComplete>
 
                 <mat-form-field class="w-full">
                     <mat-label>New Field Type</mat-label>
@@ -485,4 +477,4 @@
             </div>
         </form>
     </div>
-</fuse-drawer>
+</p-dialog>

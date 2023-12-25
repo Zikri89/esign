@@ -57,6 +57,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
 import { ListOptionLabelComponent } from './dialog/list-label-option.component'
 import { OrderListModule } from 'primeng/orderlist'
+import { DropdownModule } from 'primeng/dropdown';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event
@@ -95,7 +96,8 @@ interface AutoCompleteCompleteEvent {
         AutoCompleteModule,
         DragDropModule,
         OrderListModule,
-        DialogModule
+        DialogModule,
+        DropdownModule
     ],
     providers: [MessageService, DialogService],
 })
@@ -122,6 +124,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     showOptions: boolean = false
     visible: boolean = false;
     visibleDuplicateForm: boolean = false;
+    visibleaddFieldForm: boolean = false;
 
     createDuplicateForm: FormManagerData[]
 
@@ -737,6 +740,26 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: "Problematik" },
             { name: "Cacat Tubuh" },
             { name: "Penilaian Nyeri" },
+            { name: "APGAR Score Menit 1" },
+            { name: "APGAR Score Menit 5" },
+            { name: "Appearance Nilai 0" },
+            { name: "Appearance Nilai 1" },
+            { name: "Appearance Nilai 2" },
+            { name: "Pulse Nilai 0" },
+            { name: "Pulse Nilai 1" },
+            { name: "Pulse Nilai 2" },
+            { name: "Grimace Nilai 0" },
+            { name: "Grimace Nilai 1" },
+            { name: "Grimace Nilai 1" },
+            { name: "Activity Nilai 0" },
+            { name: "Activity Nilai 1" },
+            { name: "Activity Nilai 2" },
+            { name: "Activity Nilai 2" },
+            { name: "Respiration Nilai 0" },
+            { name: "Respiration Nilai 1" },
+            { name: "Respiration Nilai 2" },
+            { name: "S" },
+            { name: "O" },
         ]
     }
 
@@ -816,6 +839,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         })
 
         this.visibleDuplicateForm = false
+        this.visibleaddFieldForm = false
     }
 
 
@@ -825,6 +849,10 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
 
     showDialogDuplicateForm() {
         this.visibleDuplicateForm = true
+    }
+
+    showAddfieldForm() {
+        this.visibleaddFieldForm = true
     }
 
     selectOption(option: string): void {
@@ -898,6 +926,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
     addField() {
         const newField = this.createField()
         this.formFields.push(newField)
+        this.visibleaddFieldForm = false
     }
 
     createField(): any {
@@ -946,6 +975,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
         if (this.form.invalid) {
             // Mark the form as touched to display validation errors
             this.form.markAllAsTouched()
+            this.visibleaddFieldForm = false
             return
         }
 
