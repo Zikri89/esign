@@ -600,6 +600,7 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: 'Kateter, Ukuran Kateter'},
             { name: 'Kateter, Tipe'},
             { name: 'Skala Nyeri'},
+            { name: 'Skala Nyeri 2'},
         ]
     }
 
