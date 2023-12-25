@@ -919,7 +919,10 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             {name: "Rujukan dari Poliklinik Atau Ruang Rawat Inap"},
             {name: "DPJP"},
             {name: "no"},
-
+            {name: "Status Obstetri"},
+            {name: "Inspeksi"},
+            {name: "Palpasi"},
+            {name: "Pasien Atau Keluarga Pasien"},
         ]
     }
 
