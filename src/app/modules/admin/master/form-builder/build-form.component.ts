@@ -730,13 +730,13 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: "Lingkar Perut" },
             { name: "Jarak Kepala Sampai Symphysis" },
             { name: "Lingkar Lengan Atas" },
-            { name: "Jarak Symphysis Sampai Kaki" }
-            { name: "Tinggi Badan" }
-            { name: "IMT" }
-            { name: "Alat Bantu" }
-            { name: "Problematik" }
-            { name: "Cacat Tubuh" }
-            { name: "Penilaian Nyeri" }
+            { name: "Jarak Symphysis Sampai Kaki" },
+            { name: "Tinggi Badan" },
+            { name: "IMT" },
+            { name: "Alat Bantu" },
+            { name: "Problematik" },
+            { name: "Cacat Tubuh" },
+            { name: "Penilaian Nyeri" },
         ]
     }
 
