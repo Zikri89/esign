@@ -813,6 +813,9 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: "Leher" },
             { name: "Dokter Yang Melakukan Asessmen" },
             { name: "Keluarga Pasien" },
+            { name: "Diagnosis Fisioterapi" },
+            { name: "Problematika Fisioterapi" },
+            { name: "Rencana Terapi/Tindakan" },
         ]
     }
 
