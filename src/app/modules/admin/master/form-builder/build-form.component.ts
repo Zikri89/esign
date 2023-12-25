@@ -916,6 +916,10 @@ export class FormBuilderComponent implements OnInit, AfterViewInit {
             { name: "Bidan Yang Mengkaji " },
             { name: "Adakah Penyakit Atau Keadaan Yang Mengakibatkan Pasien Beresiko Mengalami Malnutrisi " },
             { name: "Apakah Terdapat Kondisi Salah satu Diare Lebih dari 5x per Hari, Muntah Lebih Dari 3x Per Hari & Asupan Makan Berkurang Selama 1 Minggu Terakhir " },
+            {name: "Rujukan dari Poliklinik Atau Ruang Rawat Inap"},
+            {name: "DPJP"},
+            {name: "no"},
+
         ]
     }
 
